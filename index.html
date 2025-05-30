@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/physics/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>НАФИЗИЧЬ - Обучение физике</title>
+    <script type="text/javascript">
+      // Обработка параметров URL при перенаправлении с 404.html
+      ;(function () {
+        var redirect = sessionStorage.redirect
+        delete sessionStorage.redirect
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect)
+        }
+
+        // Проверяем, был ли это запрос с параметрами перенаправления
+        var p = new URLSearchParams(window.location.search).get('p')
+        var q = new URLSearchParams(window.location.search).get('q')
+
+        if (p) {
+          // Преобразуем обратно закодированные амперсанды
+          p = p.replace(/~and~/g, '&')
+          // Восстанавливаем оригинальные параметры запроса
+          q = q ? '?' + q.replace(/~and~/g, '&') : ''
+
+          // Сохраняем оригинальный путь перед перенаправлением
+          var newUrl = window.location.pathname.replace(/\/$/, '') + p + q + window.location.hash
+          sessionStorage.redirect = newUrl
+
+          // Перенаправляем на правильный URL без параметров
+          window.location.replace(newUrl)
+        }
+      })()
+    </script>
+    <script type="module" crossorigin src="/physics/assets/index-B--bUsUq.js"></script>
+    <link rel="modulepreload" crossorigin href="/physics/assets/vuetify-A75-ihEZ.js">
+    <link rel="stylesheet" crossorigin href="/physics/assets/index-BypMafLe.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
