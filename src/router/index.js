@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import MainPage from '@/pages/MainPage.vue'
+import TopicPage from '@/pages/TopicPage.vue'
+import ExercisePage from '@/pages/ExercisePage.vue'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 
 const routes = [
@@ -12,9 +14,21 @@ const routes = [
       {
         path: '',
         name: 'main',
-        component: MainPage
-      }
-    ]
+        component: MainPage,
+      },
+      {
+        path: 'topic/:id',
+        name: 'topic',
+        component: TopicPage,
+        props: true,
+      },
+      {
+        path: 'topic/:topicId/:type/exercise/:exerciseId',
+        name: 'exercise',
+        component: ExercisePage,
+        props: true,
+      },
+    ],
   },
   {
     path: '/',
@@ -23,15 +37,15 @@ const routes = [
       {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
-        component: NotFoundPage
-      }
-    ]
-  }
+        component: NotFoundPage,
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 
 export default router
