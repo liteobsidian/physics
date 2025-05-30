@@ -15,4 +15,17 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  // Добавляем правила для использования символов Material Design в Vuetify
+  optimizeDeps: {
+    include: ['vuetify']
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vuetify: ['vuetify']
+        }
+      }
+    }
+  }
 })
