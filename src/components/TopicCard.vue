@@ -8,13 +8,13 @@
       <div v-if="tags.length > 0" class="mb-3 d-flex flex-wrap">
         <v-chip
           v-for="tag in tags"
-          :key="tag"
+          :key="tag.id"
           size="small"
           color="secondary"
           class="mr-1 mb-1"
           variant="flat"
         >
-          {{ tag }}
+          {{ tag.title }}
         </v-chip>
       </div>
       <v-progress-linear

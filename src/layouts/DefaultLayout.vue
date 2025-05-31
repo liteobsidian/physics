@@ -13,7 +13,7 @@
 
           <v-app-bar-title class="text-primary d-flex align-center justify-center">
             <v-icon color="primary" class="mr-2">mdi-flask</v-icon>
-            НАФИЗИЧЬ
+            Физичитариум
           </v-app-bar-title>
 
           <v-tooltip location="bottom" text="Личный кабинет находится в разработке">
