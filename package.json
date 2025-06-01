@@ -9,8 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write src/",
-    "gen": "cd src/data/temp && python3 process_exercises.py",
-    "gen-js": "node src/data/temp/convert.js"
+    "gen": "node src/data/temp/convert.js"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
