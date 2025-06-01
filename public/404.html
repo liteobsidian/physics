@@ -6,27 +6,17 @@
     <script type="text/javascript">
       // Перенаправляем все запросы на index.html
       // Это необходимо для корректной работы SPA на GitHub Pages
-      const pathSegmentsToKeep = 1
+      const pathSegmentsToKeep = 0
       const location = window.location
 
-      // Проверяем, если URL уже содержит параметры p= и q=, не добавляем их снова
-      if (location.search && location.search.indexOf('p=') !== -1) {
-        // Если URL уже обработан, просто перенаправляем на главную
-        window.location.href = `${location.protocol}//${location.hostname}${location.port ? ':' + location.port : ''}/physics/`
-      } else {
-        // Формируем путь перенаправления только для необработанных URL
-        const path = location.pathname
-          .slice(1)
-          .split('/')
-          .slice(pathSegmentsToKeep)
-          .join('/')
-          .replace(/&/g, '~and~')
-        const query = location.search ? `&q=${location.search.slice(1).replace(/&/g, '~and~')}` : ''
+      // Извлекаем путь и параметры
+      const path = location.pathname.slice(1)
 
-        const redirectUrl = `${location.protocol}//${location.hostname}${location.port ? ':' + location.port : ''}/physics/?p=/${path}${query}${location.hash}`
+      // Формируем URL для перенаправления
+      const redirectUrl = `${location.protocol}//${location.hostname}${location.port ? ':' + location.port : ''}/physics/?p=/${path}${location.search ? '&' + location.search.slice(1) : ''}${location.hash}`
 
-        window.location.href = redirectUrl
-      }
+      // Перенаправляем на главную страницу с параметрами
+      window.location.href = redirectUrl
     </script>
   </head>
   <body>

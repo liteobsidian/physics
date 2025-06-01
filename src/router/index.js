@@ -7,6 +7,9 @@ import BlockPage from '../pages/BlockPage.vue'
 import ExercisePage from '../pages/ExercisePage.vue'
 import NotFoundPage from '../pages/NotFoundPage.vue'
 
+// Определяем базовый URL в зависимости от окружения
+const base = import.meta.env.BASE_URL || '/physics/'
+
 const routes = [
   {
     path: '/',
@@ -51,12 +54,27 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(base),
   routes,
   scrollBehavior() {
     // Всегда прокручивать в начало страницы при смене маршрута
     return { top: 0 }
   },
+})
+
+// Обработка перенаправлений с 404.html
+router.beforeEach((to, from, next) => {
+  // Если есть параметр p в URL, значит это перенаправление с 404.html
+  const redirectParam = new URLSearchParams(window.location.search).get('p')
+
+  if (redirectParam && to.fullPath === '/') {
+    // Очищаем URL от параметров перенаправления
+    const cleanPath = redirectParam.replace(/~and~/g, '&')
+    // Перенаправляем на нужный маршрут
+    next({ path: cleanPath, replace: true })
+  } else {
+    next()
+  }
 })
 
 export default router
