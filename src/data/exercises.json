@@ -139,6 +139,13 @@
       "task": "<div><p><span><span>Для чего нужны разные системы счисления?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Усложнить математику</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Использование в разных областях</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Запутать учеников</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Только для истории</span></span><span>&nbsp;</span></p></div>",
       "answer": "2",
       "hint": "Каждая система удобна для конкретных задач (двоичная - для техники). "
+    },
+    {
+      "topic_id": 2,
+      "id": 11,
+      "task": "Хуй пизда сковорода",
+      "answer": "хуй",
+      "hint": "Она самая"
     }
   ],
   "check_exercises": [
