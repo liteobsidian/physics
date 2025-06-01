@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import ErrorLayout from '../layouts/ErrorLayout.vue'
 import MainPage from '../pages/MainPage.vue'
@@ -54,27 +54,12 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(base),
+  history: createWebHashHistory(base),
   routes,
   scrollBehavior() {
     // Всегда прокручивать в начало страницы при смене маршрута
     return { top: 0 }
   },
-})
-
-// Обработка перенаправлений с 404.html
-router.beforeEach((to, from, next) => {
-  // Если есть параметр p в URL, значит это перенаправление с 404.html
-  const redirectParam = new URLSearchParams(window.location.search).get('p')
-
-  if (redirectParam && to.fullPath === '/') {
-    // Очищаем URL от параметров перенаправления
-    const cleanPath = redirectParam.replace(/~and~/g, '&')
-    // Перенаправляем на нужный маршрут
-    next({ path: cleanPath, replace: true })
-  } else {
-    next()
-  }
 })
 
 export default router
