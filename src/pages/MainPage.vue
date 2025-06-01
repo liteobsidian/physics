@@ -37,35 +37,50 @@
       <div class="text-body-2 text-grey">Попробуйте изменить параметры поиска или фильтры</div>
     </div>
 
-    <div v-for="block in filteredBlocks" :key="block.id" class="mb-8">
-      <h2 class="text-h5 mb-4 text-wrap">
-        <v-btn
-          variant="text"
-          color="primary"
-          class="pa-0 text-h5 text-left text-wrap font-weight-bold"
-          :to="`/block/${block.id}`"
-          height="auto"
-          style="text-transform: none; letter-spacing: normal"
-        >
-          {{ block.title }}
-          <v-icon class="ml-2" icon="mdi-chevron-right" size="small"></v-icon>
-        </v-btn>
-      </h2>
-      <v-row>
-        <v-col v-for="topic in block.topics" :key="topic.id" cols="12">
-          <topic-card
-            :topic="topic"
-            :tags="getTopicTags(topic)"
-            :progress="getTopicProgressObject(topic.id)"
-          />
-        </v-col>
-      </v-row>
-    </div>
+    <v-expansion-panels v-model="expandedPanels" multiple class="expansion-panels">
+      <v-expansion-panel
+        v-for="block in filteredBlocks"
+        :key="block.id"
+        :value="block.id"
+        rounded="lg"
+      >
+        <v-expansion-panel-title color="grey-lighten-4">
+          <div class="d-flex justify-space-between align-center w-100">
+            <div class="text-h6 text-primary">{{ block.title }}</div>
+            <v-btn
+              variant="text"
+              color="primary"
+              :to="`/block/${block.id}`"
+              class="ml-auto mr-2"
+              size="small"
+              icon
+              @click.stop
+            >
+              <v-icon icon="mdi-arrow-right-circle-outline"></v-icon>
+            </v-btn>
+          </div>
+          <template v-slot:actions>
+            <v-icon icon="$expand"></v-icon>
+          </template>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row>
+            <v-col v-for="topic in block.topics" :key="topic.id" cols="12">
+              <topic-card
+                :topic="topic"
+                :tags="getTopicTags(topic)"
+                :progress="getTopicProgressObject(topic.id)"
+              />
+            </v-col>
+          </v-row>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </div>
 </template>
 
 <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
   import TopicCard from '../components/TopicCard.vue'
   import SearchField from '../components/SearchField.vue'
   import topicsData from '../data/topics.json'
@@ -76,6 +91,7 @@
   const searchQuery = ref('')
   const selectedTags = ref([])
   const tags = tagsData.tags
+  const expandedPanels = ref([])
 
   // Используем композабл для работы с прогрессом
   const { progress: topicsProgress, getTopicProgress } = useProgress()
@@ -157,6 +173,17 @@
     // Возвращаем только блоки с темами
     return blocks.filter(block => block.topics.length > 0)
   })
+
+  // Следим за изменениями фильтров и автоматически разворачиваем блоки при поиске или фильтрации
+  watch([searchQuery, selectedTags], () => {
+    if (searchQuery.value || selectedTags.value.length > 0) {
+      // Если есть поиск или фильтры, разворачиваем все видимые блоки
+      expandedPanels.value = filteredBlocks.value.map(block => block.id)
+    } else {
+      // Если поиск и фильтры пусты, сворачиваем все блоки
+      expandedPanels.value = []
+    }
+  })
 </script>
 
 <style scoped>
@@ -164,5 +191,31 @@
     flex-wrap: wrap;
     max-height: 180px;
     overflow-y: auto;
+  }
+
+  .v-expansion-panels {
+    background: transparent;
+  }
+
+  .expansion-panels :deep(.v-expansion-panel) {
+    margin-bottom: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .v-expansion-panel-title {
+    min-height: 48px !important;
+  }
+
+  .expansion-panels :deep(.v-expansion-panel-title) {
+    padding: 8px 16px;
+  }
+
+  .expansion-panels :deep(.v-expansion-panel-text__wrapper) {
+    padding: 12px 16px;
+  }
+
+  .expansion-panels :deep(.text-h6) {
+    font-size: 1rem !important;
+    line-height: 1.2;
   }
 </style>
