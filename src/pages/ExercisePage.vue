@@ -104,15 +104,23 @@
   // Функция для проверки, является ли задание изображением
   const isImageTask = text => {
     if (!text) return false
-    return text.toLowerCase().startsWith('img')
+    return typeof text === 'string' && text.startsWith('img')
   }
 
   // Функция для извлечения пути к изображению
   const getImagePath = text => {
     if (!isImageTask(text)) return ''
 
-    // Используем базовый URL проекта и преобразуем в нижний регистр
-    return `${import.meta.env.BASE_URL}img/${text.toLowerCase()}.jpeg`
+    // Находим имя файла (без возможных расширений)
+    const imgBaseName = text.split('.').length > 1 ? text : `${text}`
+
+    // Для задания 1.1.1.11 принудительно используем PNG
+    if (imgBaseName === 'img.1.1.1.11') {
+      return `${import.meta.env.BASE_URL}img/${imgBaseName}.png`
+    }
+
+    // Для остальных используем .jpeg
+    return `${import.meta.env.BASE_URL}img/${imgBaseName}.jpeg`
   }
 
   // Проверяем ответ
@@ -188,5 +196,14 @@
 
   :deep(.v-expansion-panel-text__wrapper) {
     padding: 0 16px 16px 16px !important;
+  }
+
+  .debug-info {
+    background-color: #f5f5f5;
+    padding: 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+    color: #333;
   }
 </style>
