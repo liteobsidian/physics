@@ -8,30 +8,30 @@
     <title>Физичитариум - Обучение физике</title>
     <script type="text/javascript">
       // Обработка параметров URL при перенаправлении с 404.html
-      ;(function () {
-        var redirect = sessionStorage.redirect
-        delete sessionStorage.redirect
-        if (redirect && redirect != location.href) {
-          history.replaceState(null, null, redirect)
-        }
+      ;(() => {
+        // Проверяем, есть ли параметр 'p' в URL
+        const p = new URLSearchParams(window.location.search).get('p')
 
-        // Проверяем, был ли это запрос с параметрами перенаправления
-        var p = new URLSearchParams(window.location.search).get('p')
-        var q = new URLSearchParams(window.location.search).get('q')
+        // Если параметр есть и мы еще не обработали это перенаправление
+        if (p && !sessionStorage.getItem('redirectProcessed')) {
+          // Отмечаем, что перенаправление обработано
+          sessionStorage.setItem('redirectProcessed', 'true')
 
-        if (p) {
           // Преобразуем обратно закодированные амперсанды
-          p = p.replace(/~and~/g, '&')
-          // Восстанавливаем оригинальные параметры запроса
-          q = q ? '?' + q.replace(/~and~/g, '&') : ''
+          const cleanPath = p.replace(/~and~/g, '&')
 
-          // Сохраняем оригинальный путь перед перенаправлением
-          var newUrl = window.location.pathname.replace(/\/$/, '') + p + q + window.location.hash
-          sessionStorage.redirect = newUrl
+          // Формируем новый URL без параметров перенаправления
+          const newUrl =
+            window.location.pathname.replace(/\/+$/, '') + cleanPath + window.location.hash
 
-          // Перенаправляем на правильный URL без параметров
-          window.location.replace(newUrl)
+          // Заменяем текущий URL без перезагрузки страницы
+          window.history.replaceState(null, null, newUrl)
         }
+
+        // Очищаем флаг после обработки
+        setTimeout(() => {
+          sessionStorage.removeItem('redirectProcessed')
+        }, 1000)
       })()
     </script>
     <script type="module" crossorigin src="/physics/assets/index-D8PnFSbI.js"></script>
