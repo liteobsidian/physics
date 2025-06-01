@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "gen": "cd src/data/temp && python3 process_exercises.py"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",

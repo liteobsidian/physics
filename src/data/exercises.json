@@ -3,271 +3,146 @@
     {
       "topic_id": 1,
       "id": 1,
-      "task": "Определите, является ли множество натуральных чисел конечным",
-      "hint": "Натуральные числа - это числа, используемые для счёта предметов: 1, 2, 3, ...",
-      "answer": "нет"
+      "task": "<div><p><span><span>Прочитайте текст и вставьте на место пропусков слова (словосочетания) из приведённого списка.</span></span><span>&nbsp;</span></p></div><div><p><span><span>Множество - это (A) ______ объектов, объединённых по определённому (B) ______. Например, множество учеников в классе или множество натуральных чисел. Круг Эйлера - это (C) ______ представления множества, где его элементы изображаются (D) ______ геометрической фигуры.</span></span><span>&nbsp;</span></p></div><div><p><span><span>Список слов и словосочетаний:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>графический способ</span></span><span>&nbsp;</span></p></li><li><p><span><span>совокупность</span></span><span>&nbsp;</span></p></li><li><p><span><span>признаку</span></span><span>&nbsp;</span></p></li><li><p><span><span>снаружи</span></span><span>&nbsp;</span></p></li><li><p><span><span>внутри</span></span><span>&nbsp;</span></p></li><li><p><span><span>случайный набор</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span>Ответ:</span></span><span>&nbsp;</span></p></div><div><p><span><span>A) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>B) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>C) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>D) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>Напишите в ответе числа в соответствующем порядке,</span></span><span><span><span>&nbsp;</span></span></span><span><span>без пробелов.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2315",
+      "hint": "Множество - собрание или сочетание объектов. "
     },
     {
       "topic_id": 1,
       "id": 2,
-      "task": "Запишите множество чисел от 1 до 5 с помощью фигурных скобок",
-      "hint": "Множество записывается через фигурные скобки, а элементы через запятую",
-      "answer": "{1,2,3,4,5}"
+      "task": "<div><p><span><span>Используя определение множества, выберите два верных утверждения из предложенных:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Множество может содержать только математические объекты</span></span><span>&nbsp;</span></p></li><li><p><span><span>Порядок элементов в множестве имеет значение</span></span><span>&nbsp;</span></p></li><li><p><span><span>Один и тот же объект не может встречаться в множестве несколько раз</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество определяется по общим свойствам его элементов</span></span><span>&nbsp;</span></p></li><li><p><span><span>Круги Эйлера используются для визуализации множеств</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>Запишите ответе числа по возрастанию,</span></span><span><span><span>&nbsp;</span></span></span><span><span>без пробелов и запятых.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "45",
+      "hint": "Ну если ты настолько глупый, что прям вот здесь тебе нужна подсказка, то мы всё равно не чем тебе не сможем помочь. Вот тебе просто правильный ответ: 45"
     },
     {
       "topic_id": 1,
       "id": 3,
-      "task": "Что такое пустое множество?",
-      "hint": "Пустое множество не содержит ни одного элемента",
-      "answer": "множество без элементов"
+      "task": "<div><p><span><span>Какое из следующих множеств является бесконечным?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Множество букв в русском алфавите</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество планет Солнечной системы</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество целых чисел</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество студентов в университете</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Бесконечное множество невозможно пересчитать полностью, до конца."
     },
     {
       "topic_id": 1,
       "id": 4,
-      "task": "Как обозначается пустое множество?",
-      "hint": "Существует специальный символ для обозначения пустого множества",
-      "answer": "∅"
+      "task": "<div><p><span><span>Переменная в математике - это:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Конкретное числовое значение</span></span><span>&nbsp;</span></p></li><li><p><span><span>Символ, обозначающий любой элемент из множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Название геометрической фигуры</span></span><span>&nbsp;</span></p></li><li><p><span><span>Способ изображения множества</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Вспомните, как используются буквы в уравнениях."
     },
     {
       "topic_id": 1,
       "id": 5,
-      "task": "Что такое объединение множеств A и B?",
-      "hint": "Объединение содержит элементы, которые есть хотя бы в одном из множеств",
-      "answer": "множество элементов, принадлежащих A или B"
+      "task": "Img.1.1.1.5",
+      "answer": "2",
+      "hint": "Подумайте, что находится в области пересечения кругов."
     },
     {
       "topic_id": 1,
       "id": 6,
-      "task": "Что такое пересечение множеств A и B?",
-      "hint": "Пересечение содержит только общие элементы",
-      "answer": "множество элементов, принадлежащих и A, и B"
+      "task": "<div><p><span><span>Сравнение множеств</span></span><span>&nbsp;</span></p></div><div><p><span><span>Даны два множества: A = {1, 2, 3} и B = {3, 2, 1}. Какое утверждение верно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Это разные множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество A содержит больше элементов</span></span><span>&nbsp;</span></p></li><li><p><span><span>Это одинаковые множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество B является подмножеством A</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Важен ли порядок элементов в множестве?"
     },
     {
       "topic_id": 1,
       "id": 7,
-      "task": "Что такое разность множеств A и B?",
-      "hint": "Разность содержит элементы первого множества, которых нет во втором",
-      "answer": "множество элементов, принадлежащих A, но не принадлежащих B"
+      "task": "<div><p><span><span>Практическое применение</span></span><span>&nbsp;</span></p></div><div><p><span><span>Учитель попросил выделить множество гласных букв в слове \"математика\". Какое множество получится?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>{м, т, м, т, к}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{а, е, а, и, а}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{м, а, т, е, м, а, т, и, к, а}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{а, е, и}</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "4",
+      "hint": "Гласные в русском языке - а, е, ё, и, о, у, ы, э, ю, я."
     },
     {
       "topic_id": 1,
       "id": 8,
-      "task": "Как обозначается объединение множеств?",
-      "hint": "Для обозначения объединения используется специальный символ",
-      "answer": "∪"
+      "task": "<div><p><span><span>Понимание переменных</span></span><span>&nbsp;</span></p></div><div><p><span><span>Если x - переменная, обозначающая любое число из множества {1, 2, 3}, то какое значение НЕ может принимать x?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>1</span></span><span>&nbsp;</span></p></li><li><p><span><span>2</span></span><span>&nbsp;</span></p></li><li><p><span><span>3</span></span><span>&nbsp;</span></p></li><li><p><span><span>4</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "4",
+      "hint": "Из какого множества выбирается значение переменной?"
     },
     {
       "topic_id": 1,
       "id": 9,
-      "task": "Как обозначается пересечение множеств?",
-      "hint": "Для обозначения пересечения используется специальный символ",
-      "answer": "∩"
+      "task": "<div><p><span><span>Анализ утверждений</span></span><span>&nbsp;</span></p></div><div><p><span><span>Какое утверждение о бесконечных множествах верно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Их можно полностью записать на бумаге</span></span><span>&nbsp;</span></p></li><li><p><span><span>Они существуют только в теории</span></span><span>&nbsp;</span></p></li><li><p><span><span>Их элементы можно пересчитать за конечное время</span></span><span>&nbsp;</span></p></li><li><p><span><span>Они обязательно содержат все числа</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Подумайте о практических ограничениях."
     },
     {
       "topic_id": 1,
       "id": 10,
-      "task": "Как обозначается принадлежность элемента множеству?",
-      "hint": "Существует специальный символ, означающий, что элемент содержится в множестве",
-      "answer": "∈"
-    },
-    {
-      "topic_id": 1,
-      "id": 11,
-      "task": "Что такое подмножество?",
-      "hint": "Подмножество - это часть другого множества",
-      "answer": "множество, все элементы которого принадлежат другому множеству"
-    },
-    {
-      "topic_id": 1,
-      "id": 12,
-      "task": "Является ли пустое множество подмножеством любого множества?",
-      "hint": "Подумайте, можно ли найти элемент пустого множества, который не принадлежит другому множеству",
-      "answer": "да"
-    },
-    {
-      "topic_id": 1,
-      "id": 13,
-      "task": "Что такое универсальное множество?",
-      "hint": "Универсальное множество включает все рассматриваемые элементы",
-      "answer": "множество, содержащее все элементы предметной области"
-    },
-    {
-      "topic_id": 1,
-      "id": 14,
-      "task": "Что такое дополнение множества A?",
-      "hint": "Дополнение содержит все элементы, которых нет в множестве A",
-      "answer": "множество всех элементов универсального множества, не принадлежащих A"
-    },
-    {
-      "topic_id": 1,
-      "id": 15,
-      "task": "Если A = {1, 2, 3} и B = {2, 3, 4}, то A ∪ B = ?",
-      "hint": "Объединение включает все элементы из обоих множеств без повторений",
-      "answer": "{1, 2, 3, 4}"
-    },
-    {
-      "topic_id": 1,
-      "id": 16,
-      "task": "Если A = {1, 2, 3} и B = {2, 3, 4}, то A \\ B = ?",
-      "hint": "Разность включает элементы A, которых нет в B",
-      "answer": "{1}"
-    },
-    {
-      "topic_id": 1,
-      "id": 17,
-      "task": "Что такое переменная в математике?",
-      "hint": "Переменная может принимать различные значения",
-      "answer": "величина, которая может изменять свое значение"
-    },
-    {
-      "topic_id": 2,
-      "id": 1,
-      "task": "Сколько цифр используется в десятичной системе счисления?",
-      "hint": "Цифры в десятичной системе: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9",
-      "answer": "10"
-    },
-    {
-      "topic_id": 2,
-      "id": 2,
-      "task": "Запишите число 101 в двоичной системе в десятичной",
-      "hint": "В двоичной системе каждый разряд имеет вес 2^n, начиная с 2^0 для крайнего правого разряда",
-      "answer": "5"
-    },
-    {
-      "topic_id": 3,
-      "id": 1,
-      "task": "Какое из чисел не относится к множеству натуральных чисел: 0, 1, 2, 3?",
-      "hint": "Натуральные числа начинаются с 1",
-      "answer": "0"
-    },
-    {
-      "topic_id": 3,
-      "id": 2,
-      "task": "Найдите частное чисел 15 и 3",
-      "hint": "Частное - это результат деления",
-      "answer": "5"
-    },
-    {
-      "topic_id": 4,
-      "id": 1,
-      "task": "Если автомобиль проезжает 60 км за 1 час, то сколько километров он проедет за 3 часа при той же скорости?",
-      "hint": "Для прямо пропорциональных величин при увеличении одной в n раз, другая также увеличивается в n раз",
-      "answer": "180"
-    },
-    {
-      "topic_id": 4,
-      "id": 2,
-      "task": "Если для приготовления 4 порций пудинга требуется 600 г молока, то сколько молока требуется для 6 порций?",
-      "hint": "Составьте пропорцию: 4 порции - 600 г, 6 порций - x г",
-      "answer": "900"
+      "task": "Img.1.1.1.5",
+      "answer": "4",
+      "hint": "Что означает область пересечения двух множеств?"
     }
   ],
   "check_exercises": [
     {
       "topic_id": 1,
       "id": 1,
-      "task": "Запишите множество гласных букв русского алфавита",
-      "answer": "{а,е,и,о,у,ы,э,ю,я}"
+      "task": "<div><p><span><span>Логический анализ</span></span><span>&nbsp;</span></p></div><div><p><span><span>Даны три множества: A - множество чётных чисел, B - множество чисел, кратных 3, C - множество чисел, кратных 5. Какое число принадлежит всем трём множествам одновременно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>15</span></span><span>&nbsp;</span></p></li><li><p><span><span>20</span></span><span>&nbsp;</span></p></li><li><p><span><span>30</span></span><span>&nbsp;</span></p></li><li><p><span><span>25</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Найдите число, которое делится на 2, 3 и 5."
     },
     {
       "topic_id": 1,
       "id": 2,
-      "task": "Если A = {1, 2, 3} и B = {3, 4, 5}, то A ∩ B = ?",
-      "answer": "{3}"
+      "task": "<div><p><span><span>Построение множеств</span></span><span>&nbsp;</span></p></div><div><p><span><span>Если множество X = {a, b, c}, а множество Y = {b, c, d}, то каково будет множество X ∪ Y?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>{a, b, c}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{b, c}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{a, b, c, d}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{a, d}</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": " Операция ∪ означает объединение множеств."
     },
     {
-      "topic_id": 2,
-      "id": 1,
-      "task": "Запишите число 15 в двоичной системе счисления",
-      "answer": "1111"
+      "topic_id": 1,
+      "id": 3,
+      "task": "<div><p><span><span>Логический анализ множеств</span></span><span>&nbsp;</span></p></div><div><p><span><span>Даны три множества:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>A = {x | x - чётное число}</span></span><span>&nbsp;</span></p></li><li><p><span><span>B = {x | x кратно 3}</span></span><span>&nbsp;</span></p></li><li><p><span><span>C = {x | x кратно 5}</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Какое наименьшее натуральное число принадлежит пересечению A ∩ B ∩ C</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>15</span></span><span>&nbsp;</span></p></li><li><p><span><span>30</span></span><span>&nbsp;</span></p></li><li><p><span><span>60</span></span><span>&nbsp;</span></p></li><li><p><span><span>10</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span><span>&nbsp;</span></span></p></div>",
+      "answer": "2",
+      "hint": "Найдите наименьшее число которое делиться на эти числа: 2, 3 и 5. Такое число называется наименышие общее кратное НОК."
     },
     {
-      "topic_id": 2,
-      "id": 2,
-      "task": "Сколько разных чисел можно записать, используя три цифры: 1, 2, 3 (без повторений)?",
-      "answer": "6"
+      "topic_id": 1,
+      "id": 4,
+      "task": "<div><p><span><span> Операции с множествами</span></span><span>&nbsp;</span></p></div><div><p><span><span>Дано:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>M = {1, 2, 3, 4, 5}</span></span><span>&nbsp;</span></p></li><li><p><span><span>N = {3, 4, 5, 6, 7}</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Чему равно множество M \\ N (разность M и N)?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>{1, 2}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{3, 4, 5}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{6, 7}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{1, 2, 6, 7}</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1",
+      "hint": "Разность содержит элементы, которые есть в M, но нет в N."
     },
     {
-      "topic_id": 3,
-      "id": 1,
-      "task": "Найдите НОК чисел 6 и 8",
-      "answer": "24"
+      "topic_id": 1,
+      "id": 5,
+      "task": "Img.1.1.2.5.",
+      "answer": "2",
+      "hint": "Исключите из круга P заштрихованную часть."
     },
     {
-      "topic_id": 3,
-      "id": 2,
-      "task": "Вычислите: 2 + 2 · 2",
-      "answer": "6"
+      "topic_id": 1,
+      "id": 6,
+      "task": "<div><p><span><span>Анализ утверждений о переменных</span></span><span>&nbsp;</span></p></div><div><p><span><span>Какое утверждение о переменных верно?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Переменная всегда обозначает конкретное число</span></span><span>&nbsp;</span></p></li><li><p><span><span>Переменная может обозначать любой объект из заданного множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Переменные используются только в алгебре</span></span><span>&nbsp;</span></p></li><li><p><span><span>Область значений переменной всегда бесконечна</span></span><span>&nbsp;</span></p></li><li><p><span><span></span></span><span>&nbsp;</span></p></li></ol><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Это определение переменной"
     },
     {
-      "topic_id": 4,
-      "id": 1,
-      "task": "За 5 часов работы рабочий изготавливает 20 деталей. Сколько деталей он изготовит за 8 часов при той же производительности?",
-      "answer": "32"
-    },
-    {
-      "topic_id": 4,
-      "id": 2,
-      "task": "Если 3 кг яблок стоят 450 рублей, то сколько стоят 5 кг таких яблок?",
-      "answer": "750"
+      "topic_id": 1,
+      "id": 7,
+      "task": "<div><p><span><span>Практическое применение кругов Эйлера</span></span><span>&nbsp;</span></p></div><div><p><span><span>В классе 30 учеников. Из них:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>15 изучают английский</span></span><span>&nbsp;</span></p></li><li><p><span><span>10 изучают французский</span></span><span>&nbsp;</span></p></li><li><p><span><span>5 изучают оба языка</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Сколько учеников не изучают ни один из этих языков?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>0</span></span><span>&nbsp;</span></p></li><li><p><span><span>5</span></span><span>&nbsp;</span></p></li><li><p><span><span>10</span></span><span>&nbsp;</span></p></li><li><p><span><span>15</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Постройте диаграмму Эйлера-Венна."
     }
   ],
   "repetition_exercises": [
     {
       "topic_id": 1,
       "id": 1,
-      "task": "Дайте определение множества",
-      "hint": "Множество объединяет разные объекты в единое целое",
-      "answer": "совокупность различных объектов, рассматриваемых как единое целое"
+      "task": "<div><p><span><span>Анализ диаграмм Эйлера-Венна</span></span><span>&nbsp;</span></p></div><div><p><span><span>На диаграмме:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>Круг A = множество простых чисел &lt; 20</span></span><span>&nbsp;</span></p></li><li><p><span><span>Круг B = множество нечётных чисел &lt; 20</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Какое число принадлежит только множеству A?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>2</span></span><span>&nbsp;</span></p></li><li><p><span><span>9</span></span><span>&nbsp;</span></p></li><li><p><span><span>15</span></span><span>&nbsp;</span></p></li><li><p><span><span>19</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1",
+      "hint": "A = {2, 3, 5, 7, 11, 13, 17, 19}; B = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19}"
     },
     {
       "topic_id": 1,
       "id": 2,
-      "task": "Если A = {1, 2, 3, 4} и B = {3, 4, 5, 6}, то A ∪ B = ?",
-      "hint": "Объединение множеств включает все элементы из обоих множеств без повторений",
-      "answer": "{1, 2, 3, 4, 5, 6}"
+      "task": "<div><p><span><span>Практическая задача с кругами Эйлера</span></span><span>&nbsp;</span></p></div><div><p><span><span>В школе:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>45 учеников изучают Python</span></span><span>&nbsp;</span></p></li><li><p><span><span>30 изучают Java</span></span><span>&nbsp;</span></p></li><li><p><span><span>20 изучают оба языка</span></span><span>&nbsp;</span></p></li><li><p><span><span>10 не изучают ни одного</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Сколько всего учеников в школе?</span></span><span>&nbsp;</span></p></div>",
+      "answer": "65",
+      "hint": "Только Python: 45 – 20 = 25 \nТолько Java: 30 – 20 = 10 \nОба языка: 20 \nНичего: 10 "
     },
     {
       "topic_id": 1,
       "id": 3,
-      "task": "Если A = {1, 2, 3, 4} и B = {3, 4, 5, 6}, то A ∩ B = ?",
-      "hint": "Пересечение множеств включает только те элементы, которые есть в обоих множествах",
-      "answer": "{3, 4}"
-    },
-    {
-      "topic_id": 2,
-      "id": 1,
-      "task": "Запишите число 10 в двоичной системе счисления",
-      "hint": "Последовательно делите число на 2 и записывайте остатки от деления справа налево",
-      "answer": "1010"
-    },
-    {
-      "topic_id": 2,
-      "id": 2,
-      "task": "Переведите число 101 из двоичной системы в десятичную",
-      "hint": "В двоичной системе каждый разряд имеет вес 2^n, начиная с 2^0 для крайнего правого разряда",
-      "answer": "5"
-    },
-    {
-      "topic_id": 3,
-      "id": 1,
-      "task": "Найдите НОД чисел 12 и 18",
-      "hint": "НОД - наибольший общий делитель. Найдите все общие делители и выберите наибольший",
-      "answer": "6"
-    },
-    {
-      "topic_id": 3,
-      "id": 2,
-      "task": "Чему равно произведение чисел 7 и 8?",
-      "hint": "Произведение - это результат умножения",
-      "answer": "56"
-    },
-    {
-      "topic_id": 4,
-      "id": 1,
-      "task": "Если 4 рабочих выполняют задание за 6 часов, то за сколько часов выполнят это же задание 6 рабочих?",
-      "hint": "Обратно пропорциональная зависимость: больше рабочих - меньше времени",
-      "answer": "4"
+      "task": "<div><p><span><span>Какое утверждение ложно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Переменная может принадлежать пустому множеству</span></span><span>&nbsp;</span></p></li><li><p><span><span>Круги Эйлера применимы к любым множествам</span></span><span>&nbsp;</span></p></li><li><p><span><span>Мощность ℕ равна мощности ℤ</span></span><span>&nbsp;</span></p></li><li><p><span><span>{∅} ≠ ∅</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится НЕ верный ответ.</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1",
+      "hint": "Переменная выбирается из множества объектов."
     }
   ]
 }

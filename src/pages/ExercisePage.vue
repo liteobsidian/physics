@@ -8,12 +8,12 @@
     </v-toolbar>
 
     <v-card v-if="exercise" class="pa-4 mb-4" rounded="lg">
-      <div v-if="exercise.task.startsWith('img/')" class="text-center mb-4">
-        <v-img :src="exercise.task" max-height="200" contain class="mx-auto"></v-img>
+      <!-- Задание с изображением -->
+      <div v-if="isImageTask(exercise.task)" class="text-center mb-4">
+        <v-img :src="getImagePath(exercise.task)" max-width="100%" contain class="mx-auto"></v-img>
       </div>
-      <div v-else class="text-body-1 mb-4 task-text">
-        {{ exercise.task }}
-      </div>
+      <!-- Задание с HTML -->
+      <div v-else class="text-body-1 mb-4 task-text" v-html="exercise.task"></div>
 
       <v-expansion-panels v-if="exercise.hint" class="mb-4 hint-panel">
         <v-expansion-panel density="compact" class="hint-panel-outline" elevation="0">
@@ -22,10 +22,17 @@
             <span class="text-body-2">Подсказка</span>
           </v-expansion-panel-title>
           <v-expansion-panel-text class="text-body-2">
-            <div v-if="exercise.hint.startsWith('img/')" class="text-center">
-              <v-img :src="exercise.hint" max-height="150" contain class="mx-auto"></v-img>
+            <!-- Подсказка с изображением -->
+            <div v-if="isImageTask(exercise.hint)" class="text-center">
+              <v-img
+                :src="getImagePath(exercise.hint)"
+                max-width="100%"
+                contain
+                class="mx-auto"
+              ></v-img>
             </div>
-            <div v-else>{{ exercise.hint }}</div>
+            <!-- Подсказка с HTML -->
+            <div v-else v-html="exercise.hint"></div>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -83,7 +90,7 @@
   })
 
   // Получаем задания по типу
-  function getExercisesByType(type) {
+  const getExercisesByType = type => {
     if (type === 'study') {
       return exercisesData.study_exercises
     } else if (type === 'exercise') {
@@ -94,8 +101,22 @@
     return []
   }
 
+  // Функция для проверки, является ли задание изображением
+  const isImageTask = text => {
+    if (!text) return false
+    return text.toLowerCase().startsWith('img')
+  }
+
+  // Функция для извлечения пути к изображению
+  const getImagePath = text => {
+    if (!isImageTask(text)) return ''
+
+    // Используем базовый URL проекта и преобразуем в нижний регистр
+    return `${import.meta.env.BASE_URL}img/${text.toLowerCase()}.jpeg`
+  }
+
   // Проверяем ответ
-  function checkAnswer() {
+  const checkAnswer = () => {
     if (!exercise.value) return
 
     const isCorrect = userAnswer.value.trim().toLowerCase() === exercise.value.answer.toLowerCase()
@@ -117,7 +138,7 @@
   }
 
   // Возвращаемся на предыдущую страницу
-  function goBack() {
+  const goBack = () => {
     router.push(`/topic/${topicId.value}?tab=${exerciseType.value}`)
   }
 
@@ -140,6 +161,16 @@
   .task-text {
     white-space: normal;
     word-break: break-word;
+    max-width: 100%;
+  }
+
+  /* Стили для вложенных элементов в HTML-контенте */
+  :deep(img) {
+    max-width: 100%;
+  }
+  :deep(ol),
+  :deep(ul) {
+    padding-left: 24px;
   }
 
   .hint-panel {
