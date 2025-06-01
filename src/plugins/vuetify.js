@@ -12,24 +12,24 @@ export default createVuetify({
       openDelay: 100,
       closeDelay: 0,
       transition: 'fade-transition',
-      contentClass: 'custom-tooltip'
-    }
+      contentClass: 'custom-tooltip',
+    },
   },
   theme: {
     defaultTheme: 'light',
     themes: {
       light: {
         colors: {
-          primary: '#4285F4',    // Google Blue - дружелюбный синий
-          secondary: '#0F9D58',  // Google Green - приятный зеленый
-          accent: '#DB4437',     // Google Red - акцентный красный
+          primary: '#4285F4', // Google Blue - дружелюбный синий
+          secondary: '#0F9D58', // Google Green - приятный зеленый
+          accent: '#DB4437', // Google Red - акцентный красный
           error: '#FF5252',
           info: '#42A5F5',
           success: '#4CAF50',
           warning: '#FFC107',
-          background: '#FFFFFF'
+          background: '#FFFFFF',
         },
       },
     },
   },
-}) 
+})
