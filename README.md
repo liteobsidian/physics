@@ -57,7 +57,7 @@ npm run build
 Для обновления заданий используется конвертер Excel в JSON:
 
 1. Отредактируйте файл `src/sources/exercises.xlsx`
-2. Запустите конвертер `utils/ExcelToJSON` (или `utils/ExcelToJSON.exe` на Windows)
+2. Запустите конвертер `utils/ExcelToJSON` (или `npm run gen`)
 3. Файл `src/data/exercises.json` будет автоматически обновлен
 
 Не забудьте закоммитить и запушить изменения
