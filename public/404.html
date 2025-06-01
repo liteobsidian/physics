@@ -6,28 +6,27 @@
     <script type="text/javascript">
       // Перенаправляем все запросы на index.html
       // Это необходимо для корректной работы SPA на GitHub Pages
-      var pathSegmentsToKeep = 1
+      const pathSegmentsToKeep = 1
+      const location = window.location
 
-      var l = window.location
-      var segmentCount = l.pathname.split('/').length
-
-      // GitHub Pages опускает "physics" из пути, поэтому нужно его добавить обратно
-      var redirectUrl =
-        l.protocol +
-        '//' +
-        l.hostname +
-        (l.port ? ':' + l.port : '') +
-        '/physics' +
-        l.pathname
+      // Проверяем, если URL уже содержит параметры p= и q=, не добавляем их снова
+      if (location.search && location.search.indexOf('p=') !== -1) {
+        // Если URL уже обработан, просто перенаправляем на главную
+        window.location.href = `${location.protocol}//${location.hostname}${location.port ? ':' + location.port : ''}/physics/`
+      } else {
+        // Формируем путь перенаправления только для необработанных URL
+        const path = location.pathname
+          .slice(1)
           .split('/')
-          .slice(0, 1 + pathSegmentsToKeep)
-          .join('/') +
-        '/?p=/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
+          .slice(pathSegmentsToKeep)
+          .join('/')
+          .replace(/&/g, '~and~')
+        const query = location.search ? `&q=${location.search.slice(1).replace(/&/g, '~and~')}` : ''
 
-      window.location.href = redirectUrl
+        const redirectUrl = `${location.protocol}//${location.hostname}${location.port ? ':' + location.port : ''}/physics/?p=/${path}${query}${location.hash}`
+
+        window.location.href = redirectUrl
+      }
     </script>
   </head>
   <body>
