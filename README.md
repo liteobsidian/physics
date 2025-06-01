@@ -30,7 +30,7 @@
 1. Клонируйте репозиторий:
 
 ```bash
-git clone https://github.com/ваш-username/physics.git
+git clone git@github.com:liteobsidian/physics.git
 cd physics
 ```
 
@@ -59,6 +59,13 @@ npm run build
 1. Отредактируйте файл `src/sources/exercises.xlsx`
 2. Запустите конвертер `utils/ExcelToJSON` (или `utils/ExcelToJSON.exe` на Windows)
 3. Файл `src/data/exercises.json` будет автоматически обновлен
+
+Не забудьте закоммитить и запушить изменения
+
+```bash
+git commit -am 'Обновлены задания'
+git push origin main
+```
 
 Подробные инструкции по работе с конвертером находятся в файле `utils/README.md`.
 
