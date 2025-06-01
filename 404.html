@@ -4,19 +4,25 @@
     <meta charset="utf-8" />
     <title>Физичитариум - Перенаправление</title>
     <script type="text/javascript">
-      // Перенаправляем все запросы на index.html
-      // Это необходимо для корректной работы SPA на GitHub Pages
-      const pathSegmentsToKeep = 0
-      const location = window.location
+      // Обработка перезагрузки страницы и прямых URL на GitHub Pages
+      ;(() => {
+        const location = window.location
 
-      // Извлекаем путь и параметры
-      const path = location.pathname.slice(1)
+        // Отсекаем базовый путь '/physics' от текущего пути, если он есть
+        let path = location.pathname
 
-      // Формируем URL для перенаправления
-      const redirectUrl = `${location.protocol}//${location.hostname}${location.port ? ':' + location.port : ''}/physics/?p=/${path}${location.search ? '&' + location.search.slice(1) : ''}${location.hash}`
+        // Проверяем, начинается ли путь с /physics/
+        if (path.indexOf('/physics/') === 0) {
+          // Убираем базовый путь из адреса
+          path = path.replace('/physics/', '/')
+        }
 
-      // Перенаправляем на главную страницу с параметрами
-      window.location.href = redirectUrl
+        // Формируем URL для корректного перенаправления
+        const redirectUrl = `${location.protocol}//${location.hostname}${location.port ? ':' + location.port : ''}/physics/#${path}${location.search}`
+
+        // Перенаправляем
+        window.location.replace(redirectUrl)
+      })()
     </script>
   </head>
   <body>
