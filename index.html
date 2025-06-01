@@ -7,34 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Физичитариум - Обучение физике</title>
     <script type="text/javascript">
-      // Обработка параметров URL при перенаправлении с 404.html
-      ;(() => {
-        // Проверяем, есть ли параметр 'p' в URL
-        const p = new URLSearchParams(window.location.search).get('p')
-
-        // Если параметр есть и мы еще не обработали это перенаправление
-        if (p && !sessionStorage.getItem('redirectProcessed')) {
-          // Отмечаем, что перенаправление обработано
-          sessionStorage.setItem('redirectProcessed', 'true')
-
-          // Преобразуем обратно закодированные амперсанды
-          const cleanPath = p.replace(/~and~/g, '&')
-
-          // Формируем новый URL без параметров перенаправления
-          const newUrl =
-            window.location.pathname.replace(/\/+$/, '') + cleanPath + window.location.hash
-
-          // Заменяем текущий URL без перезагрузки страницы
-          window.history.replaceState(null, null, newUrl)
-        }
-
-        // Очищаем флаг после обработки
-        setTimeout(() => {
-          sessionStorage.removeItem('redirectProcessed')
-        }, 1000)
-      })()
+      // Мы уберем скрипт отсюда, так как теперь обработка будет в роутере
     </script>
-    <script type="module" crossorigin src="/physics/assets/index-D8PnFSbI.js"></script>
+    <script type="module" crossorigin src="/physics/assets/index-D51Y_8EJ.js"></script>
     <link rel="modulepreload" crossorigin href="/physics/assets/vuetify-A75-ihEZ.js">
     <link rel="stylesheet" crossorigin href="/physics/assets/index-D_V0tIhM.css">
   </head>
