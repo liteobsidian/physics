@@ -50,7 +50,19 @@
     </div>
 
     <div v-for="block in filteredBlocks" :key="block.id" class="mb-8">
-      <h2 class="text-h5 mb-4 text-wrap">{{ block.title }}</h2>
+      <h2 class="text-h5 mb-4 text-wrap">
+        <v-btn
+          variant="text"
+          color="primary"
+          class="pa-0 text-h5 text-left text-wrap font-weight-bold"
+          :to="`/block/${block.id}`"
+          height="auto"
+          style="text-transform: none; letter-spacing: normal"
+        >
+          {{ block.title }}
+          <v-icon class="ml-2" icon="mdi-chevron-right" size="small"></v-icon>
+        </v-btn>
+      </h2>
       <v-row>
         <v-col v-for="topic in block.topics" :key="topic.id" cols="12">
           <topic-card
@@ -129,7 +141,7 @@
       let matchesTags = true
       if (selectedTags.value.length > 0) {
         // Теперь сравниваем напрямую ID тегов
-        matchesTags = selectedTags.value.some(selectedTagIndex => {
+        matchesTags = selectedTags.value.every(selectedTagIndex => {
           const selectedTagId = tags[selectedTagIndex].id
           return topic.tag_ids && topic.tag_ids.includes(selectedTagId)
         })

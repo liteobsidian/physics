@@ -30,7 +30,7 @@
       </v-progress-linear>
     </v-card-text>
 
-    <v-card-actions class="d-flex flex-wrap gap-2 justify-space-between px-1 pb-4">
+    <v-card-actions class="d-flex flex-wrap gap-2 justify-space-between px-4 pb-4">
       <v-btn
         variant="outlined"
         color="primary"
