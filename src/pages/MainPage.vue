@@ -1,18 +1,6 @@
 <template>
   <div class="mt-4">
-    <v-text-field
-      v-model="searchQuery"
-      label="Поиск"
-      prepend-inner-icon="mdi-magnify"
-      class="mb-4 search-field"
-      single-line
-      hide-details="auto"
-      clearable
-      rounded
-      density="compact"
-      bg-color="grey-lighten-4"
-      @click:clear="clearSearch"
-    ></v-text-field>
+    <search-field v-model="searchQuery" />
 
     <div class="d-flex align-center">
       <span class="text-subtitle-2 mr-2">Фильтр по тегам:</span>
@@ -79,6 +67,7 @@
 <script setup>
   import { ref, computed } from 'vue'
   import TopicCard from '../components/TopicCard.vue'
+  import SearchField from '../components/SearchField.vue'
   import topicsData from '../data/topics.json'
   import blocksData from '../data/blocks.json'
   import tagsData from '../data/tags.json'
@@ -90,11 +79,6 @@
 
   // Используем композабл для работы с прогрессом
   const { progress: topicsProgress, getTopicProgress } = useProgress()
-
-  // Очистка поиска
-  const clearSearch = () => {
-    searchQuery.value = ''
-  }
 
   // Очистка выбранных тегов
   const clearTags = () => {
@@ -176,10 +160,6 @@
 </script>
 
 <style scoped>
-  .search-field :deep(.v-field__outline) {
-    opacity: 0 !important;
-  }
-
   .tag-group {
     flex-wrap: wrap;
     max-height: 180px;

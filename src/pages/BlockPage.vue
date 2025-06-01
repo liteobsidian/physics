@@ -11,7 +11,7 @@
       </v-btn>
     </div>
 
-    <h1 class="text-h4 mb-6 text-wrap">{{ block?.title || 'Загрузка...' }}</h1>
+    <h1 class="text-h5 mb-6 text-wrap">{{ block?.title || 'Загрузка...' }}</h1>
 
     <div v-if="loading" class="d-flex justify-center align-center" style="min-height: 200px">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -25,20 +25,25 @@
       </v-btn>
     </div>
 
-    <v-row v-else>
-      <v-col v-for="topic in blockTopics" :key="topic.id" cols="12">
-        <topic-card
-          :topic="topic"
-          :tags="getTopicTags(topic)"
-          :progress="getTopicProgressObject(topic.id)"
-        />
-      </v-col>
+    <template v-else>
+      <search-field v-model="searchQuery" />
 
-      <v-col v-if="blockTopics.length === 0" cols="12" class="text-center my-8">
-        <v-icon icon="mdi-book-off" size="x-large" color="grey-lighten-1" class="mb-2"></v-icon>
-        <div class="text-h6 text-grey-darken-1">В данном блоке нет тем</div>
-      </v-col>
-    </v-row>
+      <div v-if="filteredTopics.length === 0" class="text-center my-8">
+        <v-icon icon="mdi-magnify-off" size="x-large" color="grey-lighten-1" class="mb-2"></v-icon>
+        <div class="text-h6 text-grey-darken-1">Ничего не найдено</div>
+        <div class="text-body-2 text-grey">Попробуйте изменить параметры поиска</div>
+      </div>
+
+      <v-row v-else>
+        <v-col v-for="topic in filteredTopics" :key="topic.id" cols="12">
+          <topic-card
+            :topic="topic"
+            :tags="getTopicTags(topic)"
+            :progress="getTopicProgressObject(topic.id)"
+          />
+        </v-col>
+      </v-row>
+    </template>
   </div>
 </template>
 
@@ -46,6 +51,7 @@
   import { ref, computed, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
   import TopicCard from '../components/TopicCard.vue'
+  import SearchField from '../components/SearchField.vue'
   import topicsData from '../data/topics.json'
   import blocksData from '../data/blocks.json'
   import tagsData from '../data/tags.json'
@@ -55,6 +61,7 @@
   const blockId = parseInt(route.params.id)
   const loading = ref(true)
   const tags = tagsData.tags
+  const searchQuery = ref('')
 
   // Используем композабл для работы с прогрессом
   const { progress: topicsProgress, getTopicProgress } = useProgress()
@@ -67,6 +74,16 @@
   // Темы для текущего блока
   const blockTopics = computed(() => {
     return topicsData.topics.filter(topic => topic.block_id === blockId)
+  })
+
+  // Отфильтрованные темы с учетом поиска
+  const filteredTopics = computed(() => {
+    if (!searchQuery.value) {
+      return blockTopics.value
+    }
+
+    const query = searchQuery.value.toLowerCase()
+    return blockTopics.value.filter(topic => topic.title.toLowerCase().includes(query))
   })
 
   // Получаем объект прогресса для топика

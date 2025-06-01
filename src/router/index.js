@@ -53,6 +53,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  scrollBehavior() {
+    // Всегда прокручивать в начало страницы при смене маршрута
+    return { top: 0 }
+  },
 })
 
 export default router

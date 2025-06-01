@@ -102,33 +102,38 @@ export function useProgress() {
 
   // Функция для расчета общего прогресса
   const calculateTotalProgress = () => {
-    if (Object.keys(progress.value).length === 0) return 0
-
     let totalSolved = 0
     let totalExercises = 0
 
-    // Подсчет общего количества заданий и решенных заданий
-    Object.keys(progress.value).forEach(topicId => {
-      const numericTopicId = parseInt(topicId)
-      const topicProgress = progress.value[topicId]
+    // Сначала подсчитаем общее количество заданий по всем темам, независимо от прогресса
+    // Найдем все уникальные идентификаторы тем
+    const allTopicIds = new Set()
 
+    // Добавляем идентификаторы тем из всех типов заданий
+    exercisesData.study_exercises.forEach(ex => allTopicIds.add(ex.topic_id))
+    exercisesData.check_exercises.forEach(ex => allTopicIds.add(ex.topic_id))
+    exercisesData.repetition_exercises.forEach(ex => allTopicIds.add(ex.topic_id))
+
+    // Теперь считаем все задания по всем темам
+    allTopicIds.forEach(topicId => {
       // Считаем задания из study_exercises
-      const studyExercises = exercisesData.study_exercises.filter(
-        ex => ex.topic_id === numericTopicId,
-      )
+      const studyExercises = exercisesData.study_exercises.filter(ex => ex.topic_id === topicId)
       totalExercises += studyExercises.length
 
       // Считаем задания из check_exercises
-      const checkExercises = exercisesData.check_exercises.filter(
-        ex => ex.topic_id === numericTopicId,
-      )
+      const checkExercises = exercisesData.check_exercises.filter(ex => ex.topic_id === topicId)
       totalExercises += checkExercises.length
 
       // Считаем задания из repetition_exercises
       const repetitionExercises = exercisesData.repetition_exercises.filter(
-        ex => ex.topic_id === numericTopicId,
+        ex => ex.topic_id === topicId,
       )
       totalExercises += repetitionExercises.length
+    })
+
+    // Считаем решенные задания из progress
+    Object.keys(progress.value).forEach(topicId => {
+      const topicProgress = progress.value[topicId]
 
       // Считаем решенные задания
       if (topicProgress.completed) {

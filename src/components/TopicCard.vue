@@ -31,78 +31,86 @@
     </v-card-text>
 
     <v-card-actions class="d-flex flex-wrap gap-2 justify-space-between px-4 pb-4">
-      <v-btn
-        variant="outlined"
-        color="primary"
-        :prepend-icon="
-          getTopicProgress('study') < 100 && !hasAnyExerciseCompleted('exercise')
-            ? 'mdi-lock'
-            : 'mdi-pencil'
-        "
-        class="position-relative flex-grow-1"
-        style="min-width: 180px"
-        :disabled="getTopicProgress('study') < 100 && !hasAnyExerciseCompleted('exercise')"
-        rounded
-        @click.stop="navigateToTopicWithTab('exercise')"
-      >
-        Упражнение
-        <template v-slot:append>
-          <v-icon
-            v-if="getTopicProgress('exercise') === 100"
-            color="success"
-            size="24"
-            class="ms-2"
-          >
-            mdi-check-circle
-          </v-icon>
-          <v-progress-circular
-            v-else-if="getTopicProgress('exercise') > 0"
-            :model-value="getTopicProgress('exercise')"
-            :size="24"
-            :width="3"
-            color="primary"
-            class="ms-2"
-          />
-        </template>
-      </v-btn>
+      <template v-if="hasExercises">
+        <v-btn
+          variant="outlined"
+          color="primary"
+          :prepend-icon="
+            getTopicProgress('study') < 100 && !hasAnyExerciseCompleted('exercise')
+              ? 'mdi-lock'
+              : 'mdi-pencil'
+          "
+          class="position-relative flex-grow-1"
+          style="min-width: 180px"
+          :disabled="getTopicProgress('study') < 100 && !hasAnyExerciseCompleted('exercise')"
+          rounded
+          @click.stop="navigateToTopicWithTab('exercise')"
+        >
+          Упражнение
+          <template v-slot:append>
+            <v-icon
+              v-if="getTopicProgress('exercise') === 100"
+              color="success"
+              size="24"
+              class="ms-2"
+            >
+              mdi-check-circle
+            </v-icon>
+            <v-progress-circular
+              v-else-if="getTopicProgress('exercise') > 0"
+              :model-value="getTopicProgress('exercise')"
+              :size="24"
+              :width="3"
+              color="primary"
+              class="ms-2"
+            />
+          </template>
+        </v-btn>
 
-      <v-btn
-        variant="outlined"
-        color="secondary"
-        :prepend-icon="getTopicProgress('exercise') < 100 ? 'mdi-lock' : 'mdi-refresh'"
-        class="position-relative flex-grow-1"
-        style="min-width: 180px"
-        :disabled="getTopicProgress('exercise') < 100"
-        rounded
-        @click.stop="navigateToTopicWithTab('repetition')"
-      >
-        Повторение
-        <template v-slot:append>
-          <v-icon
-            v-if="getTopicProgress('repetition') === 100"
-            color="success"
-            size="24"
-            class="ms-2"
-          >
-            mdi-check-circle
-          </v-icon>
-          <v-progress-circular
-            v-else-if="getTopicProgress('repetition') > 0"
-            :model-value="getTopicProgress('repetition')"
-            :size="24"
-            :width="3"
-            color="secondary"
-            class="ms-2"
-          />
-        </template>
-      </v-btn>
+        <v-btn
+          variant="outlined"
+          color="secondary"
+          :prepend-icon="getTopicProgress('exercise') < 100 ? 'mdi-lock' : 'mdi-refresh'"
+          class="position-relative flex-grow-1"
+          style="min-width: 180px"
+          :disabled="getTopicProgress('exercise') < 100"
+          rounded
+          @click.stop="navigateToTopicWithTab('repetition')"
+        >
+          Повторение
+          <template v-slot:append>
+            <v-icon
+              v-if="getTopicProgress('repetition') === 100"
+              color="success"
+              size="24"
+              class="ms-2"
+            >
+              mdi-check-circle
+            </v-icon>
+            <v-progress-circular
+              v-else-if="getTopicProgress('repetition') > 0"
+              :model-value="getTopicProgress('repetition')"
+              :size="24"
+              :width="3"
+              color="secondary"
+              class="ms-2"
+            />
+          </template>
+        </v-btn>
+      </template>
+
+      <div v-else class="no-exercises-message d-flex align-center justify-center w-100">
+        <v-icon color="grey-lighten-1" class="mr-2">mdi-information-outline</v-icon>
+        <span class="text-body-2 text-grey-darken-1">Задания ещё не добавлены</span>
+      </div>
     </v-card-actions>
   </v-card>
 </template>
 
 <script setup>
-  import { defineProps } from 'vue'
+  import { defineProps, computed } from 'vue'
   import { useRouter } from 'vue-router'
+  import exercisesData from '../data/exercises.json'
 
   const props = defineProps({
     topic: {
@@ -120,6 +128,15 @@
   })
 
   const router = useRouter()
+
+  // Проверяем, есть ли задания для темы
+  const hasExercises = computed(() => {
+    const topicId = props.topic.id
+    const hasStudy = exercisesData.study_exercises.some(ex => ex.topic_id === topicId)
+    const hasCheck = exercisesData.check_exercises.some(ex => ex.topic_id === topicId)
+    const hasRepetition = exercisesData.repetition_exercises.some(ex => ex.topic_id === topicId)
+    return hasStudy || hasCheck || hasRepetition
+  })
 
   // Получаем прогресс конкретного типа для темы
   const getTopicProgress = type => {
@@ -196,5 +213,12 @@
     padding: 8px;
     height: 20px;
     color: var(--v-success-base, #4caf50);
+  }
+
+  .no-exercises-message {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 52px;
   }
 </style>
