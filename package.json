@@ -9,14 +9,16 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write src/",
-    "gen": "cd src/data/temp && python3 process_exercises.py"
+    "gen": "cd src/data/temp && python3 process_exercises.py",
+    "gen-js": "node src/data/temp/convert.js"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "vuetify": "^3.8.7"
+    "vuetify": "^3.8.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
