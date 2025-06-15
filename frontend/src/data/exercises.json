@@ -1,0 +1,351 @@
+{
+  "study_exercises": [
+    {
+      "topic_id": 1,
+      "id": 1,
+      "task": "<div><p><span><span>Прочитайте текст и вставьте на место пропусков слова (словосочетания) из приведённого списка.</span></span><span>&nbsp;</span></p></div><div><p><span><span>Множество - это (A) ______ объектов, объединённых по определённому (B) ______. Например, множество учеников в классе или множество натуральных чисел. Круг Эйлера - это (C) ______ представления множества, где его элементы изображаются (D) ______ геометрической фигуры.</span></span><span>&nbsp;</span></p></div><div><p><span><span>Список слов и словосочетаний:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>графический способ</span></span><span>&nbsp;</span></p></li><li><p><span><span>совокупность</span></span><span>&nbsp;</span></p></li><li><p><span><span>признаку</span></span><span>&nbsp;</span></p></li><li><p><span><span>снаружи</span></span><span>&nbsp;</span></p></li><li><p><span><span>внутри</span></span><span>&nbsp;</span></p></li><li><p><span><span>случайный набор</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span>Ответ:</span></span><span>&nbsp;</span></p></div><div><p><span><span>A) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>B) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>C) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>D) ______</span></span><span>&nbsp;</span></p></div><div><p><span><span>Напишите в ответе числа в соответствующем порядке,</span></span><span><span><span>&nbsp;</span></span></span><span><span>без пробелов.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2315",
+      "hint": "Множество - собрание или сочетание объектов. "
+    },
+    {
+      "topic_id": 1,
+      "id": 2,
+      "task": "<div><p><span><span>Используя определение множества, выберите два верных утверждения из предложенных:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Множество может содержать только математические объекты</span></span><span>&nbsp;</span></p></li><li><p><span><span>Порядок элементов в множестве имеет значение</span></span><span>&nbsp;</span></p></li><li><p><span><span>Один и тот же объект не может встречаться в множестве несколько раз</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество определяется по общим свойствам его элементов</span></span><span>&nbsp;</span></p></li><li><p><span><span>Круги Эйлера используются для визуализации множеств</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>Запишите ответе числа по возрастанию,</span></span><span><span><span>&nbsp;</span></span></span><span><span>без пробелов и запятых.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "45",
+      "hint": "Ну если ты настолько глупый, что прям вот здесь тебе нужна подсказка, то мы всё равно не чем тебе не сможем помочь. Вот тебе просто правильный ответ: 45"
+    },
+    {
+      "topic_id": 1,
+      "id": 3,
+      "task": "<div><p><span><span>Какое из следующих множеств является бесконечным?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Множество букв в русском алфавите</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество планет Солнечной системы</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество целых чисел</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество студентов в университете</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Бесконечное множество невозможно пересчитать полностью, до конца."
+    },
+    {
+      "topic_id": 1,
+      "id": 4,
+      "task": "<div><p><span><span>Переменная в математике - это:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Конкретное числовое значение</span></span><span>&nbsp;</span></p></li><li><p><span><span>Символ, обозначающий любой элемент из множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Название геометрической фигуры</span></span><span>&nbsp;</span></p></li><li><p><span><span>Способ изображения множества</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Вспомните, как используются буквы в уравнениях."
+    },
+    {
+      "topic_id": 1,
+      "id": 5,
+      "task": "Img.1.1.1.5",
+      "answer": "2",
+      "hint": "Подумайте, что находится в области пересечения кругов."
+    },
+    {
+      "topic_id": 1,
+      "id": 6,
+      "task": "<div><p><span><span>Сравнение множеств</span></span><span>&nbsp;</span></p></div><div><p><span><span>Даны два множества: A = {1, 2, 3} и B = {3, 2, 1}. Какое утверждение верно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Это разные множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество A содержит больше элементов</span></span><span>&nbsp;</span></p></li><li><p><span><span>Это одинаковые множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Множество B является подмножеством A</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Важен ли порядок элементов в множестве?"
+    },
+    {
+      "topic_id": 1,
+      "id": 7,
+      "task": "<div><p><span><span>Практическое применение</span></span><span>&nbsp;</span></p></div><div><p><span><span>Учитель попросил выделить множество гласных букв в слове \"математика\". Какое множество получится?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>{м, т, м, т, к}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{а, е, а, и, а}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{м, а, т, е, м, а, т, и, к, а}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{а, е, и}</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "4",
+      "hint": "Гласные в русском языке - а, е, ё, и, о, у, ы, э, ю, я."
+    },
+    {
+      "topic_id": 1,
+      "id": 8,
+      "task": "<div><p><span><span>Понимание переменных</span></span><span>&nbsp;</span></p></div><div><p><span><span>Если x - переменная, обозначающая любое число из множества {1, 2, 3}, то какое значение НЕ может принимать x?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>1</span></span><span>&nbsp;</span></p></li><li><p><span><span>2</span></span><span>&nbsp;</span></p></li><li><p><span><span>3</span></span><span>&nbsp;</span></p></li><li><p><span><span>4</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "4",
+      "hint": "Из какого множества выбирается значение переменной?"
+    },
+    {
+      "topic_id": 1,
+      "id": 9,
+      "task": "<div><p><span><span>Анализ утверждений</span></span><span>&nbsp;</span></p></div><div><p><span><span>Какое утверждение о бесконечных множествах верно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Их можно полностью записать на бумаге</span></span><span>&nbsp;</span></p></li><li><p><span><span>Они существуют только в теории</span></span><span>&nbsp;</span></p></li><li><p><span><span>Их элементы можно пересчитать за конечное время</span></span><span>&nbsp;</span></p></li><li><p><span><span>Они обязательно содержат все числа</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Подумайте о практических ограничениях."
+    },
+    {
+      "topic_id": 1,
+      "id": 10,
+      "task": "Img.1.1.1.5",
+      "answer": "4",
+      "hint": "Что означает область пересечения двух множеств?"
+    },
+    {
+      "topic_id": 2,
+      "id": 1,
+      "task": "<div><p><span><span>Прочитайте текст и вставьте пропущенные слова:</span></span><span>&nbsp;</span></p></div><div><p><span><span>Количество – это (A) ______ объектов в множестве. Для его измерения используют (B) ______, которые состоят из (C) ______. В десятичной системе счисления основание равно (D) ______.</span></span><span>&nbsp;</span></p></div><div><p><span><span>Список: 1) характеристика, 2) цифры, 3) 10, 4) числа, 5) 2, 6) свойство</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1423",
+      "hint": "Количество не зависит от природы объектов. Числа образуются из цифр. Основание = количеству цифр. "
+    },
+    {
+      "topic_id": 2,
+      "id": 2,
+      "task": "<div><p><span><span>Какое утверждение о системе счисления верно?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Определяет только способ записи букв</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Основание равно количеству цифр в ней</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Цифры могут повторяться без ограничений</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Десятичная система использует цифры 1-10</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Основание системы = количеству цифр (включая 0). "
+    },
+    {
+      "topic_id": 2,
+      "id": 3,
+      "task": "<div><p><span><span>Как образуется следующее число в десятичной системе после 9?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Добавляется новая цифра</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Десятки +1, единицы 0</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Число не изменяется</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Используется римская запись</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "После максимальной цифры (9) разряд обнуляется, старший +1. "
+    },
+    {
+      "topic_id": 2,
+      "id": 4,
+      "task": "<div><p><span><span>Что означает основание системы счисления?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Количество цифр (включая 0)</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Максимальное число для одной цифры</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Номер первой цифры</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Символ-разделитель</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1",
+      "hint": "Основание определяет, сколько цифр используется в системе. "
+    },
+    {
+      "topic_id": 2,
+      "id": 5,
+      "task": "Выберите число в двоичной системе:  1) 12, 2) 101, 3) 3A, 4) 99 ",
+      "answer": "2",
+      "hint": "В двоичной системе только цифры 0 и 1. "
+    },
+    {
+      "topic_id": 2,
+      "id": 6,
+      "task": "<div><p><span><span>Какое число следует за 7 в восьмеричной системе?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) 8, 2) 10, 3) 9, 4) 7</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Восьмеричные цифры: 0-7. После 7 разряд обнуляется, добавляется новый. "
+    },
+    {
+      "topic_id": 2,
+      "id": 7,
+      "task": "<div><p><span><span>Что общего у десятичной и двоичной систем?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Одинаковое основание</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Принцип перехода разряда</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Одинаковый набор цифр</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Только для дробных чисел</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "В обеих системах при переполнении разряда он обнуляется, старший +1. "
+    },
+    {
+      "topic_id": 2,
+      "id": 8,
+      "task": "Как записать \"два\" в троичной системе? \n1) 2, 2) 10, 3) 11, 4) 20 ",
+      "answer": "1",
+      "hint": "Троичные цифры: 0,1,2. Числа <3 записываются одной цифрой. "
+    },
+    {
+      "topic_id": 2,
+      "id": 9,
+      "task": "<div><p><span><span>Что неверно о числе 0?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Цифра в любой системе</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Обозначает отсутствие количества</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Все системы включают ноль</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) В римской системе есть символ 0</span></span><span>&nbsp;</span></p></div>",
+      "answer": "4",
+      "hint": "Римская система не имела символа для нуля. "
+    },
+    {
+      "topic_id": 2,
+      "id": 10,
+      "task": "<div><p><span><span>Для чего нужны разные системы счисления?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Усложнить математику</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Использование в разных областях</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Запутать учеников</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Только для истории</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Каждая система удобна для конкретных задач (двоичная - для техники). "
+    }
+  ],
+  "check_exercises": [
+    {
+      "topic_id": 1,
+      "id": 1,
+      "task": "<div><p><span><span>Логический анализ</span></span><span>&nbsp;</span></p></div><div><p><span><span>Даны три множества: A - множество чётных чисел, B - множество чисел, кратных 3, C - множество чисел, кратных 5. Какое число принадлежит всем трём множествам одновременно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>15</span></span><span>&nbsp;</span></p></li><li><p><span><span>20</span></span><span>&nbsp;</span></p></li><li><p><span><span>30</span></span><span>&nbsp;</span></p></li><li><p><span><span>25</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Найдите число, которое делится на 2, 3 и 5."
+    },
+    {
+      "topic_id": 1,
+      "id": 2,
+      "task": "<div><p><span><span>Построение множеств</span></span><span>&nbsp;</span></p></div><div><p><span><span>Если множество X = {a, b, c}, а множество Y = {b, c, d}, то каково будет множество X ∪ Y?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>{a, b, c}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{b, c}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{a, b, c, d}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{a, d}</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": " Операция ∪ означает объединение множеств."
+    },
+    {
+      "topic_id": 1,
+      "id": 3,
+      "task": "<div><p><span><span>Логический анализ множеств</span></span><span>&nbsp;</span></p></div><div><p><span><span>Даны три множества:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>A = {x | x - чётное число}</span></span><span>&nbsp;</span></p></li><li><p><span><span>B = {x | x кратно 3}</span></span><span>&nbsp;</span></p></li><li><p><span><span>C = {x | x кратно 5}</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Какое наименьшее натуральное число принадлежит пересечению A ∩ B ∩ C</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>15</span></span><span>&nbsp;</span></p></li><li><p><span><span>30</span></span><span>&nbsp;</span></p></li><li><p><span><span>60</span></span><span>&nbsp;</span></p></li><li><p><span><span>10</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span><span>&nbsp;</span></span></p></div>",
+      "answer": "2",
+      "hint": "Найдите наименьшее число которое делиться на эти числа: 2, 3 и 5. Такое число называется наименышие общее кратное НОК."
+    },
+    {
+      "topic_id": 1,
+      "id": 4,
+      "task": "<div><p><span><span> Операции с множествами</span></span><span>&nbsp;</span></p></div><div><p><span><span>Дано:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>M = {1, 2, 3, 4, 5}</span></span><span>&nbsp;</span></p></li><li><p><span><span>N = {3, 4, 5, 6, 7}</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Чему равно множество M \\ N (разность M и N)?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>{1, 2}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{3, 4, 5}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{6, 7}</span></span><span>&nbsp;</span></p></li><li><p><span><span>{1, 2, 6, 7}</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1",
+      "hint": "Разность содержит элементы, которые есть в M, но нет в N."
+    },
+    {
+      "topic_id": 1,
+      "id": 5,
+      "task": "Img.1.1.2.5.",
+      "answer": "2",
+      "hint": "Исключите из круга P заштрихованную часть."
+    },
+    {
+      "topic_id": 1,
+      "id": 6,
+      "task": "<div><p><span><span>Анализ утверждений о переменных</span></span><span>&nbsp;</span></p></div><div><p><span><span>Какое утверждение о переменных верно?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Переменная всегда обозначает конкретное число</span></span><span>&nbsp;</span></p></li><li><p><span><span>Переменная может обозначать любой объект из заданного множества</span></span><span>&nbsp;</span></p></li><li><p><span><span>Переменные используются только в алгебре</span></span><span>&nbsp;</span></p></li><li><p><span><span>Область значений переменной всегда бесконечна</span></span><span>&nbsp;</span></p></li><li><p><span><span></span></span><span>&nbsp;</span></p></li></ol><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span><span>&nbsp;</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Это определение переменной"
+    },
+    {
+      "topic_id": 1,
+      "id": 7,
+      "task": "<div><p><span><span>Практическое применение кругов Эйлера</span></span><span>&nbsp;</span></p></div><div><p><span><span>В классе 30 учеников. Из них:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>15 изучают английский</span></span><span>&nbsp;</span></p></li><li><p><span><span>10 изучают французский</span></span><span>&nbsp;</span></p></li><li><p><span><span>5 изучают оба языка</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Сколько учеников не изучают ни один из этих языков?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>0</span></span><span>&nbsp;</span></p></li><li><p><span><span>5</span></span><span>&nbsp;</span></p></li><li><p><span><span>10</span></span><span>&nbsp;</span></p></li><li><p><span><span>15</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Постройте диаграмму Эйлера-Венна."
+    },
+    {
+      "topic_id": 2,
+      "id": 1,
+      "task": "В какой системе \"10\" означает два? \n\n1) Десятичной 2) Двоичной 3) Восьмеричной 4) Шестнадцатеричной ",
+      "answer": "2",
+      "hint": "\"10\" в любой системе равно её основанию. В двоичной основание 2. "
+    },
+    {
+      "topic_id": 2,
+      "id": 2,
+      "task": "Минимальное основание для цифр 0,1,2,3? \n\n1) 3 2) 4 3) 5 4) 10 ",
+      "answer": "2",
+      "hint": "Основание ≥ (макс. цифра + 1). Здесь макс. цифра = 3. "
+    },
+    {
+      "topic_id": 2,
+      "id": 3,
+      "task": "Чему равно 11₈ в десятичной? \n\n1) 9 2) 11 3) 17 4) 19 ",
+      "answer": "1",
+      "hint": "11₈ = 1×8 + 1 = 9 "
+    },
+    {
+      "topic_id": 2,
+      "id": 4,
+      "task": "Число 5 в двоичной системе: \n\n1) 101 2) 10 3) 111 4) 100 ",
+      "answer": "1",
+      "hint": "5 = 4 + 1 = 2² + 2⁰ → 101 "
+    },
+    {
+      "topic_id": 2,
+      "id": 5,
+      "task": "<div><p><span><span>Неверное утверждение:</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) В двоичной основание 2</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) В десятичной макс. цифра 9</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Все системы имеют 0</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Основание &gt; любой цифры</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "Исторические системы (например, римская) не имели нуля. "
+    },
+    {
+      "topic_id": 2,
+      "id": 6,
+      "task": "Какое число следует за 14 в системе с цифрами 0-4? \n\n1) 15 2) 20 3) 21 4) 10 ",
+      "answer": "2",
+      "hint": "Основание = 5. После 14₅ → 20₅ (как после 9 → 10 в десятичной). "
+    },
+    {
+      "topic_id": 2,
+      "id": 7,
+      "task": "Макс. однозначное в семеричной: \n\n1) 7 2) 6 3) 10 4) 9 ",
+      "answer": "2",
+      "hint": "Семиричные цифры: 0-6. Максимум - 6. "
+    },
+    {
+      "topic_id": 2,
+      "id": 8,
+      "task": "10₂ + 10₈ в десятичной: \n\n1) 10 2) 20 3) 22 4) 18 ",
+      "answer": "1",
+      "hint": "10₂ = 2; 10₈ = 8; 2 + 8 = 10 "
+    },
+    {
+      "topic_id": 2,
+      "id": 9,
+      "task": "Число 7 в троичной: \n\n1) 10 2) 21 3) 17 4) 20 ",
+      "answer": "2",
+      "hint": "7 = 2×3 + 1 → 21₃ "
+    },
+    {
+      "topic_id": 2,
+      "id": 10,
+      "task": "В какой системе 3×3=11? \n\n1) Десятичной 2) Двоичной 3) Восьмеричной 4) Девятеричной ",
+      "answer": "3",
+      "hint": "11ₓ = x + 1. Уравнение: 3×3 = x + 1 → x = 8 "
+    }
+  ],
+  "repetition_exercises": [
+    {
+      "topic_id": 1,
+      "id": 1,
+      "task": "<div><p><span><span>Анализ диаграмм Эйлера-Венна</span></span><span>&nbsp;</span></p></div><div><p><span><span>На диаграмме:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>Круг A = множество простых чисел &lt; 20</span></span><span>&nbsp;</span></p></li><li><p><span><span>Круг B = множество нечётных чисел &lt; 20</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Какое число принадлежит только множеству A?</span></span><span>&nbsp;</span></p></div><div><p><span><span>Варианты:</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>2</span></span><span>&nbsp;</span></p></li><li><p><span><span>9</span></span><span>&nbsp;</span></p></li><li><p><span><span>15</span></span><span>&nbsp;</span></p></li><li><p><span><span>19</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится верный ответ.</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1",
+      "hint": "A = {2, 3, 5, 7, 11, 13, 17, 19}; B = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19}"
+    },
+    {
+      "topic_id": 1,
+      "id": 2,
+      "task": "<div><p><span><span>Практическая задача с кругами Эйлера</span></span><span>&nbsp;</span></p></div><div><p><span><span>В школе:</span></span><span>&nbsp;</span></p></div><ul><li><p><span><span>45 учеников изучают Python</span></span><span>&nbsp;</span></p></li><li><p><span><span>30 изучают Java</span></span><span>&nbsp;</span></p></li><li><p><span><span>20 изучают оба языка</span></span><span>&nbsp;</span></p></li><li><p><span><span>10 не изучают ни одного</span></span><span>&nbsp;</span></p></li></ul><div><p><span><span>Сколько всего учеников в школе?</span></span><span>&nbsp;</span></p></div>",
+      "answer": "65",
+      "hint": "Только Python: 45 – 20 = 25 \nТолько Java: 30 – 20 = 10 \nОба языка: 20 \nНичего: 10 "
+    },
+    {
+      "topic_id": 1,
+      "id": 3,
+      "task": "<div><p><span><span>Какое утверждение ложно?</span></span><span>&nbsp;</span></p></div><ol><li><p><span><span>Переменная может принадлежать пустому множеству</span></span><span>&nbsp;</span></p></li><li><p><span><span>Круги Эйлера применимы к любым множествам</span></span><span>&nbsp;</span></p></li><li><p><span><span>Мощность ℕ равна мощности ℤ</span></span><span>&nbsp;</span></p></li><li><p><span><span>{∅} ≠ ∅</span></span><span>&nbsp;</span></p></li></ol><div><p><span><span></span></span><span>&nbsp;</span></p></div><div><p><span><span>В ответе напиши номер под которым находится НЕ верный ответ.</span></span><span>&nbsp;</span></p></div>",
+      "answer": "1",
+      "hint": "Переменная выбирается из множества объектов."
+    },
+    {
+      "topic_id": 2,
+      "id": 1,
+      "task": "В какой системе число \"100\" будет наименьшим? \n\n1) Двоичная 2) Восьмеричная 3) Десятичная 4) Шестнадцатеричная ",
+      "answer": "1",
+      "hint": "<div><p><span><span>Переведите \"100\" в каждой системе:</span></span><span>&nbsp;</span></p></div><div><p><span><span>• 100₂ = 4</span></span><span>&nbsp;</span></p></div><div><p><span><span>• 100₈ = 64</span></span><span>&nbsp;</span></p></div><div><p><span><span>• 100₁₀ = 100</span></span><span>&nbsp;</span></p></div><div><p><span><span>• 100₁₆ = 256</span></span><span>&nbsp;</span></p></div>"
+    },
+    {
+      "topic_id": 2,
+      "id": 2,
+      "task": "<div><p><span><span>Могла ли существовать система с основанием 1?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Да, с цифрой 0</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Да, с цифрой 1</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Нет</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Да, только для нуля</span></span><span>&nbsp;</span></p></div>",
+      "answer": "3",
+      "hint": "В системе с основанием 1 невозможно выразить разные числа (только один символ) "
+    },
+    {
+      "topic_id": 2,
+      "id": 3,
+      "task": "Какое число следует за 222₃? \n\n1) 223 2) 1000 3) 1111 4) 221 ",
+      "answer": "2 ",
+      "hint": "Аналогично переходу от 999 к 1000 в десятичной системе "
+    },
+    {
+      "topic_id": 2,
+      "id": 4,
+      "task": "Почему вавилонская система называлась шестидесятеричной? \n\n1) 60 цифр 2) Основание 60 3) 60 символов 4) Изобретена в 60 г. до н.э. ",
+      "answer": "2",
+      "hint": "Основание = количество уникальных значений разряда "
+    },
+    {
+      "topic_id": 2,
+      "id": 5,
+      "task": "Как записать 6 в системе с основанием 4? \n\n1) 10 2) 11 3) 12 4) 13 ",
+      "answer": "3",
+      "hint": "6 = 1×4 + 2 → 12₄ "
+    },
+    {
+      "topic_id": 2,
+      "id": 6,
+      "task": "<div><p><span><span>Почему компьютеры используют двоичную систему?</span></span><span>&nbsp;</span></p></div><div><p><span><span>1) Самая простая</span></span><span>&nbsp;</span></p></div><div><p><span><span>2) Технически удобно (есть/нет сигнала)</span></span><span>&nbsp;</span></p></div><div><p><span><span>3) Решение программистов</span></span><span>&nbsp;</span></p></div><div><p><span><span>4) Меньше цифр</span></span><span>&nbsp;</span></p></div>",
+      "answer": "2",
+      "hint": "Электронные компоненты работают с двумя состояниями (вкл/выкл) "
+    },
+    {
+      "topic_id": 2,
+      "id": 7,
+      "task": "Максимальное трёхзначное в пятеричной системе: \n\n1) 555 2) 444 3) 124 4) 999 ",
+      "answer": "2",
+      "hint": "Макс. цифра в пятеричной системе - 4 "
+    },
+    {
+      "topic_id": 2,
+      "id": 8,
+      "task": "Чему равно 24₅ в десятичной? \n\n1) 10 2) 14 3) 24 4) 100 ",
+      "answer": "2",
+      "hint": "24₅ = 2×5 + 4 = 14 "
+    },
+    {
+      "topic_id": 2,
+      "id": 9,
+      "task": "В какой системе 10 + 10 = 100? \n\n1) Десятичная 2) Двоичная 3) Троичная 4) Всех ",
+      "answer": "2",
+      "hint": "В двоичной: 10₂=2, 100₂=4 → 2+2=4 "
+    }
+  ]
+}
