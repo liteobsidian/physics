@@ -8,5 +8,10 @@
         "pg-hstore": "^2.3.4",
         "sequelize": "^6.37.7",
         "sqlite3": "^5.1.7"
-    }
+    },
+    "scripts": {
+  "start": "node app.js",
+  "dev": "nodemon app.js"
+}
+
 }
