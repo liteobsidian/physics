@@ -1,6 +1,6 @@
 "use strict";
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/db";
+import { sequelize } from "../config/db.js";
 
 export class Exercise extends Model {}
 
@@ -24,4 +24,9 @@ Exercise.init({
     hint: {
         type: DataTypes.TEXT,
     },
-});
+},{
+    sequelize,
+    tableName: "exercises"
+
+}
+);

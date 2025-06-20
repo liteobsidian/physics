@@ -7,6 +7,8 @@ import XLSX from 'xlsx'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { sequelize } from '../backend/src/config/db'
+import { Exercise } from '../backend/src/models/exercises'
 
 // Функция для поиска Excel-файла
 function findExcelFile() {
@@ -95,7 +97,7 @@ function convertExcelToJson() {
     // Сохраняем результат в JSON
     // Независимо от местоположения входного файла, выходной файл
     // всегда будет в директории src/data/exercises.json
-    const outputPath = './src/data/exercises.json'
+    const outputPath = './data/exercises.json'
 
     fs.writeFileSync(outputPath, JSON.stringify(exercisesData, null, 2), 'utf8')
 

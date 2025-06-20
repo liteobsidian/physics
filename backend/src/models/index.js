@@ -1,8 +1,8 @@
 "use strict";
-import { Block } from "./blocks";
-import { Tag } from "./tags";
-import { Topic } from "./topics";
-import { Exercise } from "./exercises";
+import { Block } from "./blocks.js";
+import { Tag } from "./tags.js";
+import { Topic } from "./topics.js";
+import { Exercise } from "./exercises.js";
 
 Block.hasMany(Topic, {
     foreignKey: "block_id",
