@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: "Z:/GitReps/physics/backend/.env" });
 
 export const sequelize = new Sequelize({
     dialect: "postgres",
@@ -16,3 +16,5 @@ export const sequelize = new Sequelize({
         // freezeTableName: false,
     },
 });
+
+console.log("DB_USER:", process.env.DB_USER);

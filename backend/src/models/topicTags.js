@@ -2,26 +2,21 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/db.js";
 
-export class Topic extends Model {}
+export class TopicTag extends Model {}
 
-Topic.init(
+TopicTag.init(
     {
-        id: {
-            primaryKey: true,
+        topic_id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             allowNull: false,
         },
-        title: {
-            type: DataTypes.TEXT,
-        },
-        block_id: {
+        tag_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
     },
     {
         sequelize,
-        tableName: "topics",
+        tableName: "topic_tags",
     }
 );

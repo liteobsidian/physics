@@ -6,9 +6,6 @@
 import XLSX from 'xlsx'
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
-import { sequelize } from '../backend/src/config/db'
-import { Exercise } from '../backend/src/models/exercises'
 
 // Функция для поиска Excel-файла
 function findExcelFile() {

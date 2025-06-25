@@ -3,22 +3,23 @@ import { Block } from "./blocks.js";
 import { Tag } from "./tags.js";
 import { Topic } from "./topics.js";
 import { Exercise } from "./exercises.js";
+import { TopicTag } from "./topicTags.js";
 
-Block.hasMany(Topic, {
-    foreignKey: "block_id",
-});
+Block.hasMany(Topic, { foreignKey: "block_id" });
+Topic.belongsTo(Block, { foreignKey: "block_id", as: "block" });
 
-Tag.hasMany(Topic, {
-    foreignKey: "tag_id",
-});
+Topic.hasMany(Exercise, { foreignKey: "topic_id" });
+Exercise.belongsTo(Topic, { foreignKey: "topic_id", as: "topic" });
 
-Topic.hasMany(Exercise, {
+Topic.belongsToMany(Tag, {
+    through: TopicTag,
     foreignKey: "topic_id",
+    otherKey: "tag_id",
+});
+Tag.belongsToMany(Topic, {
+    through: TopicTag,
+    foreignKey: "tag_id",
+    otherKey: "topic_id",
 });
 
-export default {
-    Topic,
-    Block,
-    Tag,
-    Exercise,
-};
+export { Topic, Block, Tag, Exercise, TopicTag };

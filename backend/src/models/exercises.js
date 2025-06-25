@@ -4,29 +4,31 @@ import { sequelize } from "../config/db.js";
 
 export class Exercise extends Model {}
 
-Exercise.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false,
+Exercise.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+            allowNull: false,
+            unique: true,
+        },
+        topic_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        task: {
+            type: DataTypes.TEXT,
+        },
+        answer: {
+            type: DataTypes.TEXT,
+        },
+        hint: {
+            type: DataTypes.TEXT,
+        },
     },
-    topic_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    task: {
-        type: DataTypes.TEXT,
-    },
-    answer: {
-        type: DataTypes.TEXT,
-    },
-    hint: {
-        type: DataTypes.TEXT,
-    },
-},{
-    sequelize,
-    tableName: "exercises"
-
-}
+    {
+        sequelize,
+        tableName: "exercises",
+    }
 );
