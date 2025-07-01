@@ -15,6 +15,7 @@ function findExcelFile() {
     '../sources/exercises.xlsx',
     '../../sources/exercises.xlsx',
     '../../../src/sources/exercises.xlsx',
+    '../src/sources/exercises.xlsx'
   ]
 
   for (const filePath of possiblePaths) {

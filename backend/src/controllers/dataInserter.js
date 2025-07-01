@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import * as fs from "node:fs";
 import { sequelize } from "../config/db.js";
 import { Topic, Block, Tag, Exercise } from "../models/index.js";
+import { getImgBuffer } from "../middlewares/getImgBufferMiddleware.js";
 import { Json } from "sequelize/lib/utils";
 import { where } from "sequelize";
 
@@ -13,10 +14,7 @@ const __dirname = path.dirname(__filename);
 const blocksPath = path.resolve(__dirname, "../../../src/data/blocks.json");
 const tagsPath = path.resolve(__dirname, "../../../src/data/tags.json");
 const topicsPath = path.resolve(__dirname, "../../../src/data/topics.json");
-const exercisesPath = path.resolve(
-    __dirname,
-    "../../../src/data/exercises.json"
-);
+const exercisesPath = path.resolve(__dirname, "../../../src/data/exercises.json");
 
 const blocks = JSON.parse(fs.readFileSync(blocksPath, "utf8"));
 const tags = JSON.parse(fs.readFileSync(tagsPath, "utf8"));
@@ -42,9 +40,7 @@ class DataInserter {
                 }
             }
             await t.commit();
-            return console.log(
-                "Данные о блоках и тэгах успешно добавленны в БД"
-            );
+            return console.log("Данные о блоках и тэгах успешно добавленны в БД");
         } catch (e) {
             await t.rollback();
             throw e;
@@ -93,9 +89,8 @@ class DataInserter {
         try {
             for (const element of Object.values(data)) {
                 for (const prop of element) {
-                    // console.log(prop);
                     await this.model.findOrCreate({
-                        where: { task: prop.task },
+                        where: { task: await getImgBuffer(prop.task) },
                         defaults: {
                             hint: prop.hint,
                             answer: prop.answer,
@@ -117,14 +112,11 @@ class DataInserter {
 const blockInserter = new DataInserter(Block);
 await blockInserter.insertBlocksAndTags(blocks);
 
-const tagInserter = new DataInserter(Tag);
-await tagInserter.insertBlocksAndTags(tags);
+const tagsInserter = new DataInserter(Tag);
+await tagsInserter.insertBlocksAndTags(tags);
 
-const topicInserter = new DataInserter(Topic);
-await topicInserter.insertTopics(topics);
+const topicsInserter = new DataInserter(Topic);
+await topicsInserter.insertBlocksAndTags(topics);
 
-const topicTagsInserter = new DataInserter(Topic);
-await topicTagsInserter.insertTopicTags(topics);
-
-// const exerciseInserter = new DataInserter(Exercise);
-// await exerciseInserter.insertExercises(exercises);
+const exerciseInserter = new DataInserter(Exercise);
+await exerciseInserter.insertExercises(exercises);

@@ -1,14 +1,24 @@
 import express from "express";
 const app = express();
 import { sequelize } from "./src/config/db.js";
+import getDataRouter from "./src/routes/exerciseRouter.js";
+import cors from "cors";
 
 const port = 5000;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
+app.use(
+    cors({
+        host: "http://localhost:5000",
+        origin: "http://localhost:5173",
+        methods: "GET, POST, PUT, DELETE, OPTIONS",
+        allowedHeaders: ["Authorization", "refresh_token", "Content-Type"],
+        credentials: true,
+    })
+);
+
+app.use("/data", getDataRouter);
 
 try {
     await sequelize.authenticate();
