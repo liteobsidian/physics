@@ -2,14 +2,20 @@
 import { Block } from "./blocks.js";
 import { Tag } from "./tags.js";
 import { Topic } from "./topics.js";
-import { Exercise } from "./exercises.js";
+import { StudyExercise, CheckExercise, RepetitionExercise } from "./exercises.js";
 import { TopicTag } from "./topicTags.js";
 
 Block.hasMany(Topic, { foreignKey: "block_id" });
 Topic.belongsTo(Block, { foreignKey: "block_id", as: "block" });
 
-Topic.hasMany(Exercise, { foreignKey: "topic_id" });
-Exercise.belongsTo(Topic, { foreignKey: "topic_id", as: "topic" });
+Topic.hasMany(StudyExercise, { foreignKey: "topic_id" });
+StudyExercise.belongsTo(Topic, { foreignKey: "topic_id", as: "topic" });
+
+Topic.hasMany(CheckExercise, { foreignKey: "topic_id" });
+CheckExercise.belongsTo(Topic, { foreignKey: "topic_id", as: "topic" });
+
+Topic.hasMany(RepetitionExercise, { foreignKey: "topic_id" });
+RepetitionExercise.belongsTo(Topic, { foreignKey: "topic_id", as: "topic" });
 
 Topic.belongsToMany(Tag, {
     through: TopicTag,
@@ -22,4 +28,4 @@ Tag.belongsToMany(Topic, {
     otherKey: "topic_id",
 });
 
-export { Topic, Block, Tag, Exercise, TopicTag };
+export { Topic, Block, Tag, TopicTag, StudyExercise, CheckExercise, RepetitionExercise };

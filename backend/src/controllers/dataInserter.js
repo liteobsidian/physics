@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as fs from "node:fs";
 import { sequelize } from "../config/db.js";
-import { Topic, Block, Tag, Exercise } from "../models/index.js";
+import { Topic, Block, Tag, StudyExercise, RepetitionExercise, CheckExercise } from "../models/index.js";
 import { getImgBuffer } from "../middlewares/getImgBufferMiddleware.js";
 import { Json } from "sequelize/lib/utils";
 import { where } from "sequelize";
@@ -88,17 +88,15 @@ class DataInserter {
         const t = await sequelize.transaction();
         try {
             for (const element of Object.values(data)) {
-                for (const prop of element) {
-                    await this.model.findOrCreate({
-                        where: { task: await getImgBuffer(prop.task) },
-                        defaults: {
-                            hint: prop.hint,
-                            answer: prop.answer,
-                            topic_id: prop.topic_id,
-                        },
-                        transaction: t,
-                    });
-                }
+                await this.model.findOrCreate({
+                    where: { task: await getImgBuffer(element.task) },
+                    defaults: {
+                        hint: element.hint,
+                        answer: element.answer,
+                        topic_id: element.topic_id,
+                    },
+                    transaction: t,
+                });
             }
             await t.commit();
             return console.log("Данные о заданиях успешно добавленны в БД");
@@ -118,5 +116,14 @@ await tagsInserter.insertBlocksAndTags(tags);
 const topicsInserter = new DataInserter(Topic);
 await topicsInserter.insertBlocksAndTags(topics);
 
-const exerciseInserter = new DataInserter(Exercise);
-await exerciseInserter.insertExercises(exercises);
+// const exerciseInserter = new DataInserter(Exercise);
+// await exerciseInserter.insertExercises(exercises);
+
+const studyExerciseInserter = new DataInserter(StudyExercise);
+await studyExerciseInserter.insertExercises(exercises.study_exercises);
+
+const checkExerciseInserter = new DataInserter(CheckExercise);
+await checkExerciseInserter.insertExercises(exercises.check_exercises);
+
+const repetitionExerciseInserter = new DataInserter(RepetitionExercise);
+await repetitionExerciseInserter.insertExercises(exercises.repetition_exercises);

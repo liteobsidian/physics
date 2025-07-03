@@ -24,10 +24,21 @@ class DataService {
             throw e
         }
     }
-    async getTags(){
+    async getTags() {
         try {
             const result = await api.get('/data/tag-data')
             return result.data
+        } catch (e) {
+            console.error('Ошибка при загрузке данных:', e)
+            throw e
+        }
+    }
+    async getExercises() {
+        try {
+            const studyDataResult = await api.get('/data/studyexercise-data')
+            const checkDataResult = await api.get('/data/checkexercise-data')
+            const repetitionDataResult = await api.get('/data/repetitionexercise-data')
+            return { study: studyDataResult.data, check: checkDataResult.data, repetition: repetitionDataResult.data }
         } catch (e) {
             console.error('Ошибка при загрузке данных:', e)
             throw e

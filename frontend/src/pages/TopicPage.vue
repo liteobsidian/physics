@@ -106,9 +106,6 @@
     import { ref, computed, onMounted, watch } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
     import ExercisesList from '../components/ExercisesList.vue'
-    import topicsData from '../data/topics.json'
-    import exercisesData from '../data/exercises.json'
-    import tagsData from '../data/tags.json'
     import { useProgress } from '../composables/useProgress'
     import DataService from '../composables/dataService'
 
@@ -116,35 +113,55 @@
     const router = useRouter()
     const topicId = computed(() => parseInt(route.params.id))
     const activeTab = ref('study')
-    const blockData = ref([])
+    const checkExerciseData = ref([])
+    const studyExerciseData = ref([])
+    const repetitionExerciseData = ref([])
     const topicTagData = ref([])
     const tags = ref([])
 
     // Используем композабл для работы с прогрессом
     const { getTopicProgress, hasAnyExerciseCompleted, isExerciseCompleted, loadProgress } = useProgress()
 
+    const getData = async () => {
+        try {
+            const data = await DataService.getBulk({
+                exercises: 'getExercises',
+                topicsWithTags: 'getTopicsWithTags',
+                tags: 'getTags',
+            })
+            topicTagData.value = data.topicsWithTags
+            tags.value = data.tags
+            checkExerciseData.value = data.exercises.check
+            studyExerciseData.value = data.exercises.study
+            repetitionExerciseData.value = data.exercises.repetition
+        } catch (e) {
+            console.error('Ошибка при загрузке данных:', e)
+            throw e
+        }
+    }
+
     // Получаем заголовок темы
     const topicTitle = computed(() => {
-        const topic = topicsData.topics.find(t => t.id === topicId.value)
+        const topic = topicTagData.value.find(t => t.id === topicId.value)
         return topic ? topic.title : 'Тема не найдена'
     })
 
     // Получаем задания для текущей темы
     const studyExercises = computed(() => {
-        return exercisesData.study_exercises.filter(ex => ex.topic_id === topicId.value)
+        return studyExerciseData.value.filter(ex => ex.topic_id === topicId.value)
     })
 
     const checkExercises = computed(() => {
-        return exercisesData.check_exercises.filter(ex => ex.topic_id === topicId.value)
+        return checkExerciseData.value.filter(ex => ex.topic_id === topicId.value)
     })
 
     const repetitionExercises = computed(() => {
-        return exercisesData.repetition_exercises.filter(ex => ex.topic_id === topicId.value)
+        return repetitionExerciseData.value.filter(ex => ex.topic_id === topicId.value)
     })
 
     // Получаем теги темы
     const topicTags = computed(() => {
-        const topic_tags = tagsData.topic_tags || {}
+        const topic_tags = topicTagData.Tags || {}
         return topic_tags[topicId.value.toString()] || []
     })
 
@@ -154,10 +171,10 @@
     }
 
     // Следим за параметром tab в URL
-    onMounted(() => {
+    onMounted(async () => {
         // Убедимся, что прогресс загружен
         loadProgress()
-
+        await getData()
         // Проверяем наличие параметра tab в URL
         const tabParam = route.query.tab
         if (tabParam && ['study', 'exercise', 'repetition'].includes(tabParam)) {
