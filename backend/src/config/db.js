@@ -15,6 +15,12 @@ export const sequelize = new Sequelize({
         underscored: false,
         // freezeTableName: false,
     },
+    pool: {
+        max: 10,
+        min: 0,
+        acquire: 20000,
+        idle: 10000,
+    },
 });
 
 console.log("DB_USER:", process.env.DB_USER);
