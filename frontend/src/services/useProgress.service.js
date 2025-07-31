@@ -1,5 +1,5 @@
 import { ref, onMounted, onUnmounted } from 'vue'
-import DataService from './dataService'
+import DataService from './data.service'
 
 export function useProgress() {
     // Локальное состояние прогресса

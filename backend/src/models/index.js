@@ -4,6 +4,8 @@ import { Tag } from "./tags.js";
 import { Topic } from "./topics.js";
 import { StudyExercise, CheckExercise, RepetitionExercise } from "./exercises.js";
 import { TopicTag } from "./topicTags.js";
+import { User } from "./user.js";
+import { Admin } from "./admins.js";
 
 Block.hasMany(Topic, { foreignKey: "block_id" });
 Topic.belongsTo(Block, { foreignKey: "block_id", as: "block" });
@@ -28,4 +30,4 @@ Tag.belongsToMany(Topic, {
     otherKey: "topic_id",
 });
 
-export { Topic, Block, Tag, TopicTag, StudyExercise, CheckExercise, RepetitionExercise };
+export { Topic, Block, Tag, TopicTag, StudyExercise, CheckExercise, RepetitionExercise, User, Admin };

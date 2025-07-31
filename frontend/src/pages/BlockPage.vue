@@ -1,12 +1,7 @@
 <template>
     <div class="mt-4">
         <div class="d-flex align-center mb-4">
-            <v-btn
-                variant="text"
-                color="primary"
-                prepend-icon="mdi-arrow-left"
-                @click="$router.push('/')"
-            >
+            <v-btn variant="text" color="primary" prepend-icon="mdi-arrow-left" @click="$router.push('/')">
                 Назад к списку
             </v-btn>
         </div>
@@ -29,12 +24,7 @@
             <search-field v-model="searchQuery" />
 
             <div v-if="filteredTopics.length === 0" class="text-center my-8">
-                <v-icon
-                    icon="mdi-magnify-off"
-                    size="x-large"
-                    color="grey-lighten-1"
-                    class="mb-2"
-                ></v-icon>
+                <v-icon icon="mdi-magnify-off" size="x-large" color="grey-lighten-1" class="mb-2"></v-icon>
                 <div class="text-h6 text-grey-darken-1">Ничего не найдено</div>
                 <div class="text-body-2 text-grey">Попробуйте изменить параметры поиска</div>
             </div>
@@ -57,8 +47,8 @@
     import { useRoute } from 'vue-router'
     import TopicCard from '../components/TopicCard.vue'
     import SearchField from '../components/SearchField.vue'
-    import { useProgress } from '../composables/useProgress'
-    import DataService from '../composables/dataService'
+    import { useProgress } from '../services/useProgress.service'
+    import DataService from '../services/data.service'
 
     const route = useRoute()
     const blockData = ref(null)
@@ -98,12 +88,7 @@
     // Темы для текущего блока
     const blockTopics = computed(() => {
         if (!block.value || !topicTagData.value.length) {
-            console.log(
-                'Нет данных: block.value =',
-                block.value,
-                'topicsData.value =',
-                topicTagData.value,
-            )
+            console.log('Нет данных: block.value =', block.value, 'topicsData.value =', topicTagData.value)
             return []
         }
 

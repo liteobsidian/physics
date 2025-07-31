@@ -1,5 +1,5 @@
 import express from "express";
-import { GetDataController } from "../controllers/getDataController.js";
+import { GetDataController } from "../controllers/data.controller.js";
 import { Block, Topic, Tag, StudyExercise, RepetitionExercise, CheckExercise } from "../models/index.js";
 
 const router = express.Router();

@@ -100,7 +100,7 @@
 <script setup>
     import { defineProps, computed, ref, onMounted } from 'vue'
     import { useRouter } from 'vue-router'
-    import DataService from '../composables/dataService'
+    import DataService from '../services/data.service'
 
     const props = defineProps({
         topic: {

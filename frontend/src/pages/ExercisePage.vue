@@ -55,8 +55,8 @@
 <script setup>
     import { ref, computed, onMounted } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
-    import { useProgress } from '../composables/useProgress'
-    import DataService from '../composables/dataService'
+    import { useProgress } from '../services/useProgress.service'
+    import DataService from '../services/data.service'
 
     const route = useRoute()
     const router = useRouter()

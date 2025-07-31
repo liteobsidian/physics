@@ -78,8 +78,8 @@
     import { ref, computed, watch, onMounted } from 'vue'
     import TopicCard from '../components/TopicCard.vue'
     import SearchField from '../components/SearchField.vue'
-    import { useProgress } from '../composables/useProgress'
-    import DataService from '../composables/dataService'
+    import { useProgress } from '../services/useProgress.service'
+    import DataService from '../services/data.service'
 
     const searchQuery = ref('')
     const selectedTags = ref([])

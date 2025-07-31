@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import * as fs from "node:fs";
 import { sequelize } from "../config/db.js";
 import { Topic, Block, Tag, StudyExercise, RepetitionExercise, CheckExercise } from "../models/index.js";
-import { getImgBuffer } from "../middlewares/getImgBufferMiddleware.js";
+import { getImgBuffer } from "../middlewares/getImgBuffer.middleware.js";
 import { Json } from "sequelize/lib/utils";
 import { where } from "sequelize";
 

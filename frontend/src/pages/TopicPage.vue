@@ -106,8 +106,8 @@
     import { ref, computed, onMounted, watch } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
     import ExercisesList from '../components/ExercisesList.vue'
-    import { useProgress } from '../composables/useProgress'
-    import DataService from '../composables/dataService'
+    import { useProgress } from '../services/useProgress.service'
+    import DataService from '../services/data.service'
 
     const route = useRoute()
     const router = useRouter()
