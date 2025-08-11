@@ -82,12 +82,12 @@
         />
 
         <exercises-list
-            v-else-if="activeTab === 'exercise'"
+            v-else-if="activeTab === 'check'"
             :exercises="checkExercises"
-            :progress-value="getTopicProgress(topicId, 'exercise')"
-            :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'exercise', exerciseId)"
+            :progress-value="getTopicProgress(topicId, 'check')"
+            :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'check', exerciseId)"
             empty-message="Упражнения ещё не добавлены"
-            @exercise-click="exercise => openExercise(exercise, 'exercise')"
+            @exercise-click="exercise => openExercise(exercise, 'check')"
         />
 
         <exercises-list
@@ -120,7 +120,7 @@
     const tags = ref([])
 
     // Используем композабл для работы с прогрессом
-    const { getTopicProgress, hasAnyExerciseCompleted, isExerciseCompleted, loadProgress } = useProgress()
+    const { getTopicProgress, hasAnyExerciseCompleted, isExerciseCompleted } = useProgress()
 
     const getData = async () => {
         try {
@@ -173,7 +173,6 @@
     // Следим за параметром tab в URL
     onMounted(async () => {
         // Убедимся, что прогресс загружен
-        loadProgress()
         await getData()
         // Проверяем наличие параметра tab в URL
         const tabParam = route.query.tab

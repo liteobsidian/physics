@@ -5,34 +5,57 @@
             <v-text-field label="Почта" v-model="email" :rules="emailRules"></v-text-field>
             <v-text-field label="Пароль" :rules="passwordRules" v-model="password"></v-text-field>
             <v-btn type="submit" class="button">Войти</v-btn>
+            <div class="d-felx register">
+                <span>Если у вас ещё нет аккаунта</span>
+                <v-btn @click="toRegister" class="button">Зарегистрироваться</v-btn>
+            </div>
         </v-form>
+        <v-snackbar v-model="error.show" color="red" location="top">
+            {{ error.text }}
+        </v-snackbar>
     </v-sheet>
 </template>
 
 <script setup>
     import { ref } from 'vue'
-    import { register } from '@/services/auth.service'
+    import { useRouter } from 'vue-router'
+    import { login } from '@/services/api.service'
+
+    const router = useRouter()
 
     const form = ref(null)
 
     const password = ref('')
-    const confirmPassword = ref('')
-    const username = ref('')
     const email = ref('')
+    const error = ref({ show: false, text: '' })
 
     const emailRules = [v => !!v || 'Введите почту', v => /.+@.+\..+/.test(v) || 'Некорректный email']
 
     const passwordRules = [v => !!v || 'Введите пароль', v => v.length >= 4 || 'Пароль должен быть длиннее 4 символов']
+
+    const toRegister = () => {
+        router.push('/register')
+    }
 
     async function onSubmit() {
         const isValid = await form.value.validate()
         if (!isValid) return
 
         try {
-            const data = await register(username.value, email.value, password.value)
-            console.log('Успешная регистрация', data)
+            const response = await login(email.value, password.value)
+            if (response.status === 200) {
+                sessionStorage.setItem('profileSuccess', 'Успешный вход!')
+                router.push({ name: 'profile' })
+            }
         } catch (err) {
-            console.error('Ошибка регистрации', err)
+            if (err.response && err.response.status === 409) {
+                error.value = { show: true, text: 'Неверный пароль' }
+            } else if (err.response && err.response.status === 404) {
+                error.value = { show: true, text: 'Пользователь не найден' }
+            } else {
+                error.value = { show: true, text: 'Ошибка входа' }
+            }
+            console.error('Ошибка входа', err)
         }
     }
 </script>
@@ -58,5 +81,14 @@
         background-color: #4285f4 !important;
         color: #ffff;
         width: 80%;
+    }
+    .register {
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border-top: solid 1px #a4a4a4;
+        margin-top: 1rem;
     }
 </style>

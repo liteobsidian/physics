@@ -1,6 +1,6 @@
 import { where } from "sequelize";
 import { sequelize } from "../config/db.js";
-import { hashPassword, isPsswordMatch } from "../utils/passwordHasher.js";
+import { hashPassword, isPasswordMatch } from "../utils/passwordHasher.js";
 import dotenv from "dotenv";
 import { createAuthTokens } from "../middlewares/auth.middleware.js";
 import { sendEmail } from "../services/mail.service.js";
@@ -84,6 +84,7 @@ export class AuthController {
     }
 
     async loginUser(req, res) {
+        const t = await sequelize.transaction();
         try {
             const { email, password } = req.body;
 
@@ -101,8 +102,15 @@ export class AuthController {
                 return res.status(401).json({ message: "Аккаунт не подтверждён" });
             }
 
-            if (isPsswordMatch(password, user.password)) {
+            if (await isPasswordMatch(password, user.password)) {
                 const tokens = await createAuthTokens(user.id, user.login);
+
+                // await this.model.create(
+                //     {
+                //         refresh_token: tokens.refreshToken,
+                //     },
+                //     { transaction: t }
+                // );
 
                 res.cookie("access_token", tokens.accessToken, {
                     httpOnly: true,
@@ -118,16 +126,40 @@ export class AuthController {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                 });
 
+                await t.commit();
                 return res.status(200).json({
                     message: "Успешный вход!",
-                    user: { id: user.id, username: user.username },
                 });
             } else {
-                return res.status(409).json({ message: "Неверный пароль" });
+                await t.rollback();
+                return res.status(401).json({ message: "Неверный пароль" });
             }
         } catch (error) {
+            await t.rollback();
             console.error("Ошибка входа:", error);
             return res.status(500).json({ message: "Ошибка входа" });
+        }
+    }
+
+    async logOut(req, res) {
+        const access_token = req.cookies?.access_token;
+        const refresh_token = req.cookies?.refresh_token;
+        const t = await sequelize.transaction();
+
+        if (!access_token || !refresh_token) {
+            return res.status(404).json({ message: "Токены не найдены" });
+        }
+
+        try {
+            await this.model.destroy({
+                where,
+            });
+            res.clearCookie("access_token", { httpOnly: true, secure: false, sameSite: "strict" });
+            res.clearCookie("refresh_token", { httpOnly: true, secure: false, sameSite: "strict" });
+
+            return res.status(200).json({ message: "Токены удалены" });
+        } catch (err) {
+            return res.status(500).json({ message: "Ошибка сервера" });
         }
     }
 }

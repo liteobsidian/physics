@@ -11,14 +11,20 @@
                         </div>
                     </div>
 
-                    <v-app-bar-title class="text-primary d-flex align-center justify-center">
+                    <v-app-bar-title class="text-primary d-flex align-center justify-center clickable" @click="goHome">
                         <v-icon color="primary" class="mr-2">mdi-flask</v-icon>
                         Физичитариум
                     </v-app-bar-title>
 
-                    <div>
-                        <v-btn icon="mdi-account" variant="text" color="black" v-bind="props"></v-btn>
-                    </div>
+                    <v-btn
+                        icon="mdi-account"
+                        variant="text"
+                        color="black"
+                        v-bind="props"
+                        @click="goProfile"
+                        style="text-transform: none"
+                    >
+                    </v-btn>
                 </div>
             </div>
         </v-app-bar>
@@ -35,9 +41,14 @@
 
 <script setup>
     import { ref, onMounted, computed } from 'vue'
+    import { useRouter } from 'vue-router'
     import { useProgress } from '../services/useProgress.service'
 
-    // Данные о прогрессе будем хранить в localStorage
+    const router = useRouter()
+
+    const goHome = () => router.push('/')
+    const goProfile = () => router.push('/profile')
+
     const daysCount = ref(0)
     const { calculateTotalProgress } = useProgress()
 
@@ -46,7 +57,7 @@
         return calculateTotalProgress()
     })
 
-    onMounted(() => {
+    onMounted(async () => {
         // Подсчет дней использования приложения
         const startDate = localStorage.getItem('startDate')
         if (!startDate) {
@@ -57,11 +68,6 @@
             const now = new Date()
             const diffTime = Math.abs(now - start)
             daysCount.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-        }
-
-        // Инициализация прогресса если его нет
-        if (!localStorage.getItem('topicsProgress')) {
-            localStorage.setItem('topicsProgress', JSON.stringify({}))
         }
     })
 </script>
@@ -88,5 +94,9 @@
     .status {
         width: 48px;
         padding: 0 auto;
+    }
+
+    .clickable {
+        cursor: pointer;
     }
 </style>

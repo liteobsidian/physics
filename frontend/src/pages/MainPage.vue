@@ -89,7 +89,7 @@
     const topicTagData = ref([])
 
     // Используем композабл для работы с прогрессом
-    const { progress: topicsProgress, getTopicProgress } = useProgress()
+    const { getTopicProgress } = useProgress()
 
     const getData = async () => {
         try {
@@ -114,26 +114,13 @@
 
     // Получаем объект прогресса для топика
     const getTopicProgressObject = topicId => {
-        const progress = topicsProgress.value[topicId]
-        if (!progress) {
-            return {
-                completed: {
-                    study: {},
-                    exercise: {},
-                    repetition: {},
-                },
-            }
-        }
+        console.log(getTopicProgress(topicId, 'study'))
 
-        // Вычисляем процент прогресса для всех типов заданий
-        const result = {
-            ...progress,
+        return {
             study: getTopicProgress(topicId, 'study'),
             exercise: getTopicProgress(topicId, 'exercise'),
             repetition: getTopicProgress(topicId, 'repetition'),
         }
-
-        return result
     }
 
     // Получение объектов тегов для темы

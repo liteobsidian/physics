@@ -26,9 +26,6 @@ User.init(
             allowNull: false,
             unique: true,
         },
-        progress: {
-            type: DataTypes.TEXT,
-        },
         verified: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
@@ -36,6 +33,10 @@ User.init(
         role: {
             type: DataTypes.TEXT,
             defaultValue: "user",
+            allowNull: false,
+        },
+        refresh_token: {
+            type: DataTypes.TEXT,
             allowNull: false,
         },
     },

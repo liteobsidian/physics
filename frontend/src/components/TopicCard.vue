@@ -112,7 +112,7 @@
             default: () => [],
         },
         progress: {
-            type: Object,
+            type: Array,
             required: true,
         },
     })
@@ -148,20 +148,18 @@
 
     // Получаем прогресс конкретного типа для темы
     const getTopicProgress = type => {
-        if (!props.progress || !props.progress.completed?.[type]) {
+        if (!props.progress || props.progress[type] === undefined) {
             return 0
         }
-
-        // Используем вычисленное значение, переданное из родительского компонента
         return props.progress[type] || 0
     }
 
     // Проверяем, есть ли хотя бы одно выполненное задание в указанном типе
     const hasAnyExerciseCompleted = type => {
-        if (!props.progress?.completed?.[type]) {
+        if (!props.progress[type]) {
             return false
         }
-        return Object.keys(props.progress.completed[type]).length > 0
+        return Object.keys(props.progress[type]).length > 0
     }
 
     // Навигация на страницу темы

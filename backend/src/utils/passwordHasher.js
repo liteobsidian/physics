@@ -7,6 +7,6 @@ export function hashPassword(password) {
     return bcrypt.hash(password, Number(process.env.SALT_ROUND));
 }
 
-export function isPsswordMatch(password, passwordHash) {
+export function isPasswordMatch(password, passwordHash) {
     return bcrypt.compare(password, passwordHash);
 }

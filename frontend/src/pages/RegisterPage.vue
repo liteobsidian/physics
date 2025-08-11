@@ -14,11 +14,15 @@
                 @paste.prevent
             ></v-text-field>
             <v-btn type="submit" class="button">Зарегистрироваться</v-btn>
+            <div class="d-flex login">
+                <span>Если у вас уже есть аккаунт</span>
+                <v-btn @click="toLogin" class="button">Войти</v-btn>
+            </div>
         </v-form>
-        <v-snackbar v-model="snackbar.show" :timeout="3000" color="green" location="top">
+        <v-snackbar v-model="snackbar.show" color="green" location="top">
             {{ snackbar.text }}
         </v-snackbar>
-        <v-snackbar v-model="error.show" :timeout="4000" color="red" location="top">
+        <v-snackbar v-model="error.show" color="red" location="top">
             {{ error.text }}
         </v-snackbar>
     </v-sheet>
@@ -26,7 +30,10 @@
 
 <script setup>
     import { ref } from 'vue'
-    import { register } from '@/services/auth.service'
+    import { register } from '@/services/api.service'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
 
     const form = ref(null)
 
@@ -44,6 +51,10 @@
     const passwordRules = [v => !!v || 'Введите пароль', v => v.length >= 4 || 'Пароль должен быть длиннее 4 символов']
 
     const confirmPasswordRules = [v => !!v || 'Повторите пароль', v => v === password.value || 'Пароли не совпадают']
+
+    const toLogin = () => {
+        router.push('/login')
+    }
 
     async function onSubmit() {
         const isValid = await form.value.validate()
@@ -82,5 +93,15 @@
         align-self: center;
         background-color: #4285f4 !important;
         color: #ffff;
+        width: 80%;
+    }
+    .login {
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border-top: solid 1px #a4a4a4;
+        margin-top: 1rem;
     }
 </style>

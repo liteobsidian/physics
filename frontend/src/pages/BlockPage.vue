@@ -107,20 +107,13 @@
 
     // Получаем объект прогресса для топика
     const getTopicProgressObject = topicId => {
-        const progress = topicsProgress.value[topicId]
+        const topicsProgress = progress.value[topicId]
         if (!progress) {
-            return {
-                completed: {
-                    study: {},
-                    exercise: {},
-                    repetition: {},
-                },
-            }
+            return {}
         }
 
         // Вычисляем процент прогресса для всех типов заданий
         const result = {
-            ...progress,
             study: getTopicProgress(topicId, 'study'),
             exercise: getTopicProgress(topicId, 'exercise'),
             repetition: getTopicProgress(topicId, 'repetition'),

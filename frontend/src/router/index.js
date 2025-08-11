@@ -52,7 +52,7 @@ const routes = [
                 component: LoginPage,
             },
             {
-                path: '/profile/id:',
+                path: '/profile',
                 name: 'profile',
                 component: ProfilePage,
                 props: true,
@@ -75,9 +75,17 @@ const routes = [
 const router = createRouter({
     history: createWebHashHistory(base),
     routes,
-    scrollBehavior() {
-        // Всегда прокручивать в начало страницы при смене маршрута
-        return { top: 0 }
+    scrollBehavior(to, from, savedPosition) {
+        if (to.hash) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const el = document.querySelector(to.hash)
+                    if (el) resolve({ el })
+                    else resolve({ top: 0 })
+                }, 50)
+            })
+        }
+        return savedPosition || { top: 0 }
     },
 })
 

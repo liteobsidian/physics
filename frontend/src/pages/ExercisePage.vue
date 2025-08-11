@@ -55,8 +55,8 @@
 <script setup>
     import { ref, computed, onMounted } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
-    import { useProgress } from '../services/useProgress.service'
     import DataService from '../services/data.service'
+    import { getUserInfo, completeTask } from '@/services/api.service'
 
     const route = useRoute()
     const router = useRouter()
@@ -64,6 +64,7 @@
     const topicId = computed(() => parseInt(route.params.topicId))
     const exerciseId = computed(() => parseInt(route.params.exerciseId))
     const exerciseType = computed(() => route.params.type)
+    const userId = ref(null)
 
     const userAnswer = ref('')
     const showError = ref(false)
@@ -72,11 +73,12 @@
     const studyExerciseData = ref([])
     const repetitionExerciseData = ref([])
 
-    // Используем композабл для работы с прогрессом
-    const { markExerciseAsCompleted } = useProgress()
-
     const getData = async () => {
         try {
+            const response = await getUserInfo()
+
+            userId.value = response.data.user.id
+
             const data = await DataService.getBulk({
                 exercises: 'getExercises',
             })
@@ -121,23 +123,27 @@
     }
 
     // Проверяем ответ
-    const checkAnswer = () => {
+    const checkAnswer = async () => {
         if (!exercise.value) return
 
         const isCorrect = userAnswer.value.trim().toLowerCase() === exercise.value.answer.toLowerCase()
 
         if (isCorrect) {
             // Отмечаем задание как выполненное
-            markExerciseAsCompleted(topicId.value, exerciseType.value, exerciseId.value)
+            const responese = await completeTask(exerciseId.value, exerciseType.value, topicId.value)
 
+            if (responese.status === 200) {
+                successSnackbar.value = true
+
+                // Возвращаемся на страницу темы через 1.5 секунды
+                setTimeout(() => {
+                    goBack()
+                }, 1500)
+            }
             // Показываем сообщение об успехе
-            successSnackbar.value = true
-
-            // Возвращаемся на страницу темы через 1.5 секунды
-            setTimeout(() => {
-                goBack()
-            }, 1500)
         } else {
+            if (response.status === 401) {
+            }
             showError.value = true
         }
     }
