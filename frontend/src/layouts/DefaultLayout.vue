@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, computed } from 'vue'
+    import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
     import { useRouter } from 'vue-router'
     import { useProgress } from '../services/useProgress.service'
 
@@ -50,6 +50,13 @@
     const goProfile = () => router.push('/profile')
 
     const daysCount = ref(0)
+    function updateDays() {
+        const startDate = localStorage.getItem('startDate')
+        if (!startDate) return (daysCount.value = 0)
+        const start = new Date(startDate)
+        const now = new Date()
+        daysCount.value = Math.ceil(Math.abs(now - start) / (1000 * 60 * 60 * 24))
+    }
     const { calculateTotalProgress } = useProgress()
 
     // Вычисляем общий прогресс
@@ -59,16 +66,11 @@
 
     onMounted(async () => {
         // Подсчет дней использования приложения
-        const startDate = localStorage.getItem('startDate')
-        if (!startDate) {
-            localStorage.setItem('startDate', new Date().toISOString())
-            daysCount.value = 0
-        } else {
-            const start = new Date(startDate)
-            const now = new Date()
-            const diffTime = Math.abs(now - start)
-            daysCount.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-        }
+        updateDays()
+        window.addEventListener('reset-days', updateDays)
+    })
+    onBeforeUnmount(() => {
+        window.removeEventListener('reset-days', updateDays)
     })
 </script>
 

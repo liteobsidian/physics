@@ -45,15 +45,15 @@
             const response = await login(email.value, password.value)
             if (response.status === 200) {
                 sessionStorage.setItem('profileSuccess', 'Успешный вход!')
-                router.push({ name: 'profile' })
+                router.push('/profile')
             }
         } catch (err) {
-            if (err.response && err.response.status === 409) {
+            if (err.response && err.response.status === 400) {
                 error.value = { show: true, text: 'Неверный пароль' }
             } else if (err.response && err.response.status === 404) {
                 error.value = { show: true, text: 'Пользователь не найден' }
             } else {
-                error.value = { show: true, text: 'Ошибка входа' }
+                error.value = { show: true, text: `Ошибка входа: ${err}` }
             }
             console.error('Ошибка входа', err)
         }

@@ -17,7 +17,7 @@
 
         <v-chip-group v-model="selectedTags" multiple class="mb-4 tag-group" column>
             <v-chip
-                v-for="tag in tags"
+                v-for="tag in tags.data"
                 :key="tag.id"
                 :value="tag.id"
                 filter
@@ -33,8 +33,11 @@
 
         <div v-if="filteredBlocks.length === 0" class="text-center my-8">
             <v-icon icon="mdi-magnify-off" size="x-large" color="grey-lighten-1" class="mb-2"></v-icon>
-            <div class="text-h6 text-grey-darken-1">Ничего не найдено</div>
-            <div class="text-body-2 text-grey">Попробуйте изменить параметры поиска или фильтры</div>
+            <v-progress-circular v-if="isLoading" indeterminate color="primary" size="48" class="d-flex mx-auto my-8" />
+            <div v-else>
+                <div class="text-h6 text-grey-darken-1">Ничего не найдено</div>
+                <div class="text-body-2 text-grey">Попробуйте изменить параметры поиска или фильтры</div>
+            </div>
         </div>
 
         <v-expansion-panels v-model="expandedPanels" multiple class="expansion-panels">
@@ -87,7 +90,7 @@
     const expandedPanels = ref([])
     const blockData = ref([])
     const topicTagData = ref([])
-
+    const isLoading = ref(true)
     // Используем композабл для работы с прогрессом
     const { getTopicProgress } = useProgress()
 
@@ -101,9 +104,12 @@
             blockData.value = data.blocks
             topicTagData.value = data.topicsWithTags
             tags.value = data.tags
+            console.log(tags.value.data)
         } catch (e) {
             console.error('Ошибка при загрузке данных:', e)
             throw e
+        } finally {
+            isLoading.value = false
         }
     }
 

@@ -9,6 +9,8 @@ import NotFoundPage from '../pages/NotFoundPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import ProfilePage from '@/pages/ProfilePage.vue'
+import ChangePasswordPage from '../pages/ChangePasswordPage.vue'
+import api from '@/services/api.service'
 
 // Определяем базовый URL в зависимости от окружения
 const base = import.meta.env.BASE_URL || '/physics/'
@@ -53,9 +55,15 @@ const routes = [
             },
             {
                 path: '/profile',
-                name: 'profile',
                 component: ProfilePage,
                 props: true,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/change-password',
+                name: 'change-password',
+                component: ChangePasswordPage,
+                meta: { requiresAuth: true },
             },
         ],
     },
@@ -87,6 +95,19 @@ const router = createRouter({
         }
         return savedPosition || { top: 0 }
     },
+})
+
+router.beforeEach(async (to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        try {
+            await api.get('/auth/update-tokens')
+            next()
+        } catch {
+            next({ name: 'login' })
+        }
+    } else {
+        next()
+    }
 })
 
 export default router

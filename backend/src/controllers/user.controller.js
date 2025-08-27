@@ -3,7 +3,8 @@ import { sequelize } from "../config/db.js";
 import { updateTokens } from "../middlewares/auth.middleware.js";
 import jwt, { decode } from "jsonwebtoken";
 import dotenv from "dotenv";
-import { isPasswordMatch } from "../utils/passwordHasher.js";
+import { isPasswordMatch, hashPassword } from "../utils/passwordHasher.js";
+import { Where } from "sequelize/lib/utils";
 dotenv.config();
 
 export class UserController {
@@ -83,12 +84,12 @@ export class UserController {
                     where: {
                         user_id: decoded.id,
                     },
-                    attributes: { exclude: ["user_id", "id"] },
+                    attributes: { exclude: ["user_id"] },
                 },
                 { transaction: t }
             );
 
-            if (res.status === 403) {
+            if (res.status === 401) {
                 return res.status(200).json([], { message: "Пользователь не авторизирован" });
             }
             t.commit();
@@ -107,7 +108,7 @@ export class UserController {
         const token = req.cookies?.access_token;
         if (!token) return res.status(401).json({ message: "Токен отсутвует" });
 
-        const t = sequelize.transaction();
+        const t = await sequelize.transaction();
         let decoded;
         try {
             decoded = jwt.verify(token, process.env.ACCESS_SECRET);
@@ -116,8 +117,27 @@ export class UserController {
                 where: {
                     id: decoded.id,
                 },
-                attributes: { exclude: ["username", "email", ""] },
+                attributes: ["password"],
             });
-        } catch (error) {}
+
+            if (await isPasswordMatch(currentPassword, user.password)) {
+                await this.model.update(
+                    {
+                        password: await hashPassword(newPassword),
+                    },
+                    {
+                        where: { id: decoded.id },
+                        transaction: t,
+                    }
+                );
+                await t.commit();
+                return res.status(201).json({ message: "Пароль изменён" });
+            } else {
+                return res.status(404).json({ message: "Пароли не совпадают" });
+            }
+        } catch (error) {
+            await t.rollback();
+            return res.status(500).json({ message: `Ошибка сервера: ${error}` });
+        }
     }
 }

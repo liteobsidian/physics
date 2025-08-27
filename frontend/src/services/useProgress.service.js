@@ -11,21 +11,20 @@ export function useProgress() {
 
     const getData = async () => {
         try {
-            const userProgress = await getCompletedTasks()
+            const userProgress = JSON.parse(localStorage.getItem('userProgress') || '[]')
+            progress.value = userProgress
 
-            console.log(userProgress.status)
+            // console.log(userProgress.status)
             const data = await DataService.getBulk({
                 exercises: 'getExercises',
             })
-
-            progress.value = userProgress.data
 
             studyExerciseData.value = data.exercises.study
             checkExerciseData.value = data.exercises.check
             repetitionExerciseData.value = data.exercises.repetition
         } catch (e) {
-            console.warn('Доступ запрещён (403)')
-            if (e.response?.status === 403) {
+            console.warn('Доступ запрещён (401)')
+            if (e.response?.status === 401) {
                 return (progress.value = [])
             }
             console.error('Ошибка при загрузке данных:', e)

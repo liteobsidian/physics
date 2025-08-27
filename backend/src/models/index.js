@@ -1,12 +1,13 @@
 "use strict";
-import { Block } from "./blocks.js";
-import { Tag } from "./tags.js";
-import { Topic } from "./topics.js";
-import { StudyExercise, CheckExercise, RepetitionExercise } from "./exercises.js";
-import { TopicTag } from "./topicTags.js";
-import { User } from "./user.js";
-import { Admin } from "./admins.js";
-import { UserProgress } from "./userprogress.js";
+import { Block } from "./study-models/blocks.js";
+import { Tag } from "./study-models/tags.js";
+import { Topic } from "./study-models/topics.js";
+import { StudyExercise, CheckExercise, RepetitionExercise } from "./study-models/exercises.js";
+import { TopicTag } from "./study-models/topicTags.js";
+import { User } from "./user-models/user.js";
+import { Admin } from "./user-models/admins.js";
+import { UserProgress } from "./user-models/userprogress.js";
+import { UserTokens } from "./user-models/userTokens.js";
 
 Block.hasMany(Topic, { foreignKey: "block_id" });
 Topic.belongsTo(Block, { foreignKey: "block_id", as: "block" });
@@ -23,6 +24,9 @@ RepetitionExercise.belongsTo(Topic, { foreignKey: "topic_id", as: "topic" });
 User.hasMany(UserProgress, { foreignKey: "user_id" });
 UserProgress.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
+User.hasMany(UserTokens, { foreignKey: "user_id" });
+UserTokens.belongsTo(User, { foreignKey: "user_id", as: "user" });
+
 Topic.belongsToMany(Tag, {
     through: TopicTag,
     foreignKey: "topic_id",
@@ -34,4 +38,4 @@ Tag.belongsToMany(Topic, {
     otherKey: "topic_id",
 });
 
-export { Topic, Block, Tag, TopicTag, StudyExercise, CheckExercise, RepetitionExercise, User, Admin, UserProgress };
+export { Topic, Block, Tag, TopicTag, StudyExercise, CheckExercise, RepetitionExercise, User, Admin, UserProgress, UserTokens };

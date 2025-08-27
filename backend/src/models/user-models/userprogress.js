@@ -1,6 +1,6 @@
 "use strict";
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/db.js";
+import { sequelize } from "../../config/db.js";
 
 export class UserProgress extends Model {}
 

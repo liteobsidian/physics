@@ -49,7 +49,7 @@
                     />
                 </template>
             </v-tab>
-            <v-tab value="repetition" :disabled="getTopicProgress(topicId, 'exercise') < 100">
+            <v-tab value="repetition">
                 Повторение
                 <template v-slot:append>
                     <v-icon
@@ -72,33 +72,35 @@
             </v-tab>
         </v-tabs>
 
-        <exercises-list
-            v-if="activeTab === 'study'"
-            :exercises="studyExercises"
-            :progress-value="getTopicProgress(topicId, 'study')"
-            :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'study', exerciseId)"
-            empty-message="Задания по изучению ещё не добавлены"
-            @exercise-click="exercise => openExercise(exercise, 'study')"
-        />
+        <v-progress-circular v-if="isLoading" indeterminate color="primary" size="48" class="d-flex mx-auto my-8" />
+        <div v-else>
+            <exercises-list
+                v-if="activeTab === 'study'"
+                :exercises="studyExercises"
+                :progress-value="getTopicProgress(topicId, 'study')"
+                :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'study', exerciseId)"
+                empty-message="Задания по изучению ещё не добавлены"
+                @exercise-click="exercise => openExercise(exercise, 'study')"
+            />
+            <exercises-list
+                v-else-if="activeTab === 'check'"
+                :exercises="checkExercises"
+                :progress-value="getTopicProgress(topicId, 'check')"
+                :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'check', exerciseId)"
+                empty-message="Упражнения ещё не добавлены"
+                @exercise-click="exercise => openExercise(exercise, 'check')"
+            />
 
-        <exercises-list
-            v-else-if="activeTab === 'check'"
-            :exercises="checkExercises"
-            :progress-value="getTopicProgress(topicId, 'check')"
-            :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'check', exerciseId)"
-            empty-message="Упражнения ещё не добавлены"
-            @exercise-click="exercise => openExercise(exercise, 'check')"
-        />
-
-        <exercises-list
-            v-else
-            :exercises="repetitionExercises"
-            :progress-value="getTopicProgress(topicId, 'repetition')"
-            color="secondary"
-            :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'repetition', exerciseId)"
-            empty-message="Задания для повторения ещё не добавлены"
-            @exercise-click="exercise => openExercise(exercise, 'repetition')"
-        />
+            <exercises-list
+                v-else
+                :exercises="repetitionExercises"
+                :progress-value="getTopicProgress(topicId, 'repetition')"
+                color="secondary"
+                :is-exercise-completed="exerciseId => isExerciseCompleted(topicId, 'repetition', exerciseId)"
+                empty-message="Задания для повторения ещё не добавлены"
+                @exercise-click="exercise => openExercise(exercise, 'repetition')"
+            />
+        </div>
     </div>
 </template>
 
@@ -118,6 +120,7 @@
     const repetitionExerciseData = ref([])
     const topicTagData = ref([])
     const tags = ref([])
+    const isLoading = ref(false)
 
     // Используем композабл для работы с прогрессом
     const { getTopicProgress, hasAnyExerciseCompleted, isExerciseCompleted } = useProgress()

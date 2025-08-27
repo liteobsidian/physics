@@ -4,10 +4,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as fs from "node:fs";
 import { sequelize } from "../config/db.js";
-import { Topic, Block, Tag, StudyExercise, RepetitionExercise, CheckExercise } from "../models/index.js";
+import { Topic, Block, Tag, StudyExercise, RepetitionExercise, CheckExercise, TopicTag } from "../models/index.js";
 import { getImgBuffer } from "../middlewares/getImgBuffer.middleware.js";
 import { Json } from "sequelize/lib/utils";
 import { where } from "sequelize";
+import { title } from "node:process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,9 +22,11 @@ const tags = JSON.parse(fs.readFileSync(tagsPath, "utf8"));
 const topics = JSON.parse(fs.readFileSync(topicsPath, "utf8"));
 const exercises = JSON.parse(fs.readFileSync(exercisesPath, "utf8"));
 
-class DataInserter {
+export class DataInserter {
     constructor(model) {
         this.model = model;
+        this.Topic = model.Topic;
+        this.TopicTag = model.TopicTag;
     }
     async insertBlocksAndTags(data) {
         const t = await sequelize.transaction();
@@ -31,10 +34,8 @@ class DataInserter {
             for (const element of Object.values(data)) {
                 for (const prop of element) {
                     await this.model.findOrCreate({
-                        where: { id: prop.id },
-                        defaults: {
-                            title: prop.title,
-                        },
+                        where: { title: prop.title },
+                        defaults: { title: prop.title },
                         transaction: t,
                     });
                 }
@@ -51,14 +52,15 @@ class DataInserter {
         try {
             for (const element of Object.values(data)) {
                 for (const prop of element) {
-                    await this.model.findOrCreate({
-                        where: { id: prop.id },
-                        defaults: {
+                    await this.model.create(
+                        {
                             title: prop.title,
                             block_id: prop.block_id,
                         },
-                        transaction: t,
-                    });
+                        {
+                            transaction: t,
+                        }
+                    );
                 }
             }
             await t.commit();
@@ -68,15 +70,20 @@ class DataInserter {
             throw e;
         }
     }
-    async insertTopicTags(data) {
+    async insertTopicTags(topicsData) {
         const t = await sequelize.transaction();
         try {
-            for (const element of Object.values(data)) {
-                for (const prop of element) {
-                    const topic = await this.model.findByPk(prop.id);
-                    await topic.addTag(prop.tag_ids, { transaction: t });
+            const dbTopics = await this.Topic.findAll({ attributes: ["id", "title"] });
+
+            for (const fileTopicArr of Object.values(topicsData)) {
+                for (const fileTopic of fileTopicArr) {
+                    const dbTopic = dbTopics.find((t) => t.title === fileTopic.title);
+                    if (!dbTopic) continue;
+                    if (!fileTopic.tag_ids) continue;
+                    await dbTopic.addTags(fileTopic.tag_ids, { transaction: t });
                 }
             }
+
             await t.commit();
             return console.log("Данные успешно добавленны в JOIN таблицу");
         } catch (e) {
@@ -114,10 +121,10 @@ const tagsInserter = new DataInserter(Tag);
 await tagsInserter.insertBlocksAndTags(tags);
 
 const topicsInserter = new DataInserter(Topic);
-await topicsInserter.insertBlocksAndTags(topics);
+await topicsInserter.insertTopics(topics);
 
-// const exerciseInserter = new DataInserter(Exercise);
-// await exerciseInserter.insertExercises(exercises);
+const topicTagsInserter = new DataInserter({ Topic, TopicTag });
+await topicTagsInserter.insertTopicTags(topics);
 
 const studyExerciseInserter = new DataInserter(StudyExercise);
 await studyExerciseInserter.insertExercises(exercises.study_exercises);

@@ -1,10 +1,10 @@
 "use strict";
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/db.js";
+import { sequelize } from "../../config/db.js";
 
-export class Admin extends Model {}
+export class User extends Model {}
 
-Admin.init(
+User.init(
     {
         id: {
             primaryKey: true,
@@ -20,16 +20,24 @@ Admin.init(
         password: {
             type: DataTypes.TEXT,
             allowNull: false,
-            unique: true,
         },
         email: {
             type: DataTypes.TEXT,
             allowNull: false,
             unique: true,
         },
+        verified: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
+        role: {
+            type: DataTypes.TEXT,
+            defaultValue: "user",
+            allowNull: false,
+        },
     },
     {
         sequelize,
-        tableName: "admins",
+        tableName: "users",
     }
 );

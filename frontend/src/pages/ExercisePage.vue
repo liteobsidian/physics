@@ -142,8 +142,6 @@
             }
             // Показываем сообщение об успехе
         } else {
-            if (response.status === 401) {
-            }
             showError.value = true
         }
     }

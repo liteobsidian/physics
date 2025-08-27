@@ -1,16 +1,16 @@
 "use strict";
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/db.js";
+import { sequelize } from "../../config/db.js";
 
-export class Block extends Model {}
+export class Tag extends Model {}
 
-Block.init(
+Tag.init(
     {
         id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             autoIncrement: true,
             primaryKey: true,
+            allowNull: false,
         },
         title: {
             type: DataTypes.TEXT,
@@ -18,6 +18,6 @@ Block.init(
     },
     {
         sequelize,
-        tableName: "blocks",
+        tableName: "tags",
     }
 );

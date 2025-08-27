@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { where } from "sequelize";
 dotenv.config();
 
 export class GetDataController {
