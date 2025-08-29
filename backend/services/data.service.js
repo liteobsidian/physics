@@ -31,7 +31,7 @@ class DataInserter {
             for (const element of Object.values(data)) {
                 for (const prop of element) {
                     await this.model.findOrCreate({
-                        where: { id: prop.id },
+                        where: { id: prop.title },
                         defaults: {
                             title: prop.title,
                         },
@@ -52,7 +52,7 @@ class DataInserter {
             for (const element of Object.values(data)) {
                 for (const prop of element) {
                     await this.model.findOrCreate({
-                        where: { id: prop.id },
+                        where: { id: prop.title },
                         defaults: {
                             title: prop.title,
                             block_id: prop.block_id,
@@ -115,9 +115,6 @@ await tagsInserter.insertBlocksAndTags(tags);
 
 const topicsInserter = new DataInserter(Topic);
 await topicsInserter.insertBlocksAndTags(topics);
-
-// const exerciseInserter = new DataInserter(Exercise);
-// await exerciseInserter.insertExercises(exercises);
 
 const studyExerciseInserter = new DataInserter(StudyExercise);
 await studyExerciseInserter.insertExercises(exercises.study_exercises);

@@ -3,7 +3,7 @@
         <h1>Регистрация</h1>
         <v-form ref="form" class="form" @submit.prevent="onSubmit">
             <v-text-field label="Имя пользователя" v-model="username" :rules="usernameRules"></v-text-field>
-            <v-text-field label="Почта" v-model="email" :rules="emailRules"></v-text-field>
+            <v-text-field label="Почта" v-model="email" :rules="emailRules" type="email"></v-text-field>
             <v-text-field label="Пароль" :rules="passwordRules" v-model="password"></v-text-field>
             <v-text-field
                 label="Повторите пароль"
@@ -61,7 +61,7 @@
         if (!isValid) return
 
         try {
-            const data = await register(username.value, email.value, password.value)
+            await register(username.value, email.value, password.value)
             snackbar.value = {
                 show: true,
                 text: 'Регистрация прошла успешно! На вашу почту отправлено письмо с подтверждением регистрации.',

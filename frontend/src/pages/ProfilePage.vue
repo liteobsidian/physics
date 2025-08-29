@@ -78,17 +78,12 @@
             </div>
             <ExerciseEditorFrom
                 v-show="onAddTaskEditor"
-                v-model:taskText="taskText"
-                v-model:taskAnswer="taskAnswer"
-                v-model:taskHintText="taskHintText"
                 :topics="topics"
                 :taskTypes="taskTypes"
-                v-model:selectedTaskType="selectedTaskType"
-                v-model:selectedTopic="selectedTopic"
                 :addTask="addTask"
                 v-model:onAddTaskEditor="onAddTaskEditor"
-                v-model:taskImgBuffer="taskImgBuffer"
-                v-model:taskHintImgBuffer="taskHintImgBuffer"
+                :task="currentTask"
+                @update:task="t => Object.assign(currentTask, t)"
             />
             <EditExistingExerciseForm
                 v-show="onAddEditExistingTask"
@@ -96,6 +91,8 @@
                 :exercises="exercises"
                 :topics="topics"
                 :taskTypes="taskTypes"
+                :task="currentTask"
+                @update:task="val => (task = val)"
             />
             <v-btn>Редактор тэгов</v-btn>
             <v-btn>Редактор тем</v-btn>
@@ -129,12 +126,11 @@
 </template>
 
 <script setup>
-    import { onMounted, ref, computed, watch, defineOptions } from 'vue'
-    import { useRouter, useRoute } from 'vue-router'
+    import { onMounted, ref, computed, reactive } from 'vue'
+    import { useRouter } from 'vue-router'
     import { getUserInfo, logOut, getCompletedTasks } from '@/services/api.service'
     import DataService from '../services/data.service'
     import { useProgress } from '@/services/useProgress.service'
-    import api from '@/services/api.service'
     import { addTaskAdmin, editTaskAdmin } from '@/services/admin.service.js'
     import ExerciseEditorFrom from '@/components/admin-components/exercise-components/ExerciseEditorForm.vue'
     import EditExistingExerciseForm from '@/components/admin-components/exercise-components/EditExistingExerciseForm.vue'
@@ -156,30 +152,43 @@
     const topics = ref([])
 
     const tags = ref([])
-    const selectedTag = ref([])
+    // const selectedTag = ref([])
 
     const taskTypes = [
         { type: 'study', title: 'Изучение' },
         { type: 'check', title: 'Упражнение' },
         { type: 'repetition', title: 'Повторение' },
     ]
-    const selectedTaskType = ref(null)
 
     const onOpenTaskEditor = ref(false)
+
     const onAddTaskEditor = ref(false)
 
-    const taskImgBuffer = ref('')
-    const taskText = ref('')
-    const selectedTopic = ref(null)
-    const taskAnswer = ref('')
-    const taskHintText = ref('')
-    const taskHintImgBuffer = ref('')
+    const currentTask = reactive({
+        taskText: '',
+        taskImgBuffer: '',
+        topic: {},
+        answer: '',
+        hintText: '',
+        hintImgBuffer: '',
+        taskType: {},
+        id: null,
+    })
 
-    const onOpenEditExistingTask = ref(false)
+    const cleanFields = () => {
+        ;(currentTask.taskText = ''),
+            (currentTask.taskImgBuffer = ''),
+            (currentTask.topic = null),
+            (currentTask.answer = ''),
+            (currentTask.hintText = ''),
+            (currentTask.hintImgBuffer = ''),
+            (currentTask.taskType = null),
+            (currentTask.id = null)
+    }
+
     const onAddEditExistingTask = ref(false)
 
-    const onOpenDeleteTask = ref(false)
-    const onDeleteTask = ref(false)
+    // const onDeleteTask = ref(false)
 
     const success = ref({ show: false, text: '' })
     const successPassword = ref({ show: false, text: '' })
@@ -189,31 +198,45 @@
     async function addTask() {
         try {
             const responese = await addTaskAdmin(
-                !taskImgBuffer.value ? taskText.value : taskImgBuffer.value,
-                taskAnswer.value,
-                !taskHintImgBuffer.value ? taskHintText.value : taskHintImgBuffer.value,
-                Number(selectedTopic.value.id),
-                selectedTaskType.value.type,
+                !currentTask?.taskImgBuffer ? currentTask?.taskText : currentTask?.taskImgBuffer,
+                currentTask?.answer,
+                !currentTask?.hintImgBuffer ? currentTask?.hintText : currentTask?.hintImgBuffer,
+                Number(currentTask?.topic?.id),
+                currentTask?.taskType?.type,
             )
             if (responese?.status == 201) {
+                await getData()
                 successAddedTask.value = { show: true, text: 'Задание успешно добавлено!' }
-                taskImgBuffer.value = null
-                taskText.value = null
-                taskAnswer.value = null
-                taskHintImgBuffer.value = null
-                taskHintText.value = null
-                selectedTopic.value = null
-                selectedTaskType.value = null
+                cleanFields()
                 return
             }
         } catch (error) {
             errorAddedTask.value = { show: true, text: `Ошибка: ${error}. Задание не добавлено` }
             console.log(error)
+            console.log(
+                currentTask.taskImgBuffer,
+                currentTask.taskText,
+                currentTask.answer,
+                currentTask.hintImgBuffer,
+                currentTask.hintText,
+                currentTask.topic,
+                currentTask.taskType,
+            )
             return
         }
     }
 
-    async function editTask() {}
+    // async function editTask() {
+    //     try {
+    //         await editTaskAdmin(
+    //             !newTaskImgBuffer.value ? newTaskText.value : newTaskImgBuffer.value,
+    //             !newHintImgBuffer.value ? newHintText.value : newHintImgBuffer.value,
+    //             newTaskAnswer?.value,
+    //             newTaskType?.value,
+    //             taskId.value,
+    //         )
+    //     } catch (error) {}
+    // }
 
     const onLogOut = async () => {
         const response = await logOut()

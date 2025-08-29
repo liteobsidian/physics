@@ -2,7 +2,7 @@
     <v-sheet class="register-block">
         <h1>Вход</h1>
         <v-form ref="form" class="form" @submit.prevent="onSubmit">
-            <v-text-field label="Почта" v-model="email" :rules="emailRules"></v-text-field>
+            <v-text-field label="Почта" v-model="email" :rules="emailRules" type="email"></v-text-field>
             <v-text-field label="Пароль" :rules="passwordRules" v-model="password"></v-text-field>
             <v-btn type="submit" class="button">Войти</v-btn>
             <div class="d-felx register">

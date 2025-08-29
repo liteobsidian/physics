@@ -29,8 +29,8 @@
         <div v-show="onAddText">
             <v-textarea
                 label="Введите текст задания"
-                :model-value="props.taskText"
-                @update:modelValue="val => emit('update:taskText', val)"
+                v-model="selectedTaskText"
+                @update:modelValue="val => updateField('taskText', val)"
                 content-type="html"
                 variant="filled"
                 autocomplete="off"
@@ -41,8 +41,8 @@
             <span style="color: #4285f4; font-weight: bold">Ответ</span>
             <v-text-field
                 label="Введите ответ к заданию"
-                :model-value="props.taskAnswer"
-                @update:modelValue="$emit('update:taskAnswer', $event)"
+                v-model="selectedAnswer"
+                @update:modelValue="val => updateField('answer', val)"
                 autocomplete="off"
             ></v-text-field>
         </div>
@@ -51,9 +51,9 @@
             <h5 style="color: #7d7d7d">Можно сделать подсказку либо с тестом, либо с изображением</h5>
             <v-text-field
                 label="Введите подсказку"
-                :model-value="props.taskHintText"
+                v-model="selectedHintText"
                 @click="taskHintImage = null"
-                @update:modelValue="$emit('update:taskHintText', $event)"
+                @update:modelValue="val => updateField('hintText', val)"
                 autocomplete="off"
             ></v-text-field>
             <span class="text-center" style="color: #7d7d7d">или</span>
@@ -62,14 +62,14 @@
                 accept="image/*"
                 v-model="taskHintImage"
                 variant="underlined"
-                @click="taskHintText = null"
+                @click="selectedHintText = null"
             ></v-file-input>
         </div>
         <div>
             <span style="color: #4285f4; font-weight: bold">Тема</span>
             <v-autocomplete
-                :model-value="props.selectedTopic"
-                @update:modelValue="$emit('update:selectedTopic', $event)"
+                v-model="selectedTopic"
+                @update:modelValue="val => updateField('topic', val)"
                 :items="props.topics"
                 item-title="title"
                 item-value="id"
@@ -81,8 +81,8 @@
         <div>
             <span style="color: #4285f4; font-weight: bold">Тип задания</span>
             <v-autocomplete
-                :model-value="selectedTaskType"
-                @update:modelValue="$emit('update:selectedTaskType', $event)"
+                v-model="selectedType"
+                @update:modelValue="val => updateField('taskType', val)"
                 :items="props.taskTypes"
                 item-title="title"
                 item-value="type"
@@ -96,13 +96,13 @@
             </template>
 
             <template v-slot:default="{ isActive }">
-                <v-card :title="`Просмотр задания типа: ${selectedTaskType?.title || 'Не выбрано'}`">
+                <v-card :title="`Просмотр задания типа: ${selectedType?.title || 'Не выбрано'}`">
                     <v-card-text>
                         <span class="mb-4">Выбранная тема: {{ selectedTopic?.title || 'Не выбрано' }}</span>
                         <div v-if="isImage(taskImage)" class="d-flex mb-4 mt-4" style="justify-content: center">
                             <img v-if="taskImageUrl" :src="taskImageUrl" style="max-width: 100%; border-radius: 8px" />
                         </div>
-                        <div v-else class="text-body-1 mb-4 mt-4 task-text" v-html="taskText"></div>
+                        <div v-else class="text-body-1 mb-4 mt-4 task-text" v-html="selectedTaskText"></div>
                         <v-expansion-panels class="mb-4 hint-panel">
                             <v-expansion-panel density="compact" class="hint-panel-outline" elevation="0">
                                 <v-expansion-panel-title>
@@ -123,11 +123,11 @@
                                         ></v-img>
                                     </div>
                                     <!-- Подсказка с HTML -->
-                                    <div v-else v-html="taskHintText"></div>
+                                    <div v-else v-html="selectedHintText"></div>
                                 </v-expansion-panel-text>
                             </v-expansion-panel>
                         </v-expansion-panels>
-                        <span>Ответ: {{ taskAnswer }}</span>
+                        <span>Ответ: {{ selectedAnswer }}</span>
                     </v-card-text>
 
                     <v-card-actions>
@@ -149,29 +149,32 @@
     </div>
 </template>
 <script setup>
-    import { ref, defineProps, defineEmits, watch, computed } from 'vue'
+    import { ref, defineProps, defineEmits, watch } from 'vue'
 
     const props = defineProps({
-        taskText: String,
-        taskAnswer: String,
-        taskHintText: String,
-        topics: Array,
-        taskTypes: Array,
-        selectedTaskType: [String, Object],
-        selectedTopic: [String, Object],
         addTask: Function,
         onAddTaskEditor: Boolean,
-        taskImgBuffer: String,
-        taskHintImgBuffer: String,
+        topics: Array,
+        taskTypes: Array,
+        task: { type: Object, default: () => ({}) },
     })
 
     const taskImage = ref(null)
     const taskHintImage = ref(null)
     const taskImageUrl = ref(null)
     const taskHintImageUrl = ref(null)
+    const selectedTopic = ref(null)
+    const selectedType = ref(null)
+    const selectedAnswer = ref('')
+    const selectedHintText = ref('')
+    const selectedTaskText = ref('')
     console.log('ok')
 
-    const emit = defineEmits(['update:taskImgBuffer'], ['update:taskHintImgBuffer'])
+    const emit = defineEmits(['update:task'])
+
+    function updateField(key, value) {
+        emit('update:task', { ...props.task, [key]: value })
+    }
 
     watch([taskImage, taskHintImage], ([newTaskImage, newTaskHintImg]) => {
         if (newTaskImage && newTaskImage instanceof File) {
@@ -179,11 +182,11 @@
             reader1.onload = e => {
                 taskImageUrl.value = URL.createObjectURL(newTaskImage)
                 const base64 = e.target.result.split(',')[1]
-                emit('update:taskImgBuffer', base64)
+                updateField('taskImgBuffer', base64)
             }
             reader1.readAsDataURL(newTaskImage)
         } else {
-            emit('update:taskImgBuffer', null)
+            updateField('taskImgBuffer', null)
         }
 
         if (newTaskHintImg && newTaskHintImg instanceof File) {
@@ -191,11 +194,11 @@
             reader2.onload = e => {
                 taskHintImageUrl.value = URL.createObjectURL(newTaskHintImg)
                 const base64 = e.target.result.split(',')[1]
-                emit('update:taskHintImgBuffer', base64)
+                updateField('hintImgBuffer', base64)
             }
             reader2.readAsDataURL(newTaskHintImg)
         } else {
-            emit('update:taskHintImgBuffer', null)
+            updateField('hintImgBuffer', null)
         }
     })
     const isImage = task => {

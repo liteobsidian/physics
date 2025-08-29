@@ -5,8 +5,6 @@ import dotenv from "dotenv";
 import { createAuthTokens } from "../middlewares/auth.middleware.js";
 import { sendEmail } from "../services/mail.service.js";
 import jwt, { decode } from "jsonwebtoken";
-import e from "cors";
-import { tr } from "vuetify/locale";
 dotenv.config();
 
 export class AuthController {
