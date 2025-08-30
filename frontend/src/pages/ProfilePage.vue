@@ -92,7 +92,8 @@
                 :topics="topics"
                 :taskTypes="taskTypes"
                 :task="currentTask"
-                @update:task="val => (task = val)"
+                @update:task="t => Object.assign(currentTask, t)"
+                :editTask="editTask"
             />
             <v-btn>Редактор тэгов</v-btn>
             <v-btn>Редактор тем</v-btn>
@@ -117,11 +118,11 @@
     <v-snackbar v-model="successPassword.show" color="green" location="top" :timeout="2000">
         {{ successPassword.text }}
     </v-snackbar>
-    <v-snackbar v-model="successAddedTask.show" color="green" location="top" :timeout="2000">
-        {{ successAddedTask.text }}
+    <v-snackbar v-model="successEditingTask.show" color="green" location="top" :timeout="2000">
+        {{ successEditingTask.text }}
     </v-snackbar>
-    <v-snackbar v-model="errorAddedTask.show" color="error" location="top" :timeout="2000">
-        {{ errorAddedTask.text }}
+    <v-snackbar v-model="errorEditingTask.show" color="error" location="top" :timeout="4000">
+        {{ errorEditingTask.text }}
     </v-snackbar>
 </template>
 
@@ -171,8 +172,8 @@
         answer: '',
         hintText: '',
         hintImgBuffer: '',
-        taskType: {},
         id: null,
+        taskType: {},
     })
 
     const cleanFields = () => {
@@ -192,26 +193,27 @@
 
     const success = ref({ show: false, text: '' })
     const successPassword = ref({ show: false, text: '' })
-    const successAddedTask = ref({ show: false, text: '' })
-    const errorAddedTask = ref({ show: false, text: '' })
+    const successEditingTask = ref({ show: false, text: '' })
+    const errorEditingTask = ref({ show: false, text: '' })
 
     async function addTask() {
         try {
             const responese = await addTaskAdmin(
-                !currentTask?.taskImgBuffer ? currentTask?.taskText : currentTask?.taskImgBuffer,
-                currentTask?.answer,
-                !currentTask?.hintImgBuffer ? currentTask?.hintText : currentTask?.hintImgBuffer,
-                Number(currentTask?.topic?.id),
-                currentTask?.taskType?.type,
+                !currentTask.taskImgBuffer ? currentTask.taskText : currentTask.taskImgBuffer,
+                currentTask.answer,
+                !currentTask.hintImgBuffer ? currentTask.hintText : currentTask.hintImgBuffer,
+                Number(currentTask.topic?.id),
+                currentTask.taskType?.type,
             )
             if (responese?.status == 201) {
                 await getData()
-                successAddedTask.value = { show: true, text: 'Задание успешно добавлено!' }
+                successEditingTask.value = { show: true, text: 'Задание успешно добавлено!' }
                 cleanFields()
                 return
             }
         } catch (error) {
-            errorAddedTask.value = { show: true, text: `Ошибка: ${error}. Задание не добавлено` }
+            cleanFields()
+            errorEditingTask.value = { show: true, text: `Ошибка: ${error}. Задание не добавлено` }
             console.log(error)
             console.log(
                 currentTask.taskImgBuffer,
@@ -226,17 +228,33 @@
         }
     }
 
-    // async function editTask() {
-    //     try {
-    //         await editTaskAdmin(
-    //             !newTaskImgBuffer.value ? newTaskText.value : newTaskImgBuffer.value,
-    //             !newHintImgBuffer.value ? newHintText.value : newHintImgBuffer.value,
-    //             newTaskAnswer?.value,
-    //             newTaskType?.value,
-    //             taskId.value,
-    //         )
-    //     } catch (error) {}
-    // }
+    async function editTask() {
+        try {
+            const response = await editTaskAdmin(
+                !currentTask.taskImgBuffer ? currentTask.taskText : currentTask.taskImgBuffer,
+                !currentTask.hintImgBuffer ? currentTask.hintText : currentTask.hintImgBuffer,
+                currentTask.answer,
+                currentTask.taskType?.type,
+                currentTask.id,
+            )
+            if (response.status === 201) {
+                cleanFields()
+                await getData()
+                successEditingTask.value = { show: true, text: 'Задание успешно изменено' }
+            }
+        } catch (error) {
+            cleanFields()
+            errorEditingTask.value = { show: true, text: `Неудалось изменить задание. Ошибка: ${error}` }
+            console.log(error)
+            console.log(
+                !currentTask.taskImgBuffer ? currentTask.taskText : currentTask.taskImgBuffer,
+                !currentTask.hintImgBuffer ? currentTask.hintText : currentTask.hintImgBuffer,
+                currentTask.answer,
+                currentTask.taskType?.type,
+                currentTask.id?.id,
+            )
+        }
+    }
 
     const onLogOut = async () => {
         const response = await logOut()
@@ -272,9 +290,9 @@
             localStorage.setItem('userProgress', JSON.stringify(userProgressResponse.data))
 
             exercises.value = {
-                study: Object.values(data.exercises.study),
-                check: Object.values(data.exercises.check),
-                repetition: Object.values(data.exercises.repetition),
+                study: JSON.stringify(Object.values(data.exercises.study)),
+                check: JSON.stringify(Object.values(data.exercises.check)),
+                repetition: JSON.stringify(Object.values(data.exercises.repetition)),
             }
 
             topics.value = data.topics.data

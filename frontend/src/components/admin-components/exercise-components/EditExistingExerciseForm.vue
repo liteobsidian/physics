@@ -21,14 +21,13 @@
                 <div>
                     <span>Тип задания</span>
                     <v-autocomplete
+                        :items="props.taskTypes"
                         v-model="selectedTaskType"
-                        :items="taskTypes"
                         item-title="title"
                         item-value="type"
                         label="Выберите тип задания"
                         return-object
                         autocomplete="off"
-                        @update:modelValue="$emit('update:newTaskType', $event.target.value)"
                     />
                 </div>
             </div>
@@ -38,28 +37,27 @@
                     :items="filteredExercises"
                     v-model="selectedExercise"
                     item-value="id"
-                    item-title="task"
+                    item-title="taskShort"
                     return-object
                     autocomplete="off"
-                    @update:modelValue="$emit('update:taskId', $event.target.value)"
                 />
             </div>
             <div>
                 <div class="editor-header">
                     <div class="id-box">
                         <span style="font-size: 1.7rem; font-weight: bold; color: #4285f4"
-                            >ID: {{ filteredSelectedExercise?.id }}</span
+                            >ID: {{ props.task.id }}</span
                         >
                     </div>
                     <v-btn @click="isDisabled = !isDisabled" color="#4285f4">Редактировать задание</v-btn>
                 </div>
                 <div>
                     <div
-                        v-if="isImage(filteredSelectedExercise?.task)"
+                        v-if="isImage(props.task.taskText)"
                         style="display: flex; justify-content: center; flex-direction: column; gap: 1rem"
                     >
                         <img
-                            :src="newTaskImgUrl || base64Decode(filteredSelectedExercise?.task)"
+                            :src="newTaskImgUrl || base64Decode(props.task.taskText)"
                             style="max-width: 100%; border-radius: 8px"
                         />
                         <v-file-input
@@ -71,20 +69,20 @@
                     <v-textarea
                         label="Изменить текст задания"
                         v-else
-                        :model-value="filteredSelectedExercise?.task"
+                        :model-value="props.task.taskText"
                         auto-grow
                         :disabled="isDisabled"
-                        @update:modelValue="$emit('update:newTaskText', $event.target.value)"
+                        @update:modelValue="val => updateField('taskText', val)"
                     ></v-textarea>
                 </div>
                 <div>
                     <span>Подсказка</span>
                     <div
-                        v-if="isImage(filteredSelectedExercise?.hint)"
+                        v-if="isImage(props.task.hintText)"
                         style="display: flex; justify-content: center; flex-direction: column; gap: 1rem"
                     >
                         <img
-                            :src="newHintImgUrl || base64Decode(filteredSelectedExercise?.hint)"
+                            :src="newHintImgUrl || base64Decode(props.task.hintText)"
                             style="max-width: 100%; border-radius: 8px"
                         />
                         <v-file-input
@@ -96,25 +94,27 @@
 
                     <v-textarea
                         v-else
-                        :model-value="filteredSelectedExercise?.hint"
+                        :model-value="props.task.hintText"
                         auto-grow
                         label="Изменить текст подсказки"
                         :disabled="isDisabled"
-                        @update:modelValue="$emit('update:newHintText', $event.target.value)"
+                        @update:modelValue="val => updateField('hintText', val)"
                     ></v-textarea>
                 </div>
             </div>
             <div class="mt-4">
                 <span>Ответ</span>
                 <v-text-field
-                    :model-value="filteredSelectedExercise?.answer"
+                    :model-value="props.task.answer"
                     label="Поменяйте ответ"
                     :disabled="isDisabled"
-                    @update:modelValue="$emit('update:newAnswer', $event.target.value)"
+                    @update:modelValue="val => updateField('answer', val)"
                     autocomplete="off"
                 ></v-text-field>
             </div>
-            <v-btn>Внести изменения</v-btn>
+            <v-btn @click="(editTask(), $emit('update:onAddEditExistingTask', !onAddEditExistingTask))"
+                >Внести изменения</v-btn
+            >
         </div>
     </div>
 </template>
@@ -126,7 +126,8 @@
         topics: Array,
         onAddEditExistingTask: Boolean,
         taskTypes: Array,
-        task: Object,
+        task: { type: Object, default: () => ({}) },
+        editTask: Function,
     })
 
     const selectedTopic = ref(null)
@@ -140,18 +141,17 @@
 
     const filteredExercises = computed(() => {
         let exercises = props.exercises?.[selectedTaskType.value?.type] ?? []
+        if (!Array.isArray(exercises)) return []
         return exercises
             .filter(e => (selectedTopic.value ? e.topic_id === selectedTopic.value.id : true))
             .map(({ id, task, topic_id, hint, answer }) => ({
                 id,
-                task: String(task).slice(0, 70),
+                taskShort: String(task).slice(0, 70),
+                task: task,
                 topic_id,
                 hint,
                 answer,
             }))
-    })
-    const filteredSelectedExercise = computed(() => {
-        return props.exercises?.[selectedTaskType.value?.type]?.filter(e => selectedExercise.value?.id === e.id)[0]
     })
 
     const imageSignatures = ['/9j/', 'iVBORw0KGgo=']
@@ -168,8 +168,11 @@
         return ''
     }
 
-    const emit = defineEmits(['update:newTaskImgBuffer'], ['update:newHintImageBuffer'])
+    const emit = defineEmits(['update:task', 'update:onAddEditExistingTask'])
 
+    function updateField(key, value) {
+        emit('update:task', { ...props.task, [key]: value })
+    }
     watch(newTaskImg, f => {
         if (!f) {
             newHintImgUrl.value = null
@@ -179,7 +182,7 @@
         reader.onload = e => {
             newTaskImgUrl.value = e.target.result
             const base64 = e.target.result.split(',')[1]
-            emit('update:newTaskImgBuffer', base64)
+            updateField('taskImgBuffer', base64)
         }
         reader.readAsDataURL(f)
     })
@@ -192,10 +195,22 @@
         reader.onload = e => {
             newHintImgUrl.value = e.target.result
             const base64 = e.target.result.split(',')[1]
-            emit('update:newHintImageBuffer', base64)
+            updateField('hintImgBuffer', base64)
         }
         reader.readAsDataURL(f)
     })
+    watch(selectedExercise, exercise => {
+        if (!exercise) return
+        emit('update:task', {
+            ...props.task,
+            taskText: exercise.task,
+            hintText: exercise.hint,
+            answer: exercise.answer,
+            id: exercise.id,
+            topic: exercise.topic_id,
+        })
+    })
+    watch(selectedTaskType, val => updateField('taskType', val))
 </script>
 <style lang="scss" scoped>
     .admin-edit-task {
