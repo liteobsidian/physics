@@ -1,5 +1,5 @@
 <template>
-    <div v-show="onAddTaskEditor" @update="$emit('update:onAddTaskEditor', $event.target.value)" class="admin-add-task">
+    <div class="admin-add-task">
         <div class="d-flex admin-task-editor-buttons">
             <v-btn
                 @click="((onAddImage = !onAddImage), (onAddText = false), (taskText = null))"
@@ -90,7 +90,8 @@
                 return-object
             />
         </div>
-        <v-dialog max-width="800">
+        <div class="d-flex" style="justify-content: space-between;">
+               <v-dialog max-width="800">
             <template v-slot:activator="{ props: activatorProps }">
                 <v-btn v-bind="activatorProps" color="#4285f4" text="Посмотреть задание" variant="flat"></v-btn>
             </template>
@@ -146,6 +147,9 @@
                 </v-card>
             </template>
         </v-dialog>
+        <v-btn @click="$emit('update:editorMode', null)">Отмена</v-btn>
+        </div>
+     
     </div>
 </template>
 <script setup>
@@ -157,6 +161,7 @@
         topics: Array,
         taskTypes: Array,
         task: { type: Object, default: () => ({}) },
+        editorMode: String
     })
 
     const taskImage = ref(null)
@@ -170,7 +175,7 @@
     const selectedTaskText = ref('')
     console.log('ok')
 
-    const emit = defineEmits(['update:task'])
+    const emit = defineEmits(['update:task', 'update:editorMode'])
 
     function updateField(key, value) {
         emit('update:task', { ...props.task, [key]: value })

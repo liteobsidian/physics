@@ -79,7 +79,7 @@ export class AdminController {
     const t = await sequelize.transaction();
     let decoded;
     try {
-      decoded = jwt.verify(token.process.env.ACCESS_SECRET);
+      decoded = jwt.verify(token, process.env.ACCESS_SECRET); 
       if (decoded.role !== "admin") {
         return res.status(403).json({ message: "У вас недостаточно прав" });
       }
@@ -129,6 +129,49 @@ export class AdminController {
     } catch (error) {
       await t.rollback();
       throw error;
+    }
+  }
+  async deleteTask(req, res){
+    const { id, type } = req.body;
+    const token = req.cookies?.access_token;
+    if (!token) return res.status(401).json({ message: "Токен отсутвует" });
+    const t = await sequelize.transaction();
+    let decoded
+    try {
+      decoded = jwt.verify(token, process.env.ACCESS_SECRET); 
+      if (decoded.role !== "admin") {
+        return res.status(403).json({ message: "У вас недостаточно прав" });
+      }
+      if (type === "study") {
+        await this.StudyExercise.destroy(
+          {
+            where: { id: id },
+            transaction: t,
+          }
+        );
+        await t.commit();
+        return res.status(201).json({ message: "Задание обновлено" });
+      } else if (type === "check") {
+        await this.CheckExercise.destroy(
+          {
+            where: { id: id },
+            transaction: t,
+          }
+        );
+        await t.commit();
+        return res.status(201).json({ message: "Задание обновлено" });
+      } else if (type === "repetition") {
+        await this.RepetitionExercise.destroy(
+          {
+            where: { id: id },
+            transaction: t,
+          }
+        );
+        await t.commit();
+        return res.status(201).json({ message: "Задание обновлено" });
+      }
+    } catch (error) {
+      
     }
   }
 }

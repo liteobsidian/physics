@@ -61,11 +61,11 @@
         if (!isValid) return
 
         try {
-            await register(username.value, email.value, password.value)
             snackbar.value = {
                 show: true,
                 text: 'Регистрация прошла успешно! На вашу почту отправлено письмо с подтверждением регистрации.',
             }
+            await register(username.value, email.value, password.value)
         } catch (err) {
             console.error('Ошибка регистрации', err)
             error.value = { show: true, text: 'Ошибка регистрации. Попробуйте снова.' }

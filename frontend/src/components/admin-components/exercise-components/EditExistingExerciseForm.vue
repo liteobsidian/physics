@@ -1,13 +1,11 @@
 <template>
     <div
-        v-show="onAddEditExistingTask"
-        @update="$emit('update:onAddEditExistingTask', $event.target.value)"
         class="admin-edit-task"
     >
         <div>
-            <div class="select-task-options">
+            <div class="select-task-options">   
                 <div>
-                    <span>Тема</span>
+                    <span style="color: #4285f4; font-weight: bold">Тема</span>
                     <v-autocomplete
                         :items="props.topics"
                         item-value="id"
@@ -19,7 +17,7 @@
                     />
                 </div>
                 <div>
-                    <span>Тип задания</span>
+                    <span style="color: #4285f4; font-weight: bold">Тип задания</span>
                     <v-autocomplete
                         :items="props.taskTypes"
                         v-model="selectedTaskType"
@@ -32,7 +30,7 @@
                 </div>
             </div>
             <div>
-                <span>Выбирите задание</span>
+                <span style="color: #4285f4; font-weight: bold">Выбирите задание</span>
                 <v-autocomplete
                     :items="filteredExercises"
                     v-model="selectedExercise"
@@ -76,7 +74,7 @@
                     ></v-textarea>
                 </div>
                 <div>
-                    <span>Подсказка</span>
+                    <span style="color: #4285f4; font-weight: bold">Подсказка</span>
                     <div
                         v-if="isImage(props.task.hintText)"
                         style="display: flex; justify-content: center; flex-direction: column; gap: 1rem"
@@ -103,7 +101,7 @@
                 </div>
             </div>
             <div class="mt-4">
-                <span>Ответ</span>
+                <span style="color: #4285f4; font-weight: bold">Ответ</span>
                 <v-text-field
                     :model-value="props.task.answer"
                     label="Поменяйте ответ"
@@ -112,9 +110,13 @@
                     autocomplete="off"
                 ></v-text-field>
             </div>
-            <v-btn @click="(editTask(), $emit('update:onAddEditExistingTask', !onAddEditExistingTask))"
-                >Внести изменения</v-btn
-            >
+            <div class="d-flex" style="justify-content: space-between;">
+            <v-btn @click="(editTask(), $emit('update:onAddEditExistingTask', !onAddEditExistingTask))" color="#4285f4">
+                Внести изменения
+            </v-btn>
+            <v-btn @click="$emit('update:editorMode', null), cleanFields()">Отмена</v-btn>
+            </div>
+      
         </div>
     </div>
 </template>
@@ -128,6 +130,8 @@
         taskTypes: Array,
         task: { type: Object, default: () => ({}) },
         editTask: Function,
+        cleanFields: Function,
+        editorMode: String
     })
 
     const selectedTopic = ref(null)
@@ -154,11 +158,9 @@
             }))
     })
 
-    const imageSignatures = ['/9j/', 'iVBORw0KGgo=']
-    const isImage = i => {
-        if (i?.includes(imageSignatures[0] || imageSignatures[1])) return true
-        return false
-    }
+    const imageSignatures = ['/9j/', 'iVBORw0KGgo']
+    const isImage = i => imageSignatures.some(sig => i?.includes(sig))
+    
     const base64Decode = i => {
         if (i?.includes(imageSignatures[0])) {
             return `data:image/jpeg;base64,${i}`
@@ -168,7 +170,7 @@
         return ''
     }
 
-    const emit = defineEmits(['update:task', 'update:onAddEditExistingTask'])
+    const emit = defineEmits(['update:task', 'update:editorMode'])
 
     function updateField(key, value) {
         emit('update:task', { ...props.task, [key]: value })

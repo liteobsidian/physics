@@ -8,5 +8,6 @@ const adminTasksController = new AdminController({ StudyExercise, CheckExercise,
 
 router.post("/add-task-admin", updateTokens, adminTasksController.addTask.bind(adminTasksController));
 router.put("/edit-task-admin", updateTokens, adminTasksController.editTask.bind(adminTasksController));
+router.delete("/delete-task-admin", updateTokens, adminTasksController.deleteTask.bind(adminTasksController));
 
 export default router;

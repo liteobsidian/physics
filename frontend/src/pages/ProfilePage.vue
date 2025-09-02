@@ -68,35 +68,54 @@
                     <v-btn color="#4285f4" width="30%">Добавить админа</v-btn>
                 </div>
             </div>
-            <v-btn @click="onOpenTaskEditor = !onOpenTaskEditor">Редактор заданий</v-btn>
+            <v-btn @click="onOpenTaskEditor = !onOpenTaskEditor, editorMode = null, cleanFields()" color="#4285f4" height="45px">Редактор заданий</v-btn>
             <div v-show="onOpenTaskEditor" class="editor-buttons">
-                <v-btn width="70%" @click="onAddTaskEditor = !onAddTaskEditor">Добавить задание</v-btn>
-                <v-btn width="70%" @click="onAddEditExistingTask = !onAddEditExistingTask" v-show="!onAddTaskEditor"
-                    >Измениеть задание</v-btn
-                >
-                <v-btn width="70%" v-show="!onAddTaskEditor">Удалить задание</v-btn>
+                <template v-if="editorMode === null">
+                    <v-btn width="70%" @click="openEditor('add')">Добавить задание</v-btn>
+                    <v-btn width="70%" @click="openEditor('edit')">Измениеть задание</v-btn>
+                    <v-btn width="70%" @click="openEditor('delete')">Удалить задание</v-btn>
+                </template>
             </div>
             <ExerciseEditorFrom
-                v-show="onAddTaskEditor"
+                v-if="editorMode === 'add'"
+                v-model:editorMode="editorMode"
                 :topics="topics"
                 :taskTypes="taskTypes"
                 :addTask="addTask"
-                v-model:onAddTaskEditor="onAddTaskEditor"
                 :task="currentTask"
-                @update:task="t => Object.assign(currentTask, t)"
+                @update:task="t => Object.assign(currentTask, t)"   
             />
             <EditExistingExerciseForm
-                v-show="onAddEditExistingTask"
-                v-model:onAddEditExistingTask="onAddEditExistingTask"
+                v-if="editorMode === 'edit'"
+                v-model:editorMode="editorMode"
                 :exercises="exercises"
                 :topics="topics"
                 :taskTypes="taskTypes"
                 :task="currentTask"
                 @update:task="t => Object.assign(currentTask, t)"
                 :editTask="editTask"
+                :cleanFields="cleanFields"
             />
-            <v-btn>Редактор тэгов</v-btn>
-            <v-btn>Редактор тем</v-btn>
+            <DeleteExerciseForm
+                v-if="editorMode === 'delete'"  
+                v-model:editorMode="editorMode"
+                :exercises="exercises"
+                :topics="topics"
+                :types="taskTypes"
+                :task="currentTask"
+                @update:task="t => Object.assign(currentTask, t)"
+                :cleanFields="cleanFields"
+                :deleteTask="deleteTask"
+            />
+            <v-btn color="#4285f4" height="45px" @click="onOpenTagEditor = !onOpenTagEditor, cleanFields()">Редактор тэгов</v-btn>
+            <div v-show="onOpenTagEditor" class="editor-buttons">
+                <!-- <template> -->
+                    <v-btn width="70%">Добавить тэг</v-btn>
+                    <v-btn width="70%">Изменить тэг</v-btn>
+                    <v-btn width="70%">Удалить тэг</v-btn>
+                <!-- </template> -->
+            </div>
+            <v-btn color="#4285f4" height="45px">Редактор тем</v-btn>
 
             <v-btn @click="onLogOut" color="#4285f4" width="30%">Выйти из аккаунта</v-btn>
         </div>
@@ -132,9 +151,10 @@
     import { getUserInfo, logOut, getCompletedTasks } from '@/services/api.service'
     import DataService from '../services/data.service'
     import { useProgress } from '@/services/useProgress.service'
-    import { addTaskAdmin, editTaskAdmin } from '@/services/admin.service.js'
+    import { addTaskAdmin, editTaskAdmin, deleteTaskAdmin } from '@/services/admin.service.js'
     import ExerciseEditorFrom from '@/components/admin-components/exercise-components/ExerciseEditorForm.vue'
     import EditExistingExerciseForm from '@/components/admin-components/exercise-components/EditExistingExerciseForm.vue'
+    import DeleteExerciseForm from '@/components/admin-components/exercise-components/DeleteExerciseForm.vue'
 
     const { progress } = useProgress()
 
@@ -153,7 +173,6 @@
     const topics = ref([])
 
     const tags = ref([])
-    // const selectedTag = ref([])
 
     const taskTypes = [
         { type: 'study', title: 'Изучение' },
@@ -162,8 +181,7 @@
     ]
 
     const onOpenTaskEditor = ref(false)
-
-    const onAddTaskEditor = ref(false)
+    const onOpenTagEditor = ref(false)
 
     const currentTask = reactive({
         taskText: '',
@@ -187,9 +205,12 @@
             (currentTask.id = null)
     }
 
-    const onAddEditExistingTask = ref(false)
+    const editorMode = ref(null)
 
-    // const onDeleteTask = ref(false)
+    const openEditor = mode => {
+    editorMode.value = editorMode.value === mode ? null : mode
+    if (editorMode.value !== mode) cleanFields()
+    }
 
     const success = ref({ show: false, text: '' })
     const successPassword = ref({ show: false, text: '' })
@@ -215,15 +236,6 @@
             cleanFields()
             errorEditingTask.value = { show: true, text: `Ошибка: ${error}. Задание не добавлено` }
             console.log(error)
-            console.log(
-                currentTask.taskImgBuffer,
-                currentTask.taskText,
-                currentTask.answer,
-                currentTask.hintImgBuffer,
-                currentTask.hintText,
-                currentTask.topic,
-                currentTask.taskType,
-            )
             return
         }
     }
@@ -242,17 +254,28 @@
                 await getData()
                 successEditingTask.value = { show: true, text: 'Задание успешно изменено' }
             }
-        } catch (error) {
+        } catch     (error) {
             cleanFields()
             errorEditingTask.value = { show: true, text: `Неудалось изменить задание. Ошибка: ${error}` }
             console.log(error)
-            console.log(
-                !currentTask.taskImgBuffer ? currentTask.taskText : currentTask.taskImgBuffer,
-                !currentTask.hintImgBuffer ? currentTask.hintText : currentTask.hintImgBuffer,
-                currentTask.answer,
-                currentTask.taskType?.type,
-                currentTask.id?.id,
-            )
+            return
+        }
+    }
+
+    async function deleteTask() {
+        try {
+            console.log(currentTask.id, currentTask.taskType.type)
+            const response = await deleteTaskAdmin(currentTask.id, currentTask.taskType.type)
+            if (response.status === 201) {
+                cleanFields()
+                await getData()
+                successEditingTask.value = { show: true, text: 'Задание успешно удалено' }
+            }
+        } catch (error) {
+            cleanFields()
+            errorEditingTask.value = { show: true, text: `Неудалось удалить задание. Ошибка: ${error}` }
+            console.log(error)
+            return
         }
     }
 
@@ -290,9 +313,9 @@
             localStorage.setItem('userProgress', JSON.stringify(userProgressResponse.data))
 
             exercises.value = {
-                study: JSON.stringify(Object.values(data.exercises.study)),
-                check: JSON.stringify(Object.values(data.exercises.check)),
-                repetition: JSON.stringify(Object.values(data.exercises.repetition)),
+                study: Object.values(data.exercises.study),
+                check: Object.values(data.exercises.check),
+                repetition: Object.values(data.exercises.repetition),
             }
 
             topics.value = data.topics.data
