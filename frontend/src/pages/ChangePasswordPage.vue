@@ -2,12 +2,23 @@
     <v-sheet class="change-password-block">
         <h1>Изменение пароля</h1>
         <v-form ref="form" class="form" @submit.prevent="onSubmit">
-            <v-text-field label="Введите пароль" v-model="currentPassword" :rules="currentPasswordRules"></v-text-field>
-            <v-text-field label="Введите новый пароль" :rules="newPasswordRules" v-model="newPassword"></v-text-field>
+            <v-text-field
+                label="Введите пароль"
+                v-model="currentPassword"
+                :rules="currentPasswordRules"
+                autocomplete="off"
+            ></v-text-field>
+            <v-text-field
+                label="Введите новый пароль"
+                :rules="newPasswordRules"
+                v-model="newPassword"
+                autocomplete="off"
+            ></v-text-field>
             <v-text-field
                 label="Повторите новый пароль"
                 :rules="confirmPasswordRules"
                 v-model="repeatNewPassword"
+                autocomplete="off"
             ></v-text-field>
             <v-btn type="submit" class="button">Изменить пароль</v-btn>
         </v-form>

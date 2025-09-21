@@ -35,6 +35,12 @@
                 </div>
             </div>
         </v-main>
+
+        <v-footer class="mt-16 py-8">
+            <div class="container">
+                <p>О нас</p>
+            </div>
+        </v-footer>
     </v-app>
 </template>
 
@@ -96,5 +102,12 @@
 
     .clickable {
         cursor: pointer;
+    }
+    .v-footer {
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3) !important;
+        width: 100vw;
+        align-self: center;
+        display: flex;
+        justify-content: center;
     }
 </style>
