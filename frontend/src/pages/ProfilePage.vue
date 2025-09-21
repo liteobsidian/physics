@@ -124,7 +124,7 @@
                 >{{ repetitionProgress }} / {{ repetitionValue }}</v-progress-linear
             >
         </div>
-        <v-btn @click="onLogOut" color="#4285f4" width="30%" class="mt-12">Выйти из аккаунта</v-btn>
+        <v-btn @click="onLogOut" color="#4285f4" width="30%" class="mt-12 mb-16">Выйти из аккаунта</v-btn>
     </div>
 
     <v-snackbar v-model="success.show" color="green" location="top" :timeout="2000">

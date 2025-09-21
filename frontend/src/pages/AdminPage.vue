@@ -64,7 +64,7 @@
 
     const users = ref([])
     const page = ref(0)
-    const PAGE_SIZE = 5``
+    const PAGE_SIZE = 5
     const successSnacbar = ref({ show: false, text: '' })
     const errorSnacbar = ref({ show: false, text: '' })
 

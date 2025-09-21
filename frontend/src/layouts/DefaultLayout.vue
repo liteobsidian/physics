@@ -36,7 +36,7 @@
             </div>
         </v-main>
 
-        <footer class="mt-16 py-8" elevation="0" id="footer" absolute inset>
+        <footer v-if="!hideFooter" class="mt-16 py-8" id="footer">
             <div class="footer-content">
                 <p>О нас</p>
             </div>
@@ -46,9 +46,19 @@
 
 <script setup>
     import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
-    import { useRouter } from 'vue-router'
+    import { useRouter, useRoute } from 'vue-router'
     import { useProgress } from '../services/useProgress.service'
     import { userStorage, dataStorage } from '@/plugins/pinia'
+
+    const route = useRoute()
+
+    const hideFooter = computed(
+        () =>
+            ['/login', '/register', '/add-admin', '/change-password'].includes(route.path) ||
+            route.path.startsWith('/profile') ||
+            route.path.startsWith('/topic') ||
+            route.path.startsWith('/block'),
+    )
 
     const userStore = userStorage()
     const router = useRouter()
