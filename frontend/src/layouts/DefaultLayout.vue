@@ -36,11 +36,11 @@
             </div>
         </v-main>
 
-        <v-footer class="mt-16 py-8">
-            <div class="container">
+        <footer class="mt-16 py-8" elevation="0" id="footer" absolute inset>
+            <div class="footer-content">
                 <p>О нас</p>
             </div>
-        </v-footer>
+        </footer>
     </v-app>
 </template>
 
@@ -81,7 +81,14 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
         padding: 0 2rem;
     }
-
+    #footer {
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3) !important;
+        box-sizing: border-box;
+        width: 100vw;
+        align-self: center;
+        display: flex;
+        justify-content: center;
+    }
     .v-app-bar {
         border-bottom: none !important;
     }
@@ -94,7 +101,6 @@
         max-width: 800px;
         width: 100%;
     }
-
     .status {
         width: 48px;
         padding: 0 auto;
@@ -103,11 +109,9 @@
     .clickable {
         cursor: pointer;
     }
-    .v-footer {
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3) !important;
-        width: 100vw;
-        align-self: center;
-        display: flex;
-        justify-content: center;
+    .footer-content {
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
     }
 </style>
