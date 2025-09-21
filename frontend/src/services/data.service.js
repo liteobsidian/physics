@@ -18,7 +18,7 @@ class DataService {
     async getBlocks() {
         try {
             const result = await api.get('/data/block-data')
-            return result.data
+            return result
         } catch (e) {
             console.error('Ошибка при загрузке данных:', e)
             throw e
@@ -27,7 +27,7 @@ class DataService {
     async getTopicsWithTags() {
         try {
             const result = await api.get('/data/topics-with-tags')
-            return result.data
+            return result
         } catch (e) {
             console.error('Ошибка при загрузке данных:', e)
             throw e
@@ -47,7 +47,7 @@ class DataService {
             const studyDataResult = await api.get('/data/studyexercise-data')
             const checkDataResult = await api.get('/data/checkexercise-data')
             const repetitionDataResult = await api.get('/data/repetitionexercise-data')
-            return { study: studyDataResult.data, check: checkDataResult.data, repetition: repetitionDataResult.data }
+            return { study: studyDataResult, check: checkDataResult, repetition: repetitionDataResult }
         } catch (e) {
             console.error('Ошибка при загрузке данных:', e)
             throw e
@@ -62,6 +62,11 @@ class DataService {
             throw e
         }
     }
+}
+
+export async function getLatestVersion() {
+    const ver = await api.get('/data/version')
+    return ver
 }
 
 export default new DataService()

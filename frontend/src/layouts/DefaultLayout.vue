@@ -20,7 +20,6 @@
                         icon="mdi-account"
                         variant="text"
                         color="black"
-                        v-bind="props"
                         @click="goProfile"
                         style="text-transform: none"
                     >
@@ -43,21 +42,23 @@
     import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
     import { useRouter } from 'vue-router'
     import { useProgress } from '../services/useProgress.service'
+    import { userStorage, dataStorage } from '@/plugins/pinia'
 
+    const userStore = userStorage()
     const router = useRouter()
+    const dataStore = dataStorage()
 
     const goHome = () => router.push('/')
-    const goProfile = () => router.push('/profile')
+    const goProfile = () => router.push(`/profile/${userStore.user_id}`)
 
-    const daysCount = ref(0)
-    function updateDays() {
-        const startDate = localStorage.getItem('startDate')
-        if (!startDate) return (daysCount.value = 0)
-        const start = new Date(startDate)
-        const now = new Date()
-        daysCount.value = Math.ceil(Math.abs(now - start) / (1000 * 60 * 60 * 24))
-    }
     const { calculateTotalProgress } = useProgress()
+
+    const daysCount = computed(() => {
+        if (!userStore.loggined_at) return 0
+        const now = Date.now()
+        const diffMs = now - userStore.loggined_at
+        return Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+    })
 
     // Вычисляем общий прогресс
     const totalProgress = computed(() => {
@@ -65,12 +66,7 @@
     })
 
     onMounted(async () => {
-        // Подсчет дней использования приложения
-        updateDays()
-        window.addEventListener('reset-days', updateDays)
-    })
-    onBeforeUnmount(() => {
-        window.removeEventListener('reset-days', updateDays)
+        await dataStore.getData()
     })
 </script>
 

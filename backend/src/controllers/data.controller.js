@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { where } from "sequelize";
+import jwt from "jsonwebtoken";
 dotenv.config();
 
 export class GetDataController {
@@ -17,6 +17,30 @@ export class GetDataController {
             return res.status(500).json({ error: "Ошибка сервера" });
         }
     }
+    async getExercises(req, res) {
+        const token = req.cookies?.refresh_token;
+        if (!token) {
+            return res.status(200).json([]);
+        }
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.REFRESH_SECRET);
+            if (decoded.role === "admin") {
+                const adminData = await this.model.findAll();
+                return res.status(200).json(adminData);
+            } else {
+                const userData = await this.model.findAll({
+                    attributes: {
+                        exclude: ["answer"],
+                    },
+                });
+                return res.status(200).json(userData);
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Ошибка сервера", error: error.name });
+        }
+    }
     async getTopicsWithTags(req, res) {
         try {
             const topics = await this.Topic.findAll({
@@ -31,6 +55,28 @@ export class GetDataController {
         } catch (e) {
             console.error(e);
             return res.status(500).json({ error: "Ошибка сервера" });
+        }
+    }
+    async getLatestDataVersion(req, res) {
+        try {
+            const datesReq = await this.model.findAll({
+                attributes: ["timestamp"],
+                raw: true,
+            });
+            const dates = Object.values(datesReq).map((u) => Number(u.timestamp));
+            console.log(dates);
+            const maxTimestamp = Math.max(...dates);
+            console.log(maxTimestamp);
+            const version = await this.model.findOne({
+                where: {
+                    timestamp: maxTimestamp,
+                },
+                attributes: ["id"],
+            });
+            return res.status(200).json(version);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: `Ошибка сервера: ${error}` });
         }
     }
 }

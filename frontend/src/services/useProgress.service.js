@@ -1,46 +1,27 @@
-import { ref, onMounted, onUnmounted } from 'vue'
-import DataService from './data.service'
-import { getCompletedTasks } from './api.service'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import DataService, { getLatestVersion } from './data.service'
+import { dataStorage, userStorage } from '@/plugins/pinia'
 
 export function useProgress() {
-    // Локальное состояние прогресса
-    const progress = ref([])
-    const checkExerciseData = ref([])
-    const studyExerciseData = ref([])
-    const repetitionExerciseData = ref([])
-
-    const getData = async () => {
-        try {
-            const userProgress = JSON.parse(localStorage.getItem('userProgress') || '[]')
-            progress.value = userProgress
-
-            // console.log(userProgress.status)
-            const data = await DataService.getBulk({
-                exercises: 'getExercises',
-            })
-
-            studyExerciseData.value = data.exercises.study
-            checkExerciseData.value = data.exercises.check
-            repetitionExerciseData.value = data.exercises.repetition
-        } catch (e) {
-            console.warn('Доступ запрещён (401)')
-            if (e.response?.status === 401) {
-                return (progress.value = [])
-            }
-            console.error('Ошибка при загрузке данных:', e)
-            throw e
-        }
-    }
+    const dataStore = dataStorage()
+    const store = userStorage()
+    const progress = computed(() => store.userProgress)
 
     // Функция для расчета прогресса темы по типу
     const getTopicProgress = (topicId, type) => {
         let exercises = []
         if (type === 'study') {
-            exercises = studyExerciseData.value.filter(ex => ex.topic_id === topicId)
+            exercises = Array.isArray(dataStore.exercises.study)
+                ? dataStore.exercises.study.filter(ex => ex.topic_id === topicId)
+                : []
         } else if (type === 'check') {
-            exercises = checkExerciseData.value.filter(ex => ex.topic_id === topicId)
+            exercises = Array.isArray(dataStore.exercises.study)
+                ? dataStore.exercises.check.filter(ex => ex.topic_id === topicId)
+                : []
         } else if (type === 'repetition') {
-            exercises = repetitionExerciseData.value.filter(ex => ex.topic_id === topicId)
+            exercises = Array.isArray(dataStore.exercises.study)
+                ? dataStore.exercises.repetition.filter(ex => ex.topic_id === topicId)
+                : []
         }
 
         const totalExercises = exercises.length
@@ -85,26 +66,25 @@ export function useProgress() {
         let totalSolved = 0
         let totalExercises = 0
 
-        // Теперь считаем все задания по всем темам
-        totalExercises +=
-            studyExerciseData.value.length + checkExerciseData.value.length + repetitionExerciseData.value.length
-        // Считаем решенные задания из progress
-        totalSolved = progress.value.length
+        const studyLen = Array.isArray(dataStore.exercises.study) ? dataStore.exercises.study.length : []
+        const checkLen = Array.isArray(dataStore.exercises.check) ? dataStore.exercises.check.length : []
+        const repetitionLen = Array.isArray(dataStore.exercises.repetition) ? dataStore.exercises.repetition.length : []
+        totalExercises = studyLen + checkLen + repetitionLen
+        totalSolved = progress.value?.length
 
         return totalExercises > 0 ? Number(((totalSolved / totalExercises) * 100).toFixed(2)) : 0
     }
 
     // Автоматически загружаем прогресс при монтировании компонента
-    onMounted(async () => {
-        await getData()
-        // Слушаем событие обновления прогресса
-        window.addEventListener('exercise-completed', getData)
-    })
+    // onMounted(async () => {
+    //     // Слушаем событие обновления прогресса
+    //     window.addEventListener('exercise-completed')
+    // })
 
-    // Удаляем слушатель при размонтировании компонента
-    onUnmounted(() => {
-        window.removeEventListener('exercise-completed', getData)
-    })
+    // // Удаляем слушатель при размонтировании компонента
+    // onUnmounted(() => {
+    //     window.removeEventListener('exercise-completed')
+    // })
 
     // Экспортируем все необходимые функции и состояния
     return {
@@ -114,8 +94,5 @@ export function useProgress() {
         isExerciseCompleted,
         markExerciseAsCompleted,
         calculateTotalProgress,
-        checkExerciseData,
-        studyExerciseData,
-        repetitionExerciseData,
     }
 }

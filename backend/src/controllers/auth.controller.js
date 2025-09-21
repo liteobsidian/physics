@@ -10,20 +10,13 @@ dotenv.config();
 export class AuthController {
     constructor(model) {
         this.model = model;
-        this.User = model.User;
-        this.UserTokens = model.UserTokens;
     }
     async registerUser(req, res) {
         const t = await sequelize.transaction();
         const { username, password, email } = req.body;
         let committed = false;
         try {
-            if (!username || !password || !email) {
-                await t.rollback();
-                return res.status(400).json({ message: "не все поля заполнены" });
-            }
-
-            const user = await this.User.create(
+            const user = await this.model.create(
                 {
                     username: username,
                     password: await hashPassword(password),
@@ -46,7 +39,7 @@ export class AuthController {
             }
             console.error(error);
             if (error.name === "SequelizeUniqueConstraintError") {
-                return res.status(400).json({ message: "Такой пользователь уже существует!" });
+                return res.status(400).json({ message: "Такой пользователь уже существует!", error: error.name, errorDescription: error.original.constraint });
             }
             return res.status(500).json({ message: "Ошибка регистрации" });
         }
@@ -62,7 +55,7 @@ export class AuthController {
                 return res.sendStatus(401);
             }
 
-            await this.User.update(
+            await this.model.update(
                 {
                     verified: true,
                 },
@@ -89,7 +82,7 @@ export class AuthController {
         try {
             const { email, password } = req.body;
 
-            const user = await this.User.findOne({
+            const user = await this.model.findOne({
                 where: {
                     email: email,
                 },
@@ -106,15 +99,20 @@ export class AuthController {
             if (await isPasswordMatch(password, user.password)) {
                 const tokens = await createAuthTokens(user.id, user.login, user.role);
                 decoded = jwt.verify(tokens.refreshToken, process.env.REFRESH_SECRET);
-                await this.UserTokens.create(
+
+                const loggined_at = new Date();
+                await this.model.update(
                     {
-                        refresh_token: tokens.refreshToken,
-                        user_id: decoded.id,
-                        expires_at: new Date(decoded.exp * 1000),
-                        created_at: new Date(),
+                        session_start: loggined_at,
                     },
-                    { transaction: t }
+                    {
+                        transaction: t,
+                        where: {
+                            id: user.id,
+                        },
+                    }
                 );
+                await t.commit();
 
                 res.cookie("access_token", tokens.accessToken, {
                     httpOnly: true,
@@ -130,20 +128,21 @@ export class AuthController {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                 });
 
-                await t.commit();
+                // await t.commit();
                 return res.status(200).json({
                     message: "Успешный вход!",
                     token: decoded,
+                    loggined_at: loggined_at,
                 });
             } else {
-                await t.rollback();
+                // await t.rollback();
                 return res.status(400).json({ message: "Неверный пароль" });
             }
         } catch (error) {
             await t.rollback();
             console.error("Ошибка входа:", error);
             if (error.name === "SequelizeUniqueConstraintError") {
-                return res.status(500).json({ message: "Вы уже вошли" });
+                return res.status(500).json({ message: "Вы уже вошли", error: error.name });
             }
             return res.status(500).json({ message: "Ошибка входа" });
         }
@@ -169,19 +168,26 @@ export class AuthController {
         const t = await sequelize.transaction();
 
         try {
-            await this.UserTokens.destroy(
+            await this.model.update(
                 {
-                    where: { user_id: decoded.id },
+                    session_end: new Date(),
                 },
-                { transaction: t }
+                {
+                    transaction: t,
+                    where: {
+                        id: decoded.id,
+                    },
+                }
             );
+            await t.commit();
+
             res.clearCookie("access_token", { httpOnly: true, secure: false, sameSite: "strict" });
             res.clearCookie("refresh_token", { httpOnly: true, secure: false, sameSite: "strict" });
 
-            await t.commit();
             return res.status(200).json({ message: "Токены удалены" });
         } catch (err) {
             await t.rollback();
+            console.log(err);
             return res.status(500).json({ message: "Ошибка сервера" });
         }
     }

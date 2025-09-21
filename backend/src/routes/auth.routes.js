@@ -1,10 +1,10 @@
 import express from "express";
 import { AuthController } from "../controllers/auth.controller.js";
-import { User, UserTokens } from "../models/index.js";
+import { User } from "../models/index.js";
 import { updateTokens, verifyAndRefreshTokens } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
-const authController = new AuthController({ User, UserTokens });
+const authController = new AuthController(User);
 
 router.post("/register", authController.registerUser.bind(authController));
 router.post("/login", authController.loginUser.bind(authController));

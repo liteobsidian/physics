@@ -100,7 +100,9 @@
 <script setup>
     import { defineProps, computed, ref, onMounted } from 'vue'
     import { useRouter } from 'vue-router'
-    import DataService from '../services/data.service'
+    import { dataStorage } from '@/plugins/pinia'
+
+    const store = dataStorage()
 
     const props = defineProps({
         topic: {
@@ -112,30 +114,15 @@
             default: () => [],
         },
         progress: {
-            type: Array,
+            type: Object,
             required: true,
         },
     })
 
     const router = useRouter()
-
-    const checkExerciseData = ref([])
-    const studyExerciseData = ref([])
-    const repetitionExerciseData = ref([])
-
-    const getData = async () => {
-        try {
-            const data = await DataService.getBulk({
-                exercises: 'getExercises',
-            })
-            studyExerciseData.value = data.exercises.study
-            checkExerciseData.value = data.exercises.check
-            repetitionExerciseData.value = data.exercises.repetition
-        } catch (e) {
-            console.error('Ошибка при загрузке данных:', e)
-            throw e
-        }
-    }
+    const checkExerciseData = computed(() => store.exercises.check)
+    const studyExerciseData = computed(() => store.exercises.study)
+    const repetitionExerciseData = computed(() => store.exercises.repetition)
 
     // Проверяем, есть ли задания для темы
     const hasExercises = computed(() => {
@@ -171,10 +158,6 @@
     const navigateToTopicWithTab = tab => {
         router.push(`/topic/${props.topic.id}?tab=${tab}`)
     }
-
-    onMounted(async () => {
-        await getData()
-    })
 </script>
 
 <style scoped>

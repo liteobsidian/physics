@@ -2,8 +2,15 @@
     <v-sheet class="register-block">
         <h1>Вход</h1>
         <v-form ref="form" class="form" @submit.prevent="onSubmit">
-            <v-text-field label="Почта" v-model="email" :rules="emailRules" type="email"></v-text-field>
-            <v-text-field label="Пароль" :rules="passwordRules" v-model="password"></v-text-field>
+            <v-text-field label="Почта" v-model="email" :rules="emailRules" :type="'email'"></v-text-field>
+            <v-text-field
+                label="Пароль"
+                :rules="passwordRules"
+                v-model="password"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show1 ? 'text' : 'password'"
+                @click:append="show1 = !show1"
+            ></v-text-field>
             <v-btn type="submit" class="button">Войти</v-btn>
             <div class="d-felx register">
                 <span>Если у вас ещё нет аккаунта</span>
@@ -20,10 +27,16 @@
     import { ref } from 'vue'
     import { useRouter } from 'vue-router'
     import { login } from '@/services/api.service'
+    import { userStorage } from '@/plugins/pinia'
+
+    const userStore = userStorage()
 
     const router = useRouter()
 
     const form = ref(null)
+
+    const show1 = ref(false)
+    const show2 = ref(true)
 
     const password = ref('')
     const email = ref('')
@@ -44,11 +57,18 @@
         try {
             const response = await login(email.value, password.value)
             if (response.status === 200) {
+                userStore.$patch({
+                    user_id: response.data.token.id,
+                    role: response.data.token.role,
+                    loggined_at: new Date(response.data.loggined_at).getTime(),
+                })
                 sessionStorage.setItem('profileSuccess', 'Успешный вход!')
-                router.push('/profile')
+                router.push(`/profile/${response.data.token.id}`)
             }
         } catch (err) {
-            if (err.response && err.response.status === 400) {
+            if (err.response?.data.error === 'SequelizeUniqueConstraintError') {
+                error.value = { show: true, text: 'Вы уже вошли' }
+            } else if (err.response && err.response.status === 400) {
                 error.value = { show: true, text: 'Неверный пароль' }
             } else if (err.response && err.response.status === 404) {
                 error.value = { show: true, text: 'Пользователь не найден' }

@@ -17,7 +17,7 @@ await transporter.verify();
 console.log("SMTP connection established");
 
 export async function sendEmail(email, username, id) {
-    const verify_token = jwt.sign({ username: username, id: id }, process.env.MAIL_SECRET, { expiresIn: "0.5h" });
+    const verify_token = jwt.sign({ username: username, id: id }, process.env.MAIL_SECRET, { expiresIn: "7h" });
     try {
         const info = await transporter.sendMail({
             from: "petrlensin011@gmail.com", // Надо изменить почту отправителя

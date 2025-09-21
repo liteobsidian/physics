@@ -1,8 +1,5 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { UserTokens } from "../models/index.js";
-import { sequelize } from "../config/db.js";
-import { where } from "sequelize";
 dotenv.config();
 
 export async function createAuthTokens(id, username, role) {
@@ -16,6 +13,7 @@ export async function updateTokens(req, res, next) {
     const refreshCookie = req.cookies["refresh_token"];
 
     if (!refreshCookie) {
+        res.clearCookie("access_token", { httpOnly: true, secure: false, sameSite: "strict" });
         return res.status(401).json({ message: "Unauthorized" });
     }
 
@@ -53,17 +51,6 @@ export async function verifyAndRefreshTokens(refresh_token, req, res, next) {
             });
         }
 
-        let response = await UserTokens.findOne({
-            where: { user_id: refreshData.id },
-            attributes: ["refresh_token"],
-        });
-        if (!response) {
-            return res.status(404).json({ message: "No token" });
-        }
-        if (refresh_token !== response.refresh_token) {
-            return res.status(401).json({ message: "Invalid token" });
-        }
-
         const tokens = await createAuthTokens(refreshData.id, refreshData.username, refreshData.role);
 
         res.cookie("access_token", tokens.accessToken, {
@@ -79,13 +66,6 @@ export async function verifyAndRefreshTokens(refresh_token, req, res, next) {
             sameSite: "lax",
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });
-
-        await UserTokens.update(
-            { refresh_token: tokens.refreshToken },
-            {
-                where: { user_id: refreshData.id },
-            }
-        );
 
         req.id = refreshData.id;
         return next();

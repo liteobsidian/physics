@@ -2,35 +2,31 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config/db.js";
 
-export class UserTokens extends Model {}
+export class DataVersion extends Model {}
 
-UserTokens.init(
+DataVersion.init(
     {
         id: {
-            primaryKey: true,
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
         },
-        refresh_token: {
-            type: DataTypes.TEXT,
+        user_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         created_at: {
             type: DataTypes.TIME,
             allowNull: false,
         },
-        expires_at: {
-            type: DataTypes.TIME,
-            allowNull: false,
-        },
-        user_id: {
-            type: DataTypes.INTEGER,
+        timestamp: {
+            type: DataTypes.BIGINT,
             allowNull: false,
         },
     },
     {
         sequelize,
-        tableName: "usertokens",
+        tableName: "data_version",
     }
 );

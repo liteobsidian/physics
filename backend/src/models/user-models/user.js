@@ -35,6 +35,12 @@ User.init(
             defaultValue: "user",
             allowNull: false,
         },
+        session_start: {
+            type: DataTypes.DATE,
+        },
+        session_end: {
+            type: DataTypes.DATE,
+        },
     },
     {
         sequelize,

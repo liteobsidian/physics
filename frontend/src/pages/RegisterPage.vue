@@ -2,10 +2,16 @@
     <v-sheet class="register-block">
         <h1>Регистрация</h1>
         <v-form ref="form" class="form" @submit.prevent="onSubmit">
-            <v-text-field label="Имя пользователя" v-model="username" :rules="usernameRules"></v-text-field>
-            <v-text-field label="Почта" v-model="email" :rules="emailRules" type="email"></v-text-field>
+            <v-text-field
+                label="Имя пользователя"
+                v-model="username"
+                :rules="usernameRules"
+                :type="'username'"
+            ></v-text-field>
+            <v-text-field label="Почта" v-model="email" :rules="emailRules" :type="'email'"></v-text-field>
             <v-text-field label="Пароль" :rules="passwordRules" v-model="password"></v-text-field>
             <v-text-field
+                :type="'password'"
                 label="Повторите пароль"
                 :rules="confirmPasswordRules"
                 v-model="confirmPassword"
@@ -19,11 +25,9 @@
                 <v-btn @click="toLogin" class="button">Войти</v-btn>
             </div>
         </v-form>
-        <v-snackbar v-model="snackbar.show" color="green" location="top">
-            {{ snackbar.text }}
-        </v-snackbar>
-        <v-snackbar v-model="error.show" color="red" location="top">
-            {{ error.text }}
+
+        <v-snackbar v-model="errorSnackbar.show" color="red" location="top">
+            {{ errorSnackbar.text }}
         </v-snackbar>
     </v-sheet>
 </template>
@@ -41,8 +45,7 @@
     const confirmPassword = ref('')
     const username = ref('')
     const email = ref('')
-    const snackbar = ref({ show: false, text: '' })
-    const error = ref({ show: false, text: '' })
+    const errorSnackbar = ref({ show: false, text: '' })
 
     const usernameRules = [v => !!v || 'Введите имя пользователя', v => v.length >= 3 || 'Минимум 3 символа']
 
@@ -57,18 +60,23 @@
     }
 
     async function onSubmit() {
-        const isValid = await form.value.validate()
-        if (!isValid) return
+        const { valid } = await form.value.validate()
+        if (!valid) return
 
         try {
-            snackbar.value = {
-                show: true,
-                text: 'Регистрация прошла успешно! На вашу почту отправлено письмо с подтверждением регистрации.',
-            }
-            await register(username.value, email.value, password.value)
+            const response = await register(username.value, email.value, password.value)
+            if (response.status === 200) router.push({ name: 'email-send' })
         } catch (err) {
-            console.error('Ошибка регистрации', err)
-            error.value = { show: true, text: 'Ошибка регистрации. Попробуйте снова.' }
+            const { error, errorDescription } = err.response.data
+            if (error === 'SequelizeUniqueConstraintError') {
+                if (String(errorDescription).includes('email')) {
+                    errorSnackbar.value = { show: true, text: 'Пользователь с такой почтой уже существует' }
+                } else if (String(errorDescription).includes('login')) {
+                    errorSnackbar.value = { show: true, text: 'Пользователь с таким именем уже существует' }
+                }
+            } else {
+                errorSnackbar.value = { show: true, text: 'Ошибка сервера' }
+            }
         }
     }
 </script>

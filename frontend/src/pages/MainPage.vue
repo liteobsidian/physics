@@ -17,7 +17,7 @@
 
         <v-chip-group v-model="selectedTags" multiple class="mb-4 tag-group" column>
             <v-chip
-                v-for="tag in tags.data"
+                v-for="tag in tags"
                 :key="tag.id"
                 :value="tag.id"
                 filter
@@ -33,14 +33,13 @@
 
         <div v-if="filteredBlocks.length === 0" class="text-center my-8">
             <v-icon icon="mdi-magnify-off" size="x-large" color="grey-lighten-1" class="mb-2"></v-icon>
-            <v-progress-circular v-if="isLoading" indeterminate color="primary" size="48" class="d-flex mx-auto my-8" />
-            <div v-else>
+            <div>
                 <div class="text-h6 text-grey-darken-1">Ничего не найдено</div>
                 <div class="text-body-2 text-grey">Попробуйте изменить параметры поиска или фильтры</div>
             </div>
         </div>
-
-        <v-expansion-panels v-model="expandedPanels" multiple class="expansion-panels">
+        <v-progress-circular v-if="isReady" indeterminate color="primary" size="48" class="d-flex mx-auto my-8" />
+        <v-expansion-panels v-else v-model="expandedPanels" multiple class="expansion-panels">
             <v-expansion-panel v-for="block in filteredBlocks" :key="block.id" :value="block.id" rounded="lg">
                 <v-expansion-panel-title color="grey-lighten-4">
                     <div class="d-flex justify-space-between align-center w-100">
@@ -82,36 +81,21 @@
     import TopicCard from '../components/TopicCard.vue'
     import SearchField from '../components/SearchField.vue'
     import { useProgress } from '../services/useProgress.service'
-    import DataService from '../services/data.service'
+    import { dataStorage } from '@/plugins/pinia'
+
+    const store = dataStorage()
 
     const searchQuery = ref('')
     const selectedTags = ref([])
-    const tags = ref([])
     const expandedPanels = ref([])
-    const blockData = ref([])
-    const topicTagData = ref([])
-    const isLoading = ref(true)
+
+    const tags = computed(() => store.tags)
+    const blockData = computed(() => store.blocks)
+    const topicTagData = computed(() => store.topicTag)
+    const isReady = computed(() => store.isloading)
+
     // Используем композабл для работы с прогрессом
     const { getTopicProgress } = useProgress()
-
-    const getData = async () => {
-        try {
-            const data = await DataService.getBulk({
-                blocks: 'getBlocks',
-                topicsWithTags: 'getTopicsWithTags',
-                tags: 'getTags',
-            })
-            blockData.value = data.blocks
-            topicTagData.value = data.topicsWithTags
-            tags.value = data.tags
-            console.log(tags.value.data)
-        } catch (e) {
-            console.error('Ошибка при загрузке данных:', e)
-            throw e
-        } finally {
-            isLoading.value = false
-        }
-    }
 
     // Очистка выбранных тегов
     const clearTags = () => {
@@ -120,8 +104,6 @@
 
     // Получаем объект прогресса для топика
     const getTopicProgressObject = topicId => {
-        console.log(getTopicProgress(topicId, 'study'))
-
         return {
             study: getTopicProgress(topicId, 'study'),
             exercise: getTopicProgress(topicId, 'exercise'),
@@ -178,14 +160,6 @@
         } else {
             // Если поиск и фильтры пусты, сворачиваем все блоки
             expandedPanels.value = []
-        }
-    })
-
-    onMounted(async () => {
-        try {
-            await getData()
-        } catch (e) {
-            console.error('Failed to load data', e)
         }
     })
 </script>

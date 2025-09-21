@@ -2,133 +2,129 @@
     <v-progress-circular v-if="isLoading" indeterminate color="primary" size="48" class="d-flex mx-auto my-8" />
     <div v-else>
         <div v-if="isLogin && userRole === 'user'" class="profile-container">
-            <div class="d-flex justify-center flex-column profile-info">
+            <div class="d-flex justify-center flex-column editor-container">
                 <div class="profile-header">
                     <p>Профиль</p>
                 </div>
                 <div class="d-flex ga-3" style="flex-direction: column">
                     <div class="d-flex" style="justify-content: space-between">
-                        <p>Ученик {{ username }}</p>
+                        <h3>Ученик {{ username }}</h3>
                     </div>
                     <div class="d-flex" style="justify-content: space-between">
-                        <p>Элеткронная почта: {{ email }}</p>
+                        <h3>Элеткронная почта: {{ email }}</h3>
                     </div>
                     <v-btn color="#4285f4" width="30%" @click="toChangePassword">Изменить пароль</v-btn>
                 </div>
             </div>
-            <div class="user-stats">
-                <div class="user-stats-header">
-                    <p>Статистика</p>
-                </div>
-                <p>Изучение</p>
-                <v-progress-linear
-                    bg-color="#0f9d58"
-                    color="#0f9d58"
-                    :model-value="studyProgress"
-                    :height="25"
-                    style="border-radius: 8px"
-                    >{{ studyProgress }} / {{ Object.keys(exercises.study).length }}</v-progress-linear
-                >
-                <br />
-                <p>Упражнения</p>
-                <v-progress-linear
-                    bg-color="#0f9d58"
-                    color="#0f9d58"
-                    :model-value="checkProgress"
-                    :height="25"
-                    style="border-radius: 8px"
-                    >{{ checkProgress }} / {{ Object.keys(exercises.check).length }}</v-progress-linear
-                >
-                <br />
-                <p>Упражнения на повторение</p>
-                <v-progress-linear
-                    bg-color="#0f9d58"
-                    color="#0f9d58"
-                    :model-value="checkProgress"
-                    :height="25"
-                    style="border-radius: 8px"
-                    >{{ repetitionProgress }} / {{ Object.keys(exercises.repetition).length }}</v-progress-linear
-                >
-            </div>
-            <v-btn @click="onLogOut" color="#4285f4" width="30%">Выйти из аккаунта</v-btn>
         </div>
         <div v-else-if="isLogin && userRole === 'admin'" class="profile-container">
-            <div class="d-flex justify-center flex-column profile-info">
+            <div class="d-flex justify-center flex-column editor-container">
                 <div class="profile-header">
                     <p>Добро пожаловать в админ панель!</p>
                 </div>
                 <div class="d-flex ga-3" style="flex-direction: column">
                     <div class="d-flex" style="justify-content: space-between">
-                        <p>Админ {{ username }}</p>
+                        <h3>Админ {{ username }}</h3>
                     </div>
                     <div class="d-flex" style="justify-content: space-between">
-                        <p>Элеткронная почта: {{ email }}</p>
+                        <h3>Элеткронная почта: {{ email }}</h3>
                     </div>
                     <v-btn color="#4285f4" width="30%" @click="toChangePassword">Изменить пароль</v-btn>
-                    <v-btn color="#4285f4" width="30%">Добавить админа</v-btn>
+                    <div class="admin-actions">
+                        <v-btn color="#4285f4" width="30%" @click="toAdmins">Добавить админа</v-btn>
+                        <v-btn color="#4285f4" width="30%" @click="toEditor">Открыть редактор</v-btn>
+                    </div>
                 </div>
             </div>
-            <v-btn @click="onOpenTaskEditor = !onOpenTaskEditor, editorMode = null, cleanFields()" color="#4285f4" height="45px">Редактор заданий</v-btn>
-            <div v-show="onOpenTaskEditor" class="editor-buttons">
-                <template v-if="editorMode === null">
-                    <v-btn width="70%" @click="openEditor('add')">Добавить задание</v-btn>
-                    <v-btn width="70%" @click="openEditor('edit')">Измениеть задание</v-btn>
-                    <v-btn width="70%" @click="openEditor('delete')">Удалить задание</v-btn>
-                </template>
-            </div>
-            <ExerciseEditorFrom
-                v-if="editorMode === 'add'"
-                v-model:editorMode="editorMode"
-                :topics="topics"
-                :taskTypes="taskTypes"
-                :addTask="addTask"
-                :task="currentTask"
-                @update:task="t => Object.assign(currentTask, t)"   
-            />
-            <EditExistingExerciseForm
-                v-if="editorMode === 'edit'"
-                v-model:editorMode="editorMode"
-                :exercises="exercises"
-                :topics="topics"
-                :taskTypes="taskTypes"
-                :task="currentTask"
-                @update:task="t => Object.assign(currentTask, t)"
-                :editTask="editTask"
-                :cleanFields="cleanFields"
-            />
-            <DeleteExerciseForm
-                v-if="editorMode === 'delete'"  
-                v-model:editorMode="editorMode"
-                :exercises="exercises"
-                :topics="topics"
-                :types="taskTypes"
-                :task="currentTask"
-                @update:task="t => Object.assign(currentTask, t)"
-                :cleanFields="cleanFields"
-                :deleteTask="deleteTask"
-            />
-            <v-btn color="#4285f4" height="45px" @click="onOpenTagEditor = !onOpenTagEditor, cleanFields()">Редактор тэгов</v-btn>
-            <div v-show="onOpenTagEditor" class="editor-buttons">
-                <!-- <template> -->
-                    <v-btn width="70%">Добавить тэг</v-btn>
-                    <v-btn width="70%">Изменить тэг</v-btn>
-                    <v-btn width="70%">Удалить тэг</v-btn>
-                <!-- </template> -->
-            </div>
-            <v-btn color="#4285f4" height="45px">Редактор тем</v-btn>
+            <div class="editor-container">
+                <h3 class="user-stats-header">Статистика сайта</h3>
+                <div>
+                    <h3>
+                        Пользователей на сайте: <span class="editor-font">{{ usersQuntity }}</span>
+                    </h3>
+                </div>
+                <div>
+                    <div>
+                        <div class="subtitle">
+                            <h3 class="text-start">Учебный материал</h3>
+                        </div>
+                        <p class="text-start editor-font mb-4 mt-2">Всего заданий: {{ exercisesSum }}</p>
+                    </div>
+                    <div class="d-flex ga-md-16 justify-sm-center">
+                        <div class="diagram-container">
+                            <p>Изучение: {{ studyValue }}</p>
+                            <v-progress-circular
+                                color="primary"
+                                :model-value="Math.ceil((studyValue / exercisesSum) * 100)"
+                                :width="15"
+                                :size="100"
+                            >
+                                <span>{{ Math.ceil((studyValue / exercisesSum) * 100) }} % </span>
+                            </v-progress-circular>
+                        </div>
 
-            <v-btn @click="onLogOut" color="#4285f4" width="30%">Выйти из аккаунта</v-btn>
-        </div>
-        <div v-else class="container">
-            <div v-if="noLogin" class="auth-container">
-                <div class="title">
-                    <v-icon color="primary" size="64">mdi-flask</v-icon>
-                    <p class="text">Зарегистрируйтесь или войдите, если у вас уже есть аккаунт.</p>
+                        <div class="diagram-container">
+                            <p class="stat-text">Упражнения: {{ checkValue }}</p>
+                            <v-progress-circular
+                                color="primary"
+                                :model-value="Math.ceil((studyValue / exercisesSum) * 100)"
+                                :width="15"
+                                :size="100"
+                            >
+                                <span>{{ Math.ceil((checkValue / exercisesSum) * 100) }} % </span>
+                            </v-progress-circular>
+                        </div>
+
+                        <div class="diagram-container">
+                            <p>Повторение: {{ repetitionValue }}</p>
+                            <v-progress-circular
+                                color="primary"
+                                :model-value="Math.ceil((repetitionValue / exercisesSum) * 100)"
+                                :width="15"
+                                :size="100"
+                            >
+                                <span>{{ Math.ceil((repetitionValue / exercisesSum) * 100) }} % </span>
+                            </v-progress-circular>
+                        </div>
+                    </div>
                 </div>
-                <v-btn class="button" @click="router.push('/login')">ВОЙТИ</v-btn>
-                <v-btn class="button" @click="router.push('/register')">ЗАРЕГИСТРИРОВАТЬСЯ</v-btn>
             </div>
         </div>
+        <div class="user-stats">
+            <div class="user-stats-header">
+                <p>Статистика по выполнению заданий</p>
+            </div>
+            <p>Изучение</p>
+            <v-progress-linear
+                bg-color="#0f9d58"
+                color="#0f9d58"
+                :model-value="studyProgress"
+                :height="25"
+                style="border-radius: 8px"
+                >{{ studyProgress }} / {{ studyValue }}</v-progress-linear
+            >
+            <br />
+            <p>Упражнения</p>
+            <v-progress-linear
+                bg-color="#0f9d58"
+                color="#0f9d58"
+                :model-value="checkProgress"
+                :height="25"
+                style="border-radius: 8px"
+                >{{ checkProgress }} / {{ checkValue }}</v-progress-linear
+            >
+            <br />
+            <p>Упражнения на повторение</p>
+            <v-progress-linear
+                bg-color="#0f9d58"
+                color="#0f9d58"
+                :model-value="checkProgress"
+                :height="25"
+                style="border-radius: 8px"
+                >{{ repetitionProgress }} / {{ repetitionValue }}</v-progress-linear
+            >
+        </div>
+        <v-btn @click="onLogOut" color="#4285f4" width="30%" class="mt-12">Выйти из аккаунта</v-btn>
     </div>
 
     <v-snackbar v-model="success.show" color="green" location="top" :timeout="2000">
@@ -137,24 +133,19 @@
     <v-snackbar v-model="successPassword.show" color="green" location="top" :timeout="2000">
         {{ successPassword.text }}
     </v-snackbar>
-    <v-snackbar v-model="successEditingTask.show" color="green" location="top" :timeout="2000">
-        {{ successEditingTask.text }}
-    </v-snackbar>
-    <v-snackbar v-model="errorEditingTask.show" color="error" location="top" :timeout="4000">
-        {{ errorEditingTask.text }}
-    </v-snackbar>
 </template>
 
 <script setup>
     import { onMounted, ref, computed, reactive } from 'vue'
     import { useRouter } from 'vue-router'
     import { getUserInfo, logOut, getCompletedTasks } from '@/services/api.service'
-    import DataService from '../services/data.service'
     import { useProgress } from '@/services/useProgress.service'
-    import { addTaskAdmin, editTaskAdmin, deleteTaskAdmin } from '@/services/admin.service.js'
-    import ExerciseEditorFrom from '@/components/admin-components/exercise-components/ExerciseEditorForm.vue'
-    import EditExistingExerciseForm from '@/components/admin-components/exercise-components/EditExistingExerciseForm.vue'
-    import DeleteExerciseForm from '@/components/admin-components/exercise-components/DeleteExerciseForm.vue'
+    import { userStorage, dataStorage } from '@/plugins/pinia'
+    import { getUsers } from '@/services/admin.service'
+    import '@/assets/main.css'
+
+    const userStore = userStorage()
+    const dataStore = dataStorage()
 
     const { progress } = useProgress()
 
@@ -164,172 +155,74 @@
     const username = ref('')
     const email = ref('')
     const userId = ref(null)
-    const noLogin = ref(false)
     const isLogin = ref(false)
     const userRole = ref('')
 
-    const exercises = ref({ study: null, check: null, repetition: null })
+    const checkExerciseData = computed(() => dataStore.exercises.check)
+    const studyExerciseData = computed(() => dataStore.exercises.study)
+    const repetitionExerciseData = computed(() => dataStore.exercises.repetition)
 
-    const topics = ref([])
+    const users = ref([])
 
-    const tags = ref([])
+    const topics = computed(() => dataStore.topics)
 
-    const taskTypes = [
-        { type: 'study', title: 'Изучение' },
-        { type: 'check', title: 'Упражнение' },
-        { type: 'repetition', title: 'Повторение' },
-    ]
-
-    const onOpenTaskEditor = ref(false)
-    const onOpenTagEditor = ref(false)
-
-    const currentTask = reactive({
-        taskText: '',
-        taskImgBuffer: '',
-        topic: {},
-        answer: '',
-        hintText: '',
-        hintImgBuffer: '',
-        id: null,
-        taskType: {},
-    })
-
-    const cleanFields = () => {
-        ;(currentTask.taskText = ''),
-            (currentTask.taskImgBuffer = ''),
-            (currentTask.topic = null),
-            (currentTask.answer = ''),
-            (currentTask.hintText = ''),
-            (currentTask.hintImgBuffer = ''),
-            (currentTask.taskType = null),
-            (currentTask.id = null)
-    }
-
-    const editorMode = ref(null)
-
-    const openEditor = mode => {
-    editorMode.value = editorMode.value === mode ? null : mode
-    if (editorMode.value !== mode) cleanFields()
-    }
+    const tags = computed(() => dataStore.tags)
 
     const success = ref({ show: false, text: '' })
     const successPassword = ref({ show: false, text: '' })
-    const successEditingTask = ref({ show: false, text: '' })
-    const errorEditingTask = ref({ show: false, text: '' })
 
-    async function addTask() {
-        try {
-            const responese = await addTaskAdmin(
-                !currentTask.taskImgBuffer ? currentTask.taskText : currentTask.taskImgBuffer,
-                currentTask.answer,
-                !currentTask.hintImgBuffer ? currentTask.hintText : currentTask.hintImgBuffer,
-                Number(currentTask.topic?.id),
-                currentTask.taskType?.type,
-            )
-            if (responese?.status == 201) {
-                await getData()
-                successEditingTask.value = { show: true, text: 'Задание успешно добавлено!' }
-                cleanFields()
-                return
-            }
-        } catch (error) {
-            cleanFields()
-            errorEditingTask.value = { show: true, text: `Ошибка: ${error}. Задание не добавлено` }
-            console.log(error)
-            return
-        }
-    }
+    const exercisesSum = computed(
+        () =>
+            Object.keys(studyExerciseData.value).length +
+            Object.keys(checkExerciseData.value).length +
+            Object.keys(repetitionExerciseData.value).length,
+    )
 
-    async function editTask() {
-        try {
-            const response = await editTaskAdmin(
-                !currentTask.taskImgBuffer ? currentTask.taskText : currentTask.taskImgBuffer,
-                !currentTask.hintImgBuffer ? currentTask.hintText : currentTask.hintImgBuffer,
-                currentTask.answer,
-                currentTask.taskType?.type,
-                currentTask.id,
-            )
-            if (response.status === 201) {
-                cleanFields()
-                await getData()
-                successEditingTask.value = { show: true, text: 'Задание успешно изменено' }
-            }
-        } catch     (error) {
-            cleanFields()
-            errorEditingTask.value = { show: true, text: `Неудалось изменить задание. Ошибка: ${error}` }
-            console.log(error)
-            return
-        }
-    }
+    const studyValue = computed(() => Object.keys(studyExerciseData.value).length)
+    const checkValue = computed(() => Object.keys(checkExerciseData.value).length)
+    const repetitionValue = computed(() => Object.keys(repetitionExerciseData.value).length)
 
-    async function deleteTask() {
-        try {
-            console.log(currentTask.id, currentTask.taskType.type)
-            const response = await deleteTaskAdmin(currentTask.id, currentTask.taskType.type)
-            if (response.status === 201) {
-                cleanFields()
-                await getData()
-                successEditingTask.value = { show: true, text: 'Задание успешно удалено' }
-            }
-        } catch (error) {
-            cleanFields()
-            errorEditingTask.value = { show: true, text: `Неудалось удалить задание. Ошибка: ${error}` }
-            console.log(error)
-            return
-        }
-    }
+    const usersQuntity = computed(() => Object.keys(users.value).length)
 
     const onLogOut = async () => {
         const response = await logOut()
         if (response.status === 200) {
             progress.value = []
-            localStorage.removeItem('userProgress')
-            localStorage.removeItem('startDate')
-            window.dispatchEvent(new Event('reset-days'))
+            userStore.userProgress = []
+            userStore.$reset()
             router.push('/')
         }
     }
 
-    const toChangePassword = async () => {
+    const toChangePassword = () => {
         router.push({ name: 'change-password' })
+    }
+    const toEditor = () => {
+        router.push({ name: 'editor' })
+    }
+    const toAdmins = () => {
+        router.push({ name: 'add-admin' })
     }
 
     const getData = async () => {
         isLoading.value = true
         try {
-            const userProgressResponse = await getCompletedTasks()
-            const data = await DataService.getBulk({
-                exercises: 'getExercises',
-                topics: 'getTopics',
-                tags: 'getTags',
-            })
             const response = await getUserInfo()
             if (response.status === 200) {
                 isLogin.value = true
                 userRole.value = response.data.user.role
             }
 
-            progress.value = userProgressResponse.data
-            localStorage.setItem('userProgress', JSON.stringify(userProgressResponse.data))
-
-            exercises.value = {
-                study: Object.values(data.exercises.study),
-                check: Object.values(data.exercises.check),
-                repetition: Object.values(data.exercises.repetition),
+            if (userStore.role === 'admin') {
+                const res = await getUsers()
+                users.value = res.data
             }
-
-            topics.value = data.topics.data
-
-            tags.value = data.tags.data
 
             username.value = response.data.user.username
             userId.value = response.data.user.id
             email.value = response.data.user.email
         } catch (error) {
-            if (error.response?.status === 401) {
-                window.location.href = 'http://localhost:5173/physics/#/login'
-                return
-            }
+            throw error
         } finally {
             isLoading.value = false
         }
@@ -341,6 +234,8 @@
 
     onMounted(async () => {
         await getData()
+        await userStore.updateCompletedTask()
+
         const msg = sessionStorage.getItem('profileSuccess')
         const passwordMsg = sessionStorage.getItem('changePasswordSuccess')
         if (msg) {
@@ -455,5 +350,19 @@
         flex-direction: column;
         gap: 1rem;
         align-items: center;
+    }
+    .admin-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+    .diagram-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 300px;
+        max-width: 500px;
+    }
+    .subtitle {
+        border-bottom: #d7d7d7 solid 1px;
     }
 </style>

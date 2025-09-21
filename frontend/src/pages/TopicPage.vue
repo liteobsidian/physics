@@ -49,7 +49,10 @@
                     />
                 </template>
             </v-tab>
-            <v-tab value="repetition">
+            <v-tab
+                value="repetition"
+                :disabled="getTopicProgress(topicId, 'check') < 100 && !hasAnyExerciseCompleted(topicId, 'exercise')"
+            >
                 Повторение
                 <template v-slot:append>
                     <v-icon
@@ -71,8 +74,7 @@
                 </template>
             </v-tab>
         </v-tabs>
-
-        <v-progress-circular v-if="isLoading" indeterminate color="primary" size="48" class="d-flex mx-auto my-8" />
+        <v-progress-circular v-if="isReady" indeterminate color="primary" size="48" class="d-flex mx-auto my-8" />
         <div v-else>
             <exercises-list
                 v-if="activeTab === 'study'"
@@ -109,39 +111,25 @@
     import { useRoute, useRouter } from 'vue-router'
     import ExercisesList from '../components/ExercisesList.vue'
     import { useProgress } from '../services/useProgress.service'
-    import DataService from '../services/data.service'
+    import { dataStorage } from '@/plugins/pinia'
+
+    const store = dataStorage()
 
     const route = useRoute()
     const router = useRouter()
+
     const topicId = computed(() => parseInt(route.params.id))
+
     const activeTab = ref('study')
-    const checkExerciseData = ref([])
-    const studyExerciseData = ref([])
-    const repetitionExerciseData = ref([])
-    const topicTagData = ref([])
-    const tags = ref([])
-    const isLoading = ref(false)
+    const isReady = computed(() => store.isloading)
+
+    const checkExerciseData = computed(() => store.exercises.check)
+    const studyExerciseData = computed(() => store.exercises.study)
+    const repetitionExerciseData = computed(() => store.exercises.repetition)
+    const topicTagData = computed(() => store.topicTag)
 
     // Используем композабл для работы с прогрессом
     const { getTopicProgress, hasAnyExerciseCompleted, isExerciseCompleted } = useProgress()
-
-    const getData = async () => {
-        try {
-            const data = await DataService.getBulk({
-                exercises: 'getExercises',
-                topicsWithTags: 'getTopicsWithTags',
-                tags: 'getTags',
-            })
-            topicTagData.value = data.topicsWithTags
-            tags.value = data.tags
-            checkExerciseData.value = data.exercises.check
-            studyExerciseData.value = data.exercises.study
-            repetitionExerciseData.value = data.exercises.repetition
-        } catch (e) {
-            console.error('Ошибка при загрузке данных:', e)
-            throw e
-        }
-    }
 
     // Получаем заголовок темы
     const topicTitle = computed(() => {
@@ -176,7 +164,6 @@
     // Следим за параметром tab в URL
     onMounted(async () => {
         // Убедимся, что прогресс загружен
-        await getData()
         // Проверяем наличие параметра tab в URL
         const tabParam = route.query.tab
         if (tabParam && ['study', 'exercise', 'repetition'].includes(tabParam)) {

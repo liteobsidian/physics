@@ -2,7 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 const app = express();
 import { sequelize } from "./src/config/db.js";
-import getDataRouter from "./src/routes/exercise.routes.js";
+import getDataRouter from "./src/routes/data.routes.js";
 import authRouter from "./src/routes/auth.routes.js";
 import userRouter from "./src/routes/user.routes.js";
 import adminRouter from "./src/routes/admin.routes.js";

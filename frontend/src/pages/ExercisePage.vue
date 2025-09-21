@@ -55,41 +55,24 @@
 <script setup>
     import { ref, computed, onMounted } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
-    import DataService from '../services/data.service'
-    import { getUserInfo, completeTask } from '@/services/api.service'
+    import { completeTask } from '@/services/api.service'
+    import { dataStorage, userStorage } from '@/plugins/pinia'
 
+    const dataStore = dataStorage()
+    const userStore = userStorage()
     const route = useRoute()
     const router = useRouter()
 
     const topicId = computed(() => parseInt(route.params.topicId))
     const exerciseId = computed(() => parseInt(route.params.exerciseId))
     const exerciseType = computed(() => route.params.type)
-    const userId = ref(null)
 
     const userAnswer = ref('')
     const showError = ref(false)
     const successSnackbar = ref(false)
-    const checkExerciseData = ref([])
-    const studyExerciseData = ref([])
-    const repetitionExerciseData = ref([])
-
-    const getData = async () => {
-        try {
-            const response = await getUserInfo()
-
-            userId.value = response.data.user.id
-
-            const data = await DataService.getBulk({
-                exercises: 'getExercises',
-            })
-            studyExerciseData.value = data.exercises.study
-            checkExerciseData.value = data.exercises.check
-            repetitionExerciseData.value = data.exercises.repetition
-        } catch (e) {
-            console.error('Ошибка при загрузке данных:', e)
-            throw e
-        }
-    }
+    const checkExerciseData = computed(() => dataStore.exercises.check)
+    const studyExerciseData = computed(() => dataStore.exercises.study)
+    const repetitionExerciseData = computed(() => dataStore.exercises.repetition)
 
     // Получаем данные задания
     const exercise = computed(() => {
@@ -134,7 +117,7 @@
 
             if (responese.status === 200) {
                 successSnackbar.value = true
-
+                await userStore.updateCompletedTask()
                 // Возвращаемся на страницу темы через 1.5 секунды
                 setTimeout(() => {
                     goBack()
@@ -155,7 +138,6 @@
         // Сбрасываем поля при загрузке страницы
         userAnswer.value = ''
         showError.value = false
-        await getData()
     })
 </script>
 

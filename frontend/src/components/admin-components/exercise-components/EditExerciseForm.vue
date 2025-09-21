@@ -1,11 +1,17 @@
 <template>
-    <div
-        class="admin-edit-task"
-    >
+    <div class="editor-container">
+        <div class="d-flex justify-sm-space-between">
+            <h3 class="editor-font">Форма изменения задания</h3>
+            <v-btn @click="($emit('update:selectedExerciseOption', null), cleanFields())">Отмена</v-btn>
+        </div>
+        <span class="editor-description"
+            >Здесь вы можете изменть существующее задание. Если задание с изображением нельзя поменять его на текст, это
+            касается и подсказки</span
+        >
         <div>
-            <div class="select-task-options">   
+            <div class="select-task-options">
                 <div>
-                    <span style="color: #4285f4; font-weight: bold">Тема</span>
+                    <h3 class="editor-font">Тема:</h3>
                     <v-autocomplete
                         :items="props.topics"
                         item-value="id"
@@ -17,7 +23,7 @@
                     />
                 </div>
                 <div>
-                    <span style="color: #4285f4; font-weight: bold">Тип задания</span>
+                    <h3 class="editor-font">Тип задания:</h3>
                     <v-autocomplete
                         :items="props.taskTypes"
                         v-model="selectedTaskType"
@@ -30,7 +36,7 @@
                 </div>
             </div>
             <div>
-                <span style="color: #4285f4; font-weight: bold">Выбирите задание</span>
+                <h3 class="editor-font">Выбранное задание:</h3>
                 <v-autocomplete
                     :items="filteredExercises"
                     v-model="selectedExercise"
@@ -38,26 +44,25 @@
                     item-title="taskShort"
                     return-object
                     autocomplete="off"
+                    label="Выберите задание"
                 />
             </div>
             <div>
                 <div class="editor-header">
                     <div class="id-box">
-                        <span style="font-size: 1.7rem; font-weight: bold; color: #4285f4"
-                            >ID: {{ props.task.id }}</span
-                        >
+                        <span style="font-size: 1.7rem; font-weight: bold; color: #4285f4">
+                            ID: {{ selectedExercise?.id }}
+                        </span>
                     </div>
                     <v-btn @click="isDisabled = !isDisabled" color="#4285f4">Редактировать задание</v-btn>
                 </div>
                 <div>
+                    <h3 class="editor-font">Задание:</h3>
                     <div
-                        v-if="isImage(props.task.taskText)"
+                        v-if="isImage(selectedExercise?.task)"
                         style="display: flex; justify-content: center; flex-direction: column; gap: 1rem"
                     >
-                        <img
-                            :src="newTaskImgUrl || base64Decode(props.task.taskText)"
-                            style="max-width: 100%; border-radius: 8px"
-                        />
+                        <img :src="newTaskImgUrl || base64Decode(selectedExercise?.task)" style="max-width: 100%" />
                         <v-file-input
                             label="Внесите новое изображение"
                             v-model="newTaskImg"
@@ -67,22 +72,18 @@
                     <v-textarea
                         label="Изменить текст задания"
                         v-else
-                        :model-value="props.task.taskText"
+                        :model-value="selectedExercise?.task"
                         auto-grow
                         :disabled="isDisabled"
-                        @update:modelValue="val => updateField('taskText', val)"
                     ></v-textarea>
                 </div>
                 <div>
-                    <span style="color: #4285f4; font-weight: bold">Подсказка</span>
+                    <h3 class="editor-font">Подсказка:</h3>
                     <div
-                        v-if="isImage(props.task.hintText)"
+                        v-if="isImage(selectedExercise?.hint)"
                         style="display: flex; justify-content: center; flex-direction: column; gap: 1rem"
                     >
-                        <img
-                            :src="newHintImgUrl || base64Decode(props.task.hintText)"
-                            style="max-width: 100%; border-radius: 8px"
-                        />
+                        <img :src="newHintImgUrl || base64Decode(selectedExercise?.hint)" style="max-width: 100%" />
                         <v-file-input
                             label="Внесите новое изображение"
                             v-model="newHintImg"
@@ -92,46 +93,41 @@
 
                     <v-textarea
                         v-else
-                        :model-value="props.task.hintText"
+                        :model-value="selectedExercise?.hint"
                         auto-grow
                         label="Изменить текст подсказки"
                         :disabled="isDisabled"
-                        @update:modelValue="val => updateField('hintText', val)"
                     ></v-textarea>
                 </div>
             </div>
             <div class="mt-4">
-                <span style="color: #4285f4; font-weight: bold">Ответ</span>
+                <h3 class="editor-font">Ответ:</h3>
                 <v-text-field
-                    :model-value="props.task.answer"
+                    :model-value="selectedExercise?.answer"
                     label="Поменяйте ответ"
                     :disabled="isDisabled"
-                    @update:modelValue="val => updateField('answer', val)"
                     autocomplete="off"
                 ></v-text-field>
             </div>
-            <div class="d-flex" style="justify-content: space-between;">
-            <v-btn @click="(editTask(), $emit('update:onAddEditExistingTask', !onAddEditExistingTask))" color="#4285f4">
-                Внести изменения
-            </v-btn>
-            <v-btn @click="$emit('update:editorMode', null), cleanFields()">Отмена</v-btn>
+            <div class="d-flex" style="justify-content: space-between">
+                <v-btn @click="editTask()" color="#4285f4"> Внести изменения </v-btn>
             </div>
-      
         </div>
     </div>
 </template>
 <script setup>
     import { defineProps, ref, computed, watch, defineEmits } from 'vue'
+    import '@/assets/main.css'
+    import { editTaskAdmin } from '@/services/admin.service'
 
     const props = defineProps({
         exercises: Object,
         topics: Array,
-        onAddEditExistingTask: Boolean,
         taskTypes: Array,
-        task: { type: Object, default: () => ({}) },
-        editTask: Function,
-        cleanFields: Function,
-        editorMode: String
+        errorEditingTask: { type: Object, default: () => ({}) },
+        successEditingTask: { type: Object, default: () => ({}) },
+        selectedExerciseOption: String,
+        getData: Function,
     })
 
     const selectedTopic = ref(null)
@@ -142,6 +138,9 @@
     const newHintImg = ref(null)
     const newHintImgUrl = ref(null)
     const isDisabled = ref(true)
+
+    const taskImgBuffer = ref(null)
+    const hintImgBuffer = ref(null)
 
     const filteredExercises = computed(() => {
         let exercises = props.exercises?.[selectedTaskType.value?.type] ?? []
@@ -160,7 +159,7 @@
 
     const imageSignatures = ['/9j/', 'iVBORw0KGgo']
     const isImage = i => imageSignatures.some(sig => i?.includes(sig))
-    
+
     const base64Decode = i => {
         if (i?.includes(imageSignatures[0])) {
             return `data:image/jpeg;base64,${i}`
@@ -170,11 +169,8 @@
         return ''
     }
 
-    const emit = defineEmits(['update:task', 'update:editorMode'])
+    const emit = defineEmits(['update:selectedExerciseOption', 'update:errorEditingTask', 'update:successEditingTask'])
 
-    function updateField(key, value) {
-        emit('update:task', { ...props.task, [key]: value })
-    }
     watch(newTaskImg, f => {
         if (!f) {
             newHintImgUrl.value = null
@@ -184,7 +180,7 @@
         reader.onload = e => {
             newTaskImgUrl.value = e.target.result
             const base64 = e.target.result.split(',')[1]
-            updateField('taskImgBuffer', base64)
+            taskImgBuffer.value = base64
         }
         reader.readAsDataURL(f)
     })
@@ -197,33 +193,40 @@
         reader.onload = e => {
             newHintImgUrl.value = e.target.result
             const base64 = e.target.result.split(',')[1]
-            updateField('hintImgBuffer', base64)
+            hintImgBuffer.value = base64
         }
         reader.readAsDataURL(f)
     })
-    watch(selectedExercise, exercise => {
-        if (!exercise) return
-        emit('update:task', {
-            ...props.task,
-            taskText: exercise.task,
-            hintText: exercise.hint,
-            answer: exercise.answer,
-            id: exercise.id,
-            topic: exercise.topic_id,
-        })
-    })
-    watch(selectedTaskType, val => updateField('taskType', val))
+
+    const cleanFields = () => {
+        ;(selectedExercise.value = null), (selectedTopic.value = null), (selectedTaskType.value = null)
+    }
+
+    async function editTask() {
+        try {
+            const response = await editTaskAdmin(
+                !taskImgBuffer.value ? selectedExercise.value?.task : taskImgBuffer.value,
+                !hintImgBuffer.value ? selectedExercise.value?.hint : hintImgBuffer.value,
+                selectedExercise.value?.answer,
+                selectedTaskType.value?.type,
+                selectedExercise.value?.id,
+            )
+            if (response.status === 201) {
+                emit('update:successEditingTask', { show: true, text: 'Задание успешно изменено' })
+                cleanFields()
+                await props.getData()
+                emit('update:selectedExerciseOption', null)
+            }
+        } catch (error) {
+            emit('update:errorEditingTask', { show: true, text: `Неудалось изменить задание. Ошибка: ${error}` })
+            cleanFields()
+            console.log(error)
+            emit('update:selectedExerciseOption', null)
+            return
+        }
+    }
 </script>
 <style lang="scss" scoped>
-    .admin-edit-task {
-        display: flex;
-        padding: 2.5rem;
-        border-radius: 8px;
-        background-color: #f5f5f5;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        gap: 2rem;
-        flex-direction: column;
-    }
     .select-task-options {
         display: flex;
         justify-content: space-between;
