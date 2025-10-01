@@ -12,7 +12,7 @@
         <div>
             <h3 class="editor-font">Выбранный блок:</h3>
             <v-autocomplete
-                :items="props.blocks"
+                :items="props.blocks.data"
                 item-title="title"
                 item-value="id"
                 v-model="selectedBlock"

@@ -12,7 +12,7 @@
             <h3 class="editor-font">Выбранная тема:</h3>
             <v-autocomplete
                 autocomplete="off"
-                :items="topics"
+                :items="props.topics"
                 item-title="title"
                 item-value="id"
                 v-model="selectedTopic"
