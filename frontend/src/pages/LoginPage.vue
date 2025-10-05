@@ -12,6 +12,7 @@
                 @click:append="show1 = !show1"
             ></v-text-field>
             <v-btn type="submit" class="button">Войти</v-btn>
+            <v-btn class="button" @click="toForgotPassword">Забыли пароль </v-btn>
             <div class="d-felx register">
                 <span>Если у вас ещё нет аккаунта</span>
                 <v-btn @click="toRegister" class="button">Зарегистрироваться</v-btn>
@@ -48,6 +49,9 @@
 
     const toRegister = () => {
         router.push('/register')
+    }
+    const toForgotPassword = () => {
+        router.push({ name: 'forgot-password' })
     }
 
     async function onSubmit() {

@@ -6,7 +6,7 @@ export class UserProgress extends Model {}
 
 UserProgress.init(
     {
-        user_id: {
+        id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             allowNull: false,

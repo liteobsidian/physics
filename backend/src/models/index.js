@@ -5,9 +5,9 @@ import { Topic } from "./study-models/topics.js";
 import { StudyExercise, CheckExercise, RepetitionExercise } from "./study-models/exercises.js";
 import { TopicTag } from "./study-models/topicTags.js";
 import { User } from "./user-models/user.js";
-import { Admin } from "./user-models/admins.js";
 import { UserProgress } from "./user-models/userprogress.js";
 import { DataVersion } from "./study-models/dataVersion.js";
+import { RecoveryCodes } from "./user-models/recovery_codes.js";
 
 Block.hasMany(Topic, { foreignKey: "block_id" });
 Topic.belongsTo(Block, { foreignKey: "block_id", as: "block" });
@@ -38,4 +38,7 @@ Tag.belongsToMany(Topic, {
 User.hasMany(DataVersion, { foreignKey: "user_id" });
 DataVersion.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
-export { Topic, Block, Tag, TopicTag, StudyExercise, CheckExercise, RepetitionExercise, User, Admin, UserProgress, DataVersion };
+User.hasMany(RecoveryCodes, { foreignKey: "user_id" });
+RecoveryCodes.belongsTo(User, { foreignKey: "user_id", as: "user" });
+
+export { Topic, Block, Tag, TopicTag, StudyExercise, CheckExercise, RepetitionExercise, User, UserProgress, DataVersion, RecoveryCodes };

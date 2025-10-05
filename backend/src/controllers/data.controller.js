@@ -64,7 +64,9 @@ export class GetDataController {
                 raw: true,
             });
             const dates = Object.values(datesReq).map((u) => Number(u.timestamp));
-            console.log(dates);
+            if (dates.length === 0) {
+                return res.status(200).json(null);
+            }
             const maxTimestamp = Math.max(...dates);
             console.log(maxTimestamp);
             const version = await this.model.findOne({

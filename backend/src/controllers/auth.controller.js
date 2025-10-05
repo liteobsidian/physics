@@ -1,15 +1,17 @@
 import { where } from "sequelize";
 import { sequelize } from "../config/db.js";
-import { hashPassword, isPasswordMatch } from "../utils/passwordHasher.js";
+import { hasher, isPasswordMatch } from "../utils/hasher.js";
 import dotenv from "dotenv";
 import { createAuthTokens } from "../middlewares/auth.middleware.js";
-import { sendEmail } from "../services/mail.service.js";
+import { sendEmail, recoveryPasswordMailSendler } from "../services/mail.service.js";
+import { generate_code } from "../utils/codeGenerator.js";
 import jwt, { decode } from "jsonwebtoken";
 dotenv.config();
 
 export class AuthController {
     constructor(model) {
         this.model = model;
+        this.RecoveryCodes = model.RecoveryCodes;
     }
     async registerUser(req, res) {
         const t = await sequelize.transaction();
@@ -19,7 +21,7 @@ export class AuthController {
             const user = await this.model.create(
                 {
                     username: username,
-                    password: await hashPassword(password),
+                    password: await hasher(password),
                     email: email,
                 },
                 {
@@ -49,7 +51,7 @@ export class AuthController {
         const verify_token = req.params.token;
         const t = await sequelize.transaction();
         try {
-            const decoded = jwt.verify(verify_token, process.env.MAIL_SECRET);
+            let decoded = jwt.verify(verify_token, process.env.MAIL_SECRET);
 
             if (!decoded || !decoded.id) {
                 return res.sendStatus(401);
@@ -189,6 +191,73 @@ export class AuthController {
             await t.rollback();
             console.log(err);
             return res.status(500).json({ message: "Ошибка сервера" });
+        }
+    }
+    async forgotPasswordMailSendler(req, res) {
+        const email = req.body.email;
+        const t = await sequelize.transaction();
+        console.log(email);
+        try {
+            const user = await this.model.findOne({
+                where: {
+                    email: email,
+                },
+            });
+            if (!user) {
+                return res.status(404).json({ error: "User not found" });
+            }
+            const code = generate_code();
+            const codeHash = hasher(code);
+            const createdCodeTime = new Date();
+
+            await this.RecoveryCodes.create(
+                {
+                    user_id: user.id,
+                    code: codeHash,
+                    created_at: createdCodeTime,
+                },
+                {
+                    transaction: t,
+                }
+            );
+            await t.commit();
+
+            try {
+                await recoveryPasswordMailSendler(email, user.username, code);
+            } catch (mailErr) {
+                console.error(mailErr);
+            }
+            return res.status(200).json({ message: "Success" });
+        } catch (err) {
+            await t.rollback();
+            console.error(err);
+            return res.status(500).json({ error: err.name });
+        }
+    }
+    async recoveryPassword(req, res) {
+        const newPassword = req.body;
+        const verify_token = req.params.token;
+        const t = await sequelize.transaction();
+        try {
+            let decoded = jwt.verify(verify_token, process.env.MAIL_SECRET);
+            const hashedPassword = hasher(newPassword);
+
+            const updatePassword = await this.model.update(
+                {
+                    password: hashedPassword,
+                },
+                {
+                    where: {
+                        id: decoded.id,
+                    },
+                    transaction: t,
+                }
+            );
+            await t.commit();
+            return res.status(200).json({ message: "Пароль успешно изменён" });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: err.name });
         }
     }
 }

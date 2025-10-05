@@ -79,4 +79,9 @@ export async function changePassword(currentPassword, newPassword) {
     return response
 }
 
+export async function forgotPassword(email) {
+    const response = await api.post('/auth/forgotpassword', { params: { email: email } })
+    return response
+}
+
 export default api

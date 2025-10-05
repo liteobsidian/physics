@@ -9,6 +9,8 @@ const authController = new AuthController(User);
 router.post("/register", authController.registerUser.bind(authController));
 router.post("/login", authController.loginUser.bind(authController));
 router.get("/confirm.register/:token", authController.confirmRegister.bind(authController));
+router.post("/forgotpassword", authController.forgotPasswordMailSendler.bind(authController));
+router.put("/recoverypassword/:token", authController.recoveryPassword.bind(authController));
 router.get("/update-tokens", updateTokens, (req, res, next) => {
     res.status(200).json({ message: "Токены обновлены" });
 });

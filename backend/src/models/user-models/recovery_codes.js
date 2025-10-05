@@ -2,34 +2,31 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../../config/db.js";
 
-export class Admin extends Model {}
+export class RecoveryCodes extends Model {}
 
-Admin.init(
+RecoveryCodes.init(
     {
         id: {
-            primaryKey: true,
             type: DataTypes.INTEGER,
             autoIncrement: true,
             allowNull: false,
+            primaryKey: true,
         },
-        username: {
+        user_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        code: {
             type: DataTypes.TEXT,
             allowNull: false,
-            unique: true,
         },
-        password: {
-            type: DataTypes.TEXT,
+        created_at: {
+            type: DataTypes.TIME,
             allowNull: false,
-            unique: true,
-        },
-        email: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            unique: true,
         },
     },
     {
         sequelize,
-        tableName: "admins",
+        tableName: "recovery_password_codes",
     }
 );

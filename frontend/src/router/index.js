@@ -15,6 +15,7 @@ import AdminEditorPage from '@/pages/AdminEditorPage.vue'
 import AdminPage from '@/pages/AdminPage.vue'
 import ForbiddenPage from '@/pages/ForbiddenPage.vue'
 import EmailSendPage from '@/pages/EmailSendPage.vue'
+import ForgotPasswordPage from '@/pages/ForgotPasswordPage.vue'
 import { userStorage } from '@/plugins/pinia'
 
 // Определяем базовый URL в зависимости от окружения
@@ -80,6 +81,11 @@ const routes = [
                 path: '/emailsendedpage',
                 name: 'email-send',
                 component: EmailSendPage,
+            },
+            {
+                path: '/forgotpassword',
+                name: 'forgot-password',
+                component: ForgotPasswordPage,
             },
         ],
     },

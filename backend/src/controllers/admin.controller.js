@@ -1,8 +1,6 @@
 import { sequelize } from "../config/db.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { DATE, where } from "sequelize";
-import { includes } from "vuetify/lib/util/helpers.mjs";
 
 dotenv.config();
 
