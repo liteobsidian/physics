@@ -1,6 +1,6 @@
 import { where } from "sequelize";
 import { sequelize } from "../config/db.js";
-import { hasher, isPasswordMatch } from "../utils/hasher.js";
+import { hasher, validateHash } from "../utils/hasher.js";
 import dotenv from "dotenv";
 import { createAuthTokens } from "../middlewares/auth.middleware.js";
 import { sendEmail, recoveryPasswordMailSendler } from "../services/mail.service.js";
@@ -12,6 +12,7 @@ export class AuthController {
     constructor(model) {
         this.model = model;
         this.RecoveryCodes = model.RecoveryCodes;
+        this.User = model.User;
     }
     async registerUser(req, res) {
         const t = await sequelize.transaction();
@@ -98,7 +99,7 @@ export class AuthController {
                 return res.status(401).json({ message: "Аккаунт не подтверждён" });
             }
 
-            if (await isPasswordMatch(password, user.password)) {
+            if (await validateHash(password, user.password)) {
                 const tokens = await createAuthTokens(user.id, user.login, user.role);
                 decoded = jwt.verify(tokens.refreshToken, process.env.REFRESH_SECRET);
 
@@ -198,7 +199,7 @@ export class AuthController {
         const t = await sequelize.transaction();
         console.log(email);
         try {
-            const user = await this.model.findOne({
+            const user = await this.User.findOne({
                 where: {
                     email: email,
                 },
@@ -206,9 +207,11 @@ export class AuthController {
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
             }
+
             const code = generate_code();
-            const codeHash = hasher(code);
-            const createdCodeTime = new Date();
+            const codeHash = await hasher(code);
+            console.log(code, codeHash);
+            const createdCodeTime = new Date().toISOString();
 
             await this.RecoveryCodes.create(
                 {
@@ -234,28 +237,80 @@ export class AuthController {
             return res.status(500).json({ error: err.name });
         }
     }
-    async recoveryPassword(req, res) {
-        const newPassword = req.body;
-        const verify_token = req.params.token;
+    async validateCode(req, res) {
+        const code = req.body.code;
+        // console.log(code);
         const t = await sequelize.transaction();
         try {
-            let decoded = jwt.verify(verify_token, process.env.MAIL_SECRET);
-            const hashedPassword = hasher(newPassword);
-
-            const updatePassword = await this.model.update(
-                {
-                    password: hashedPassword,
-                },
-                {
-                    where: {
-                        id: decoded.id,
-                    },
-                    transaction: t,
+            const recoveryCodes = await this.RecoveryCodes.findAll({ raw: true });
+            for (const record of recoveryCodes) {
+                const isValid = await validateHash(code, record.code);
+                if (isValid) {
+                    const forgotPasswordToken = jwt.sign({ user_id: record.user_id }, process.env.MAIL_SECRET, { expiresIn: "7h" });
+                    res.cookie("forgot_password_token", forgotPasswordToken, {
+                        httpOnly: true,
+                        secure: false,
+                        sameSite: "lax",
+                        maxAge: 7 * 60 * 60 * 1000,
+                    });
+                    await this.RecoveryCodes.destroy({
+                        where: {
+                            code: record.code,
+                        },
+                        transaction: t,
+                    });
+                    await t.commit();
+                    return res.status(200).json({ message: "Valid code" });
                 }
-            );
-            await t.commit();
-            return res.status(200).json({ message: "Пароль успешно изменён" });
+            }
+            return res.status(404).json({ message: "Invalid code" });
+        } catch (error) {
+            await t.rollback();
+            console.error(error);
+            return res.status(500).json({ error: error.name });
+        }
+    }
+    async recoveryPassword(req, res) {
+        const new_password = req.body.new_password;
+        // console.log(new_password);
+        const forgotPasswordToken = req.cookies?.forgot_password_token;
+        if (!forgotPasswordToken) {
+            return res.status(404).json({ message: "Missing token" });
+        }
+        const t = await sequelize.transaction();
+        try {
+            let decoded = jwt.verify(forgotPasswordToken, process.env.MAIL_SECRET);
+            const hashedPassword = await hasher(new_password);
+            // console.log(hashedPassword);
+            const existingPassword = await this.User.findOne({
+                where: {
+                    id: decoded.user_id,
+                },
+                attributes: ["password"],
+            });
+            console.log(existingPassword.password);
+            const isPasswordExist = await validateHash(new_password, existingPassword.password);
+            if (!isPasswordExist) {
+                await this.User.update(
+                    {
+                        password: hashedPassword,
+                    },
+                    {
+                        where: {
+                            id: decoded.user_id,
+                        },
+                        transaction: t,
+                    }
+                );
+                await t.commit();
+
+                res.clearCookie("forgot_password_token", { httpOnly: true, secure: false, sameSite: "strict" });
+                return res.status(201).json({ message: "Password succsesfully added!" });
+            }
+
+            return res.status(409).json({ message: "Password already exist" });
         } catch (err) {
+            await t.rollback();
             console.error(err);
             return res.status(500).json({ error: err.name });
         }

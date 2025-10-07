@@ -80,7 +80,17 @@ export async function changePassword(currentPassword, newPassword) {
 }
 
 export async function forgotPassword(email) {
-    const response = await api.post('/auth/forgotpassword', { params: { email: email } })
+    const response = await api.post('/auth/forgotpassword', { email })
+    return response
+}
+
+export async function validateRecoveryPasswordCode(code) {
+    const response = await api.post('/auth/validatecode', { code })
+    return response
+}
+
+export async function recoveryPassword(new_password) {
+    const response = await api.post('/auth/recoverypassword', { new_password })
     return response
 }
 

@@ -1,7 +1,7 @@
 <template>
     <v-sheet class="change-password-block">
-        <h1>Восстановление пароля</h1>
-        <v-form ref="form" class="form" @submit.prevent="onSubmit">
+        <h1 class="mb-8">Восстановление пароля</h1>
+        <v-form class="form" @submit.prevent="submitNewPassword">
             <v-text-field
                 label="Введите новый пароль"
                 :rules="newPasswordRules"
@@ -13,6 +13,7 @@
                 :rules="confirmPasswordRules"
                 v-model="repeatNewPassword"
                 autocomplete="off"
+                type="password"
             ></v-text-field>
             <v-btn type="submit" class="button">Изменить пароль</v-btn>
         </v-form>
@@ -24,44 +25,35 @@
 
 <script setup>
     import { ref } from 'vue'
-    import { changePassword } from '@/services/api.service'
+    import { recoveryPassword } from '@/services/api.service'
     import { useRouter } from 'vue-router'
 
     const router = useRouter()
 
-    const currentPassword = ref('')
     const newPassword = ref('')
     const repeatNewPassword = ref('')
-    const form = ref(null)
     const error = ref({ show: false, text: '' })
 
     const newPasswordRules = [
         v => !!v || 'Введите пароль',
         v => v.length >= 4 || 'Пароль должен быть длиннее 4 символов',
-        v => v !== currentPassword.value || 'Пароли не должны совпадать',
     ]
 
     const confirmPasswordRules = [v => !!v || 'Повторите пароль', v => v === newPassword.value || 'Пароли не совпадают']
 
-    const onSubmit = async () => {
-        const { valid } = await form.value.validate()
-        if (!valid) return
+    async function submitNewPassword() {
         try {
-            const response = await changePassword(currentPassword.value, newPassword.value)
+            const response = await recoveryPassword(newPassword.value)
             if (response.status === 201) {
-                sessionStorage.setItem('changePasswordSuccess', 'Пароль успешно изменён!')
+                sessionStorage.setItem('recoveryPasswordSuccess', 'Пароль успешно изменён!')
                 router.push('/login')
             }
         } catch (err) {
-            if (err && err.response.status === 404) {
-                error.value = { show: true, text: 'Неверный текущий пароль' }
-                return
-            }
             if (err && err.response.status === 409) {
                 error.value = { show: true, text: 'Новый пароль совпадает со старым' }
-                return
+            } else {
+                error.value = { show: true, text: `Ошибка: ${err.name}` }
             }
-            error.value = { show: true, text: 'Неизвестная ошибка сервера' }
         }
     }
 </script>
@@ -70,7 +62,7 @@
     .change-password-block {
         display: flex;
         justify-content: center;
-        padding: 5rem;
+        padding: 8rem;
         flex-direction: column;
         align-items: center;
         gap: 1rem;

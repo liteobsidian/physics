@@ -1,17 +1,17 @@
 <template>
     <v-sheet class="register-block">
         <h1>Регистрация</h1>
-        <v-form ref="form" class="form" @submit.prevent="onSubmit">
+        <v-form ref="form" class="form" @submit.prevent="onSubmit" autocomplete="off">
             <v-text-field
                 label="Имя пользователя"
                 v-model="username"
                 :rules="usernameRules"
-                :type="'username'"
+                type="username"
             ></v-text-field>
-            <v-text-field label="Почта" v-model="email" :rules="emailRules" :type="'email'"></v-text-field>
+            <v-text-field label="Почта" v-model="email" :rules="emailRules" type="email"></v-text-field>
             <v-text-field label="Пароль" :rules="passwordRules" v-model="password"></v-text-field>
             <v-text-field
-                :type="'password'"
+                type="password"
                 label="Повторите пароль"
                 :rules="confirmPasswordRules"
                 v-model="confirmPassword"

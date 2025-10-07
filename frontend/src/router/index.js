@@ -17,6 +17,8 @@ import ForbiddenPage from '@/pages/ForbiddenPage.vue'
 import EmailSendPage from '@/pages/EmailSendPage.vue'
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage.vue'
 import { userStorage } from '@/plugins/pinia'
+import RecoveryPasswordCodePage from '@/pages/RecoveryPasswordCodePage.vue'
+import RecoveryPasswordPage from '@/pages/RecoveryPasswordPage.vue'
 
 // Определяем базовый URL в зависимости от окружения
 const base = import.meta.env.BASE_URL || '/physics/'
@@ -86,6 +88,16 @@ const routes = [
                 path: '/forgotpassword',
                 name: 'forgot-password',
                 component: ForgotPasswordPage,
+            },
+            {
+                path: '/recoverypasswordcode',
+                name: 'recovery-password-code',
+                component: RecoveryPasswordCodePage,
+            },
+            {
+                path: '/recoverypassword',
+                name: 'recovery-password',
+                component: RecoveryPasswordPage,
             },
         ],
     },

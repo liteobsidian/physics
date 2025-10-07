@@ -2,7 +2,13 @@
     <v-sheet class="register-block">
         <h1>Вход</h1>
         <v-form ref="form" class="form" @submit.prevent="onSubmit">
-            <v-text-field label="Почта" v-model="email" :rules="emailRules" :type="'email'"></v-text-field>
+            <v-text-field
+                label="Почта"
+                v-model="email"
+                :rules="emailRules"
+                type="email"
+                autocomplete="email"
+            ></v-text-field>
             <v-text-field
                 label="Пароль"
                 :rules="passwordRules"
@@ -21,11 +27,14 @@
         <v-snackbar v-model="error.show" color="red" location="top">
             {{ error.text }}
         </v-snackbar>
+        <v-snackbar v-model="successPasswordChange.show" color="green" location="top">
+            {{ successPasswordChange.text }}
+        </v-snackbar>
     </v-sheet>
 </template>
 
 <script setup>
-    import { ref } from 'vue'
+    import { ref, onMounted } from 'vue'
     import { useRouter } from 'vue-router'
     import { login } from '@/services/api.service'
     import { userStorage } from '@/plugins/pinia'
@@ -37,11 +46,11 @@
     const form = ref(null)
 
     const show1 = ref(false)
-    const show2 = ref(true)
 
     const password = ref('')
     const email = ref('')
     const error = ref({ show: false, text: '' })
+    const successPasswordChange = ref({ show: false, text: '' })
 
     const emailRules = [v => !!v || 'Введите почту', v => /.+@.+\..+/.test(v) || 'Некорректный email']
 
@@ -82,6 +91,15 @@
             console.error('Ошибка входа', err)
         }
     }
+
+    onMounted(() => {
+        const passwordMsg = sessionStorage.getItem('recoveryPasswordSuccess')
+
+        if (passwordMsg) {
+            successPasswordChange.value = { show: true, text: passwordMsg }
+            sessionStorage.removeItem('recoveryPasswordSuccess')
+        }
+    })
 </script>
 
 <style lang="scss" scoped>

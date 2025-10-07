@@ -1,7 +1,7 @@
 import { sequelize } from "../config/db.js";
 import jwt, { decode } from "jsonwebtoken";
 import dotenv from "dotenv";
-import { isPasswordMatch, hasher } from "../utils/hasher.js";
+import { validateHash, hasher } from "../utils/hasher.js";
 dotenv.config();
 
 export class UserController {
@@ -117,7 +117,7 @@ export class UserController {
                 attributes: ["password"],
             });
 
-            if (await isPasswordMatch(currentPassword, user.password)) {
+            if (await validateHash(currentPassword, user.password)) {
                 await this.model.update(
                     {
                         password: await hasher(newPassword),

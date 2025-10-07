@@ -1,19 +1,14 @@
 <template>
     <v-sheet class="register-block">
-        <h1>Забыли пароль?</h1>
-        <div class="desc-container editor-description mb-4">
-            <h3>Введите вашу почту, чтобы мы могли отправить вам письмо с кодом для восстановления пароля</h3>
+        <h1>Восстановления пароля</h1>
+        <div class="desc-container editor-description">
+            <h3>Проверьте вашу почту. На неё должно было прийти письмо с кодом восстановления пароля</h3>
         </div>
-        <v-form class="form" @submit.prevent="sendMail">
-            <v-text-field
-                label="Почта"
-                v-model="email"
-                :rules="emailRules"
-                type="email"
-                autocomplete="email"
-            ></v-text-field>
-            <v-btn type="submit" class="button" :loading="isLoading">Восстановить пароль</v-btn>
-            <v-btn class="button" @click="goBack">Назад</v-btn>
+        <v-form ref="form" class="form" @submit.prevent="validateCode">
+            <v-otp-input :length="5" variant="solo" class="mb-16" divider="•" v-model="code"></v-otp-input>
+            <v-btn type="submit" class="button" :disabled="code.length < 5 || isLoading" :loading="isLoading">
+                Подтвердить
+            </v-btn>
         </v-form>
         <v-snackbar v-model="error.show" color="red" location="top">
             {{ error.text }}
@@ -24,32 +19,33 @@
 <script setup>
     import { ref } from 'vue'
     import { useRouter } from 'vue-router'
-    import { forgotPassword } from '@/services/api.service'
+    import { validateRecoveryPasswordCode } from '@/services/api.service'
     import '@/assets/main.css'
 
     const router = useRouter()
 
-    const goBack = () => {
-        router.back()
-    }
+    const form = ref(null)
 
-    const email = ref('')
     const error = ref({ show: false, text: '' })
+
+    const code = ref('')
     const isLoading = ref(false)
 
-    const emailRules = [v => !!v || 'Введите почту', v => /.+@.+\..+/.test(v) || 'Некорректный email']
-
-    async function sendMail() {
+    async function validateCode() {
         try {
+            console.log(code.value)
             isLoading.value = true
-            // console.log(email.value)
-            const response = await forgotPassword(email.value)
+            const response = await validateRecoveryPasswordCode(String(code.value))
             if (response.status === 200) {
-                router.push('/recoverypasswordcode')
+                router.push({ name: 'recovery-password' })
             }
         } catch (err) {
             isLoading.value = false
-            error.value = { show: true, text: `Ошибка: ${err}` }
+            if (err.status === 404) {
+                error.value = { show: true, text: `Неверный код` }
+            } else {
+                error.value = { show: true, text: `Ошибк: ${err}` }
+            }
             console.error('Ошибка', err)
         } finally {
             isLoading.value = false
