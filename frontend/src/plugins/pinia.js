@@ -12,7 +12,7 @@ export const userStorage = defineStore('user', {
         user_id: null,
         role: null,
         userProgress: [],
-        loggined_at: null,
+        created_at: null,
         days: null,
     }),
     actions: {

@@ -135,7 +135,7 @@ export class AuthController {
                 return res.status(200).json({
                     message: "Успешный вход!",
                     token: decoded,
-                    loggined_at: loggined_at,
+                    created_at: user.created_at,
                 });
             } else {
                 // await t.rollback();
@@ -169,11 +169,11 @@ export class AuthController {
         }
 
         const t = await sequelize.transaction();
-
+        const logOut_at = new Date();
         try {
             await this.model.update(
                 {
-                    session_end: new Date(),
+                    session_end: logOut_at,
                 },
                 {
                     transaction: t,

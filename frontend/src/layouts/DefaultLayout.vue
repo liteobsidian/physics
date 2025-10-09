@@ -70,9 +70,9 @@
     const { calculateTotalProgress } = useProgress()
 
     const daysCount = computed(() => {
-        if (!userStore.loggined_at) return 0
+        if (!userStore.created_at) return 0
         const now = Date.now()
-        const diffMs = now - userStore.loggined_at
+        const diffMs = now - userStore.created_at
         return Math.ceil(diffMs / (1000 * 60 * 60 * 24))
     })
 

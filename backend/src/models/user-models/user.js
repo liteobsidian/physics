@@ -35,6 +35,11 @@ User.init(
             defaultValue: "user",
             allowNull: false,
         },
+        created_at: {
+            type: DataTypes.DATE,
+            defaultValue: new Date(),
+            allowNull: false,
+        },
         session_start: {
             type: DataTypes.DATE,
         },

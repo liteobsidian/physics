@@ -73,7 +73,7 @@
                 userStore.$patch({
                     user_id: response.data.token.id,
                     role: response.data.token.role,
-                    loggined_at: new Date(response.data.loggined_at).getTime(),
+                    created_at: new Date(response.data.created_at).getTime(),
                 })
                 sessionStorage.setItem('profileSuccess', 'Успешный вход!')
                 router.push(`/profile/${response.data.token.id}`)
